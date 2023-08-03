@@ -38,10 +38,10 @@ line="$(random_int 64 "$lines")"
 line="$(random_int 8)" # TODO first line, one of first few lines?
 
 ## head + cut with default delim (tab)
-seq "$lines" | while read i; do
+for i in $(seq "$lines"); do
 	columns="$(random_int 4 16)"
 	column="$(random_int 4 "$columns")"
-	seq "$columns" | while read j; do
+	for j in $(seq "$columns"); do
 		if test "$i" -eq "$line" && test "$j" -eq "$column"; then
 			task "Token in line $line, col $column in file '$file'" >&2
 			token 1-1
@@ -92,7 +92,7 @@ file="$(rand_touch)"
 echo
 task "Token in line with largest number in '$file'"
 {
-	random_seq 1024 2048 | while read i; do fake_token 1-1; done
+	for i in $(random_seq 1024 2048); do fake_token 1-1; done
 	token 1-1
 } | nl | shuf > "$file"
 
@@ -102,15 +102,15 @@ echo
 task "Token is line with highest frequency in '$file'"
 freq="$(random_int 16)"
 {
-	random_seq 256 512 | while read _; do
+	for _ in $(random_seq 256 512); do
 		token="$(fake_token 1-1)"
-		random_seq "$freq" | while read _; do
+		for _ in $(random_seq "$freq"); do
 			echo "$token"
 		done
 	done
 
 	token="$(token 1-1)"
-	random_seq "$((freq+1))" "$((freq*2))" | while read _; do
+	for _ in $(random_seq "$((freq+1))" "$((freq*2))"); do
 		echo "$token"
 	done
 } | shuf > "$file"
@@ -123,7 +123,7 @@ echo
 task "Token is in line which starts with '$tag' in '$file'"
 {
 	printf '%s\t%s\t%s\n' "$tag" "$(token 1-1)" "$(random_alnum)"
-	random_seq 512 1024 | while read _; do
+	for _ in $(random_seq 512 1024); do
 		printf '%s\t%s\t%s\n' "$(random_alnum)" "$(fake_token 1-1)" "$tag"
 	done
 } | shuf > "$file"
@@ -138,7 +138,7 @@ task "Token is in line which starts with '$start' and ends with '$end' in '$file
 {
 	line() { printf '%s\t%s\t%s\n' "$1" "$2" "$3"; }
 	line "$start" "$(token 1-1)" "$end"
-	random_seq 512 1024 | while read _; do
+	for _ in $(random_seq 512 1024); do
 		case "$(random_int 5)" in
 			1) line "$start" "$(fake_token 1-1)" "$(random_alnum)" ;;
 			2) line "$(random_alnum)" "$(fake_token 1-1)" "$end" ;;
@@ -159,7 +159,7 @@ task "Token is in line which starts with '$start' but does not end with '$end' i
 {
 	line() { printf '%s\t%s\t%s\n' "$1" "$2" "$3"; }
 	line "$start" "$(token 1-1)" "$(random_alnum)"
-	random_seq 512 1024 | while read _; do
+	for _ in $(random_seq 512 1024); do
 		case "$(random_int 5)" in
 			1) line "$start" "$(fake_token 1-1)" "$end" ;;
 			2) line "$(random_alnum)" "$(fake_token 1-1)" "$end" ;;
@@ -178,7 +178,7 @@ echo
 task "Token is in line which does not contain '$tag' in '$file'"
 {
 	printf '%s %s\n' "$(random_alnum)" "$(token 1-1)"
-	random_seq 512 1024 | while read _; do
+	for _ in $(random_seq 512 1024); do
 		printf '%s %s\n' "$tag" "$(fake_token 1-1)"
 	done
 } | shuf > "$file"
@@ -190,7 +190,7 @@ echo
 task "Token is in line which contains '$(printf '%s' "$tag"|to_lower)' in mixed case in '$file'"
 {
 	printf '%s\t%s\n' "$(random_alnum)$tag$(random_alnum)" "$(token 1-1)"
-	random_seq 512 1024 | while read _; do
+	for _ in $(random_seq 512 1024); do
 		printf '%s\t%s\n' "$(random_alnum)$(random_alnum)$(random_alnum)" "$(fake_token 1-1)"
 	done
 } | shuf > "$file"
@@ -201,7 +201,7 @@ echo
 task "Token is in line which starts with numbers in '$file'"
 {
 	printf '%s\t%s\n' "$(random_digits)$(random_alnum)" "$(token 1-1)"
-	random_seq 512 1024 | while read _; do
+	for _ in $(random_seq 512 1024); do
 		printf '%s\t%s\n' "$(random_alpha)$(random_alnum)" "$(fake_token 1-1)"
 	done
 } | shuf > "$file"

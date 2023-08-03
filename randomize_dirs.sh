@@ -13,10 +13,10 @@ root="$PWD" # get absolute path
 rand_dir() { find "$1" -type d | pick_random; }
 rand_cd() { cd "$(rand_dir "$root")"; }
 
-mkdirs() { seq "${1:-2}" | while read _; do mkdir "$(random_filename)"; done; }
-mkfiles() { seq "${1:-4}" | while read _; do touch "$(random_filename)"; done; }
+mkdirs() { for _ in $(seq "${1:-2}"); do mkdir "$(random_filename)"; done; }
+mkfiles() { for _ in $(seq "${1:-4}"); do touch "$(random_filename)"; done; }
 
-seq "$num_dirs" | while read _; do
+for _ in $(seq "$num_dirs"); do
 	rand_cd
 	mkdirs
 	mkfiles
