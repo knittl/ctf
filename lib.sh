@@ -1,4 +1,4 @@
-# no shebang, needs to be sourced
+# no shebang, must be sourced
 
 # helper funcs
 color_reset='[0m'
