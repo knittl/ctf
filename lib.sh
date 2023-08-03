@@ -101,9 +101,7 @@ token() {
 	pepper="${4:-$TOKEN_PEPPER}"      # TODO
 	nonce="${5:-$(random_alnum)}"     # TODO
 
-	if test "$course" && test "$student" && test "$exercise"; then
-		: all good
-	else
+	if test -z "$course" || test -z "$student" || test -z "$exercise"; then
 		err "token EXERCISE [COURSE STUDENT [PEPPER [NONCE]]]" >&2
 		return 1
 	fi
