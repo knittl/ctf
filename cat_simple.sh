@@ -6,7 +6,7 @@ root="$1"
 num_files=8
 max_name_len=16
 
-test -d "$root" || mkdir -p "$root"
+test -d "$root" || mkdir -p "$root" || exit 1
 
 cd "$root"
 root="$PWD" # get absolute path
@@ -32,3 +32,11 @@ task "Token is in files 'part0' through 'part9', sorted alphabetically"
 file="$(random_filename) $(random_filename) $(random_filename)"
 token 1-3 > "$file"
 task 'Token is in file with spaces in its name'
+
+prefix="$(random_filename)"
+suffix="$(random_filename)"
+for _ in $(random_seq 8 32); do
+	fake_token 1-4 > "$prefix$(random_filename)$suffix"
+done
+token 1-4 > "$prefix*$suffix"
+task 'Token is in file with asterisk (*) in its name'
