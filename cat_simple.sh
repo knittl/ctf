@@ -28,3 +28,7 @@ echo "$(token 1-2)" | while parse_token; do
 	printf '%s\n' '}' > part9
 done
 task "Token is in files 'part0' through 'part9', sorted alphabetically"
+
+file="$(random_filename) $(random_filename) $(random_filename)"
+token 1-3 > "$file"
+task 'Token is in file with spaces in its name'
