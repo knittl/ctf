@@ -93,7 +93,7 @@ rand_mkdir() {
 
 
 # TODO token
-token() {
+token_init() {
 	exercise="${1}"            # e.g. 1-2
 	course="${2:-$COURSE}"     # BIT
 	student="${3:-$STUDENT}"   # matrikelnummer: Sxxxx...
@@ -111,15 +111,20 @@ token() {
 	fi
 
 	data="$exercise:$student:$nonce"
-
+}
+token() {
+	token_init "$@"
 	mac="$(printf '%s' "$data:$pepper" | sha256sum | xxd -r -p | base32 -w0 | take 8)"
-
 	printf '%s{%s:%s}\n' "$course" "$data" "$mac"
 }
 
-fake_pepper='invalid' # export? # TODO randomize?
-dbg "Fake token pepper: $fake_pepper"
-fake_token() (TOKEN_PEPPER="$fake_pepper" token "$1") # run in subshell
+# fake_pepper='invalid' # export? # TODO randomize?
+# dbg "Fake token pepper: $fake_pepper"
+# fake_token() (TOKEN_PEPPER="$fake_pepper" token "$1") # run in subshell
+fake_token() {
+	token_init "$@"
+	printf '%s{%s:%s}\n' "$course" "$data" "$(random_alnum 8)"
+}
 
 
 parse_token() { IFS='{:}' read -r course exercise student nonce mac _; }
