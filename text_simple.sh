@@ -35,7 +35,7 @@ echo
 
 lines="$(random_int 64 256)"
 line="$(random_int 64 "$lines")"
-line="$(random_int 8)" # TODO first line, one of first few lines?
+line="$(random_int 2 8)" # TODO first line, one of first few lines?
 
 ## head + cut with default delim (tab)
 for i in $(seq "$lines"); do
