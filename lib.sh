@@ -113,7 +113,7 @@ token_init() {
 	data="$exercise:$student:$nonce"
 }
 token() {
-	token_init "$@"
+	token_init "$@" || return 1
 	mac="$(printf '%s' "$data:$pepper" | sha256sum | xxd -r -p | base32 -w0 | take 8)"
 	printf '%s{%s:%s}\n' "$course" "$data" "$mac"
 }
@@ -122,7 +122,7 @@ token() {
 # dbg "Fake token pepper: $fake_pepper"
 # fake_token() (TOKEN_PEPPER="$fake_pepper" token "$1") # run in subshell
 fake_token() {
-	token_init "$@"
+	token_init "$@" || return 1
 	printf '%s{%s:%s}\n' "$course" "$data" "$(random_alnum 8)"
 }
 
