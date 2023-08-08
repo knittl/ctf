@@ -26,7 +26,7 @@ task "Token in first line of '$file'"
 {
 	lines="$(random_int 64 256)"
 	token 1-1
-	random_alnum "$((lines*80))" | fold -w64
+	random_alnum "$((lines*64))" | fold -w64
 } > "$file"
 
 ## simple file:
