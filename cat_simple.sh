@@ -3,17 +3,18 @@
 . ./lib.sh
 
 root="$1"
-num_files=8
-max_name_len=16
 
 test -d "$root" || mkdir -p "$root" || exit 1
 
 cd "$root"
 root="$PWD" # get absolute path
 
-for _ in $(seq "$num_files"); do touch "$(random_filename)"; done
+dir="$(rand_mkdir)"
+cd "$dir"
+for _ in $(random_seq 8 16); do touch "$(random_filename)"; done
 echo "$(token 1-1)" > "$(find -type f | pick_random)"
-task 'Token is content of the only non-empty file'
+task "Token is content of the only non-empty file in directory '$dir/'"
+cd "$root"
 
 echo "$(token 1-2)" | while parse_token; do
 	printf '%s' "$course" > part0
