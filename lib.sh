@@ -94,12 +94,8 @@ rand_mkdir() {
 
 # TODO token
 token_init() {
-	exercise="${1}"            # e.g. 1-2
-	course="${2:-$COURSE}"     # BIT
-	student="${3:-$STUDENT}"   # matrikelnummer: Sxxxx...
-
-	pepper="${4:-$TOKEN_PEPPER}"      # TODO
-	nonce="${5:-$(random_alnum)}"     # TODO
+	token_init_course "$@"
+	token_init_mac "$@"
 
 	if test -z "$course" || test -z "$student" || test -z "$exercise"; then
 		err "token EXERCISE [COURSE STUDENT [PEPPER [NONCE]]]" >&2
@@ -112,10 +108,24 @@ token_init() {
 
 	data="$exercise:$student:$nonce"
 }
+token_init_course() {
+	exercise="${1}"            # e.g. 1-2
+	course="${2:-$COURSE}"     # BIT
+	student="${3:-$STUDENT}"   # matrikelnummer: Sxxxx...
+}
+token_init_mac() {
+	pepper="${4:-$TOKEN_PEPPER}"      # TODO
+	nonce="${5:-$(random_alnum)}"     # TODO
+}
 token() {
 	token_init "$@" || return 1
-	mac="$(printf '%s' "$data:$pepper" | sha256sum | xxd -r -p | base32 -w0 | take 8)"
+	mac="$(mac "$data:$pepper")"
 	printf '%s{%s:%s}\n' "$course" "$data" "$mac"
+}
+
+mac() {
+	printf '%s' "$1" | sha256sum | xxd -r -p | base32 -w0 | take 8;
+	# printf '%s' "$1" | sha256sum | take 8;
 }
 
 # fake_pepper='invalid' # export? # TODO randomize?
