@@ -123,7 +123,7 @@ token() {
 	printf '%s{%s:%s}\n' "$course" "$data" "$mac"
 }
 token_format() {
-	set -- "$1" '' '' '' "$2" # pin nonce
+	set -- "$1" "$3" "$4" "$5" "$2" # pin nonce
 	token_init "$@" || return 1
 	mac="$(mac "$data:$pepper")"
 	printf '%s{%s:%s}\n' "$course" "${data%:*}:%s" "$mac"
