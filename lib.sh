@@ -135,6 +135,9 @@ token() {
 	mac="$(mac "$data:$pepper")"
 	printf '%s{%s:%s}\n' "$course" "$data" "$mac"
 }
+token_format() {
+	token "$1" "$3" "$4" "$5" "$2" # pin nonce
+}
 
 current_token() { token "$(level)"; }
 current_fake_token() { fake_token "$(level)"; }
