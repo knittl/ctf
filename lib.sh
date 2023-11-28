@@ -120,13 +120,16 @@ token_init_mac() {
 token() {
 	token_init "$@" || return 1
 	mac="$(mac "$data:$pepper")"
-	printf '%s{%s:%s}\n' "$course" "$data" "$mac"
+	render_token  "$data" "$mac"
 }
 token_format() {
 	set -- "$1" "$3" "$4" "$5" "$2" # pin nonce
 	token_init "$@" || return 1
 	mac="$(mac "$data:$pepper")"
-	printf '%s{%s:%s}\n' "$course" "${data%:*}:%s" "$mac"
+	render_token  "${data%:*}:%s" "$mac"
+}
+render_token() {
+	printf '%s{%s:%s}\n' "$course" "$1" "$mac"
 }
 
 mac() {
