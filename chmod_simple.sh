@@ -63,7 +63,7 @@ chmod "$(random_perm)" "$filename"
 token_format 1-1 "$(mac64 "$perms")" | while parse_token; do
 	echo "$perms" | cut -c2- | sed 's/.../& /g' | {
 		read -r user group other;
-		task "Enable $(render_perm "$user") permissions for user, $(render_perm "$group") permissions for group, and $(render_perm "$other") permissions for others for the file '$filename' -- then run: check_perm 1-1 $mac '$filename';"
+		task "Enable $(render_perm "$user") permissions for user, $(render_perm "$group") permissions for group, and $(render_perm "$other") permissions for others for the file '$filename' -- then run: check_token perm 1-1 $mac '$filename';"
 	}
 done
 
@@ -75,7 +75,7 @@ perms_octal="$(stat -c'%#a' "$filename")"
 chmod "$(random_perm)" "$filename"
 
 token_format 1-2 "$(mac64 "$perms")" | while parse_token; do
-	task "Set the octal permissions '$perms_octal' for the file '$filename' -- then run: check_perm 1-2 $mac '$filename';"
+	task "Set the octal permissions '$perms_octal' for the file '$filename' -- then run: check_token perm 1-2 $mac '$filename';"
 done
 
 ## perms (symbolic)
@@ -85,7 +85,15 @@ perms="$(stat -c'%A' "$filename")"
 chmod "$(random_perm)" "$filename"
 
 token_format 1-3 "$(mac64 "$perms")" | while parse_token; do
-	task "Set permissions '${perms#?}' for the file '$filename' -- then run: check_perm 1-3 $mac '$filename';"
+	task "Set permissions '${perms#-}' for the file '$filename' -- then run: check_token perm 1-3 $mac '$filename';"
 done
 
-## TODO create file or dir, then set perms
+## create + mode
+type="$(pick_random d -)"
+path="$(uniq_filename)"
+pathtype=file; test "$type" = d && pathtype=directory
+perms="$(random_perm_sym)"
+
+token_format 1-4 "$(mac64 "$type$perms")" | while parse_token; do
+	task "Create $pathtype '$path' with permissions '$perms' -- then run: check_token perm 1-4 $mac '$path';"
+done
