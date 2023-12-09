@@ -53,13 +53,13 @@ random_name() { random_alnum "$@"; }
 random_filename() { random_name "$(random_int "${1:-4}" "${2:-16}")"; }
 random_perm() { echo "0$(random_int 0 7)$(random_int 0 7)$(random_int 0 7)"; }
 random_seq() { seq "$(random_int "$1" "$2")"; }
-pick_random() { shuf -n1 "$@"; }
+pick_random() { shuf ${1+-e} -n1 "$@"; }
 chance() { test "$(random_int 0 99)" -lt "${1:-50}"; }
 
 random_int() {
 	if test "$2"
-	then pick_random -i"$1-$2"
-	else pick_random -i"1-${1:-8}"
+	then shuf -n1 -i"$1-$2"
+	else shuf -n1 -i"1-${1:-8}"
 	fi
 	# case "$#" in
 	# 	0) shuf -n1 -i1-8 ;;
@@ -71,7 +71,7 @@ random_int() {
 random_perm_chmod() {
 	for user in u g o; do
 		echo "$user="
-		for p in r w x; do pick_random -e "$p" ''; done
+		for p in r w x; do pick_random "$p" ''; done
 		test "$user" = o || echo ","
 	done | join_lines
 }
