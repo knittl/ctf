@@ -14,34 +14,29 @@ rand_dir() { find "$1" -type d | pick_random; }
 rand_cd() { cd "$(rand_dir "$root")"; }
 
 # helpers
-mac64() {
-	printf '%s\n' "$1" | sha256sum | xxd -r -p | base64 | take 8;
-}
+mac64() { printf '%s\n' "$1" | sha256sum | xxd -r -p | base64 | take 8; }
 
-script='/tmp/check_perm'
+script='/tmp/check_token'
 > "$script"
 chmod a+x "$script"
 cat >> "$script" <<-\SH
 #!/bin/sh
-task="$1"; mac="$2"; file="$3"
-if [ "$#" -ne 3 ]; then
-	echo "$0: Usage: $0 TASK MAC FILENAME" >&2
+if [ "$#" -ne 4 ]; then
+	echo "$0: Usage: $0 SCRIPT TASK MAC FILE..." >&2
 	exit 1
 fi
-if ! [ -e "$file" ]; then
-	echo "$0: No such file or directory: $file" >&2
-	exit 1
-fi
-check() {
-	stat -c'%A' "$file" |
+perm() {
+	stat -c'%A' "$@" |
 		sha256sum |
 		xxd -r -p |
 		base64 |
 		head -c8 # TODO head/dd # TODO source lib.sh
 }
+script="$1"; task="$2"; mac="$3";
+shift 3
 SH
 cat >> "$script" <<-SH
-printf '%s{%s:%s}' "$COURSE" "\$task:$STUDENT:\$(check "\$file")" "\$mac"
+printf '%s{%s:%s}' "$COURSE" "\$task:$STUDENT:\$("\$script" "\$@")" "\$mac"
 SH
 
 render_perm() {
