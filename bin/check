@@ -1,0 +1,11 @@
+#!/bin/sh
+if [ "$#" -lt 4 ]; then
+	echo "$0: Usage: $0 SCRIPT TASK MAC ARGS..." >&2
+	exit 1
+fi
+
+script="$1"; task="$2"; mac="$3";
+shift 3
+nonce="$("$script" "$@")" || exit 1
+printf '%s{%s:%s:%s:%s}\n' "$COURSE" "$task" "$STUDENT" "$nonce" "$mac"
+
