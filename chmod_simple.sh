@@ -2,11 +2,7 @@
 
 . ./lib.sh
 
-root="${1?root dir missing}"
-test -d "$root" || mkdir -p "$root"
-
-cd "$root"
-root="$PWD" # get absolute path
+init_root "$1"
 
 exec 2> README
 
