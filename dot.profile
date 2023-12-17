@@ -1,3 +1,3 @@
-show_motd() { cat ~/README; }
+show-motd() { cat ~/README; }
 
-show_motd
+show-motd
