@@ -2,26 +2,32 @@
 
 . ./lib.sh
 
-root="$1"
+: "${current_level:?must be set}"
+
 num_files=8
 
+root="$1"
 test -d "$root" || mkdir -p "$root"
-
 cd "$root"
 root="$PWD" # get absolute path
+
+# TODO create readme
+exec 2> README
 
 rand_dir() { find "$1" -type d | pick_random; }
 rand_cd() { cd "$(rand_dir "$root")"; }
 
 ## simple file:
+next_task
 cd "$(rand_mkdir)"
-touch "$(token 1-1)"
+touch "$(current_token)"
 cd ..
 task 'Token is a file in a random directory'
 
+next_task
 mkdir -p lst
 cd lst
-echo "$(token 1-3)" | while parse_token; do
+current_token | while parse_token; do
 	year="$(random_int 10 20)"
 
 	# touch -t "${year}01$(random_int 31)$(rand_hour)$(rand_minute)" "$course"
