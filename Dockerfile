@@ -48,6 +48,11 @@ RUN awk -v student="$STUDENT" '{gsub("\\${STUDENT}", student);print}' /ctf/READM
 # ---------------
 
 FROM base
+LABEL org.opencontainers.image.authors="p23687@fh-hagenberg.at" \
+	org.opencontainers.image.description="CTF-like exercises"
+	# org.opencontainers.image.source="https://github.com/knittl/hyp1-docker" \
+	# org.opencontainers.image.url="https://github.com/knittl/hyp1-docker"
+
 
 ENV SHELL=/bin/bash
 
