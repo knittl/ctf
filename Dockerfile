@@ -20,8 +20,8 @@ ENV TOKEN_PEPPER=$pepper
 
 RUN . ./lib.sh \
 	&& . ./setup.sh \
-	&& ./cat_simple.sh /ctf/tasks/1-cat \
-	&& cat /ctf/tasks/1-cat/README  \
+	&& current_level=1 ./cat_simple.sh /ctf/tasks/1-cat \
+	&& cat /ctf/tasks/1-cat/README \
 	&& echo done
 
 COPY README /ctf
