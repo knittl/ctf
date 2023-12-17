@@ -36,7 +36,7 @@ RUN . ./lib.sh \
 	&& echo done
 
 COPY README /ctf
-RUN awk -v student="$STUDENT" '{gsub("\\${STUDENT}", student);print}' /ctf/README > /ctf/README.tmp
+RUN awk -v student="$STUDENT" '{gsub("\\${STUDENT}", student);print}' /ctf/README > /ctf/README.tmp && printf 'Checksum: %s\n\n' "$(printf '%s' "$TOKEN_PEPPER" | sha256sum | cut -c-64)" >> /ctf/README.tmp
 
 # TODO copy scripts
 # TODO generate tasks
@@ -62,5 +62,3 @@ RUN cat dot.bashrc >> .bashrc && rm dot.bashrc
 USER "$STUDENT"
 
 # TODO different users for different "levels"
-
-# TODO hash pepper to "verify" correct "build"
