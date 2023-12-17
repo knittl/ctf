@@ -2,8 +2,9 @@
 
 . ./lib.sh
 
-root="$1"
+: "${current_level:?must be set}"
 
+root="$1"
 test -d "$root" || mkdir -p "$root" || exit 1
 
 cd "$root"
@@ -12,8 +13,6 @@ root="$PWD" # get absolute path
 # TODO create readme
 exec 2>&1 >/dev/null | tee README
 # exec 2> README
-
-current_level=1
 
 next_task
 dir="$(rand_mkdir)"
