@@ -21,7 +21,7 @@ next_task
 	cd "$dirname"
 	for _ in $(random_seq 4 8); do rand_mkdir >/dev/null; done
 	touch "$(find */ -type d | pick_random)/$(current_token)"
-	task "Token is the filename in a random directory under '$dirname'"
+	task "Token is the filename of the only file in a random subdirectory of '$dirname'"
 )
 
 next_task
