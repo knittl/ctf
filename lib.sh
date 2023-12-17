@@ -136,6 +136,8 @@ render_token() {
 	printf '%s{%s:%s}\n' "$course" "$1" "$mac"
 }
 
+current_token() { token "$(level)"; }
+
 mac() {
 	printf '%s' "$1" | sha256sum | xxd -r -p | base32 -w0 | take 8;
 	# printf '%s' "$1" | sha256sum | take 8;
