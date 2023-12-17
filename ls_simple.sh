@@ -52,4 +52,8 @@ current_token | while parse_token; do
 done
 task 'Token is all files sorted by modification date'
 
-# TODO token in target of softlink
+# token in target of softlink
+next_task
+filename="$(uniq_filename)"
+ln -s "$(current_token)" "$filename"
+task "Token is target of symbolic link '$filename'"
