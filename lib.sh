@@ -10,7 +10,9 @@ colored() { color="$1"; shift; printf "$color%s$color_reset\n" "$*"; }
 err() { colored "$color_red" "⚠️ $*" >&2; }
 dbg() { test "$DBG" && printf "${color_yellow}DBG${color_reset}: %s\n" "$*" >&2; }
 info() { colored "$color_green" "ℹ️  $*" >&2; }
-task() { colored "$color_blue" "📝 $*" >&2; }
+next_task() { current_task="$((current_task+1))"; }
+level() { printf '%s-%s\n' "$current_level" "$current_task"; }
+task() { colored "$color_blue" "📝 ${current_task:+[$(level)] }$*"; } >&2
 # TODO extra format for question text?
 
 leetify() {
