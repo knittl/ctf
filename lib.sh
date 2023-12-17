@@ -12,7 +12,7 @@ dbg() { test "$DBG" && printf "${color_yellow}DBG${color_reset}: %s\n" "$*" >&2;
 info() { colored "$color_green" "ℹ️  $*" >&2; }
 next_task() { current_task="$((current_task+1))"; }
 level() { printf '%s-%s\n' "$current_level" "$current_task"; }
-task() { colored "$color_blue" "📝 ${current_task:+[$(level)] }$*"; } >&2
+task() { colored "$color_blue" "📝 ${current_task:+[$(level)] }$*"; echo; } >&2
 # TODO extra format for question text?
 
 leetify() {
