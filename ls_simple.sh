@@ -14,9 +14,6 @@ root="$PWD" # get absolute path
 # TODO create readme
 exec 2> README
 
-rand_dir() { find "$1" -type d | pick_random; }
-rand_cd() { cd "$(rand_dir "$root")"; }
-
 ## simple file:
 next_task
 cd "$(rand_mkdir)"
