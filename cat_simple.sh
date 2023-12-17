@@ -11,8 +11,7 @@ cd "$root"
 root="$PWD" # get absolute path
 
 # TODO create readme
-exec 2>&1 >/dev/null | tee README
-# exec 2> README
+exec 2> README
 
 next_task
 dir="$(rand_mkdir)"
