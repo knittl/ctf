@@ -32,23 +32,25 @@ RUN awk -v student="$STUDENT" '{gsub("\\${STUDENT}", student);print}' /ctf/READM
 
 FROM ubuntu:23.10
 
+ENV LANG=C.UTF-8
+ENV SHELL=/bin/bash
+
 ARG student
 ENV STUDENT=$student
 
-WORKDIR /home/ubuntu
+RUN useradd -ms /bin/bash --no-log-init -c 'Account for '"$STUDENT" "$STUDENT" \
+	&& sed -i '/^#force_color_prompt=yes$/s/^#//' "/home/$STUDENT/.bashrc"
+WORKDIR "/home/$STUDENT"
 
 COPY --from=build /ctf/tasks .
 COPY --from=build /ctf/README.tmp README
-COPY dot.bashrc .bashrc
+COPY dot.bashrc .
+RUN cat dot.bashrc >> .bashrc && rm dot.bashrc
 
-USER ubuntu
+USER "$STUDENT"
 
-# TODO user account
 # TODO unminimize / man pages
 # TODO different users for different "levels"
-
-# TODO export course/student to env?
-# TODO home directory for $student
 
 # TODO hash pepper to "verify" correct "build"
 
