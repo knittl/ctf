@@ -40,7 +40,7 @@ next_task
 		touch_ago 2 '{'
 		touch_ago 3 "$exercise"
 		touch_ago 4 ":$student:"
-		printf '%s:%s' "$nonce" "$mac" | fold -b2 | {
+		printf '%s:%s' "$nonce" "$mac" | fold -b3 | {
 			ago=6
 			while read c; do
 				touch_ago "$ago" "$c"
