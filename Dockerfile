@@ -32,8 +32,12 @@ ENV TOKEN_PEPPER=$pepper
 RUN . ./lib.sh \
 	&& . ./setup.sh \
 	&& current_level=1 ./cat_simple.sh /ctf/tasks/1-cat \
-	&& cat /ctf/tasks/1-cat/README \
-	&& echo done
+	&& cat /ctf/tasks/1-cat/README
+
+RUN . ./lib.sh \
+	&& . ./setup.sh \
+	&& current_level=2 ./ls_simple.sh /ctf/tasks/2-ls \
+	&& cat /ctf/tasks/2-ls/README
 
 COPY README /ctf
 RUN awk -v student="$STUDENT" '{gsub("\\${STUDENT}", student);print}' /ctf/README > /ctf/README.tmp && printf 'Checksum: %s\n\n' "$(printf '%s' "$TOKEN_PEPPER" | sha256sum | cut -c-64)" >> /ctf/README.tmp
