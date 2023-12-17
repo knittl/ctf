@@ -39,12 +39,9 @@ WORKDIR /home/ubuntu
 
 COPY --from=build /ctf/tasks .
 COPY --from=build /ctf/README.tmp README
-COPY dot.profile .profile
+COPY dot.bashrc .bashrc
 
 USER ubuntu
-
-ENTRYPOINT [ "/bin/bash" ]
-CMD [ "-l" ]
 
 # TODO user account
 # TODO unminimize / man pages
