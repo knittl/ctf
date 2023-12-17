@@ -1,4 +1,15 @@
-FROM ubuntu:23.10 AS build
+FROM ubuntu:23.10 AS base
+
+ENV LANG=C.UTF-8
+
+RUN yes|unminimize
+RUN apt update \
+	&& apt install -y man-db netbase less nano \
+	&& apt install -y psmisc \
+	&& apt install -y curl \
+	&& rm -rf /var/cache/apt/archives /var/lib/apt/lists/*
+
+FROM base AS build
 
 RUN apt-get update && apt-get install -y xxd
 
@@ -30,9 +41,10 @@ RUN awk -v student="$STUDENT" '{gsub("\\${STUDENT}", student);print}' /ctf/READM
 # TODO copy scripts
 # TODO generate tasks
 
-FROM ubuntu:23.10
+# ---------------
 
-ENV LANG=C.UTF-8
+FROM base
+
 ENV SHELL=/bin/bash
 
 ARG student
@@ -49,10 +61,6 @@ RUN cat dot.bashrc >> .bashrc && rm dot.bashrc
 
 USER "$STUDENT"
 
-# TODO unminimize / man pages
 # TODO different users for different "levels"
 
 # TODO hash pepper to "verify" correct "build"
-
-# TODO install binaries: nano, man, less, …
-# TODO setup colors
