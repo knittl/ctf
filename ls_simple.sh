@@ -16,10 +16,13 @@ exec 2> README
 
 ## simple file:
 next_task
-cd "$(rand_mkdir)"
-touch "$(current_token)"
-cd ..
-task 'Token is a file in a random directory'
+(
+	dirname="$(rand_mkdir)"
+	cd "$dirname"
+	for _ in $(random_seq 4 8); do rand_mkdir >/dev/null; done
+	touch "$(find */ -type d | pick_random)/$(current_token)"
+	task "Token is the filename in a random directory under '$dirname'"
+)
 
 next_task
 (
