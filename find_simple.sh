@@ -135,7 +135,7 @@ next_task
 			esac
 		done
 
-		test "$action" = token && task "Token is name of file with size $size bytes and permissions $(stat -c'%#a' "$file"), last modified $age weeks ago"
+		test "$action" = token && task "Token is name of file with size $(wc -c < "$file") bytes and permissions $(stat -c'%#a' "$file"), last modified $age weeks ago"
 	}
 
 	# real token:
