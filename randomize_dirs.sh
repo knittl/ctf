@@ -2,11 +2,12 @@
 
 . ./lib.sh
 
-root="${1:?root missing}"
+: "${current_level:?must be set}"
+
 num_dirs=8
 
+root="${1:?root missing}"
 test -d "$root" || mkdir -p "$root"
-
 cd "$root"
 root="$PWD" # get absolute path
 
@@ -22,33 +23,53 @@ for _ in $(seq "$num_dirs"); do
 	mkfiles
 done
 
+next_task
 cd "$root"
 file="$(rand_touch "$(random_alnum)")"
-token 2-0 > "$file"
+current_token > "$file"
 task "Type \"cat '${PWD#$root}$file'\" to get the first token" # TODO correct path
 
+next_task
 rand_cd
-mkdir "$(token 2-1)"
+mkdir "$(current_token)"
 task 'Navigate the directory tree to find the directory with the token as name'
 
+next_task
 rand_cd
-mkdir ".$(token 2-2)"
+mkdir ".$(current_token)"
 task 'Navigate the directory tree to find the hidden directory with the token as name'
 
-rand_cd
-file="$(rand_touch "$(token 2-3)")" # TODO better file name?
-task 'Token is the name of a file'
-token 2-4 > "$file"
-task 'Token is in the content of file with token name 2-3'
+next_task
+(
+	rand_cd
+	level="$(level)"
+	current_level="${current_level}.a"
+	file="$(rand_touch "$(current_token)")" # TODO better file name?
+	task 'Token is the name of a file'
 
-rand_cd
-touch ".$(token 2-5)" # TODO
-task 'Token is the name of a hidden file'
+	current_level="${current_level%.a}.b"
+	current_token > "$file"
+	task "Token is in the content of file with token name $level"
+)
 
-rand_cd
-file="$(rand_touch "-$(token 2-6)")"
-task 'Token is the name of a file that has a name starting with a hyphen'
-token 2-7 > "$file"
-task 'Token is in the file with token name 2-6'
+next_task
+(
+	rand_cd
+	touch ".$(current_token)" # TODO
+	task 'Token is the name of a hidden file'
+)
+
+next_task
+(
+	rand_cd
+	level="$(level)"
+	current_level="${current_level}.a"
+	file="$(rand_touch "-$(current_token)")"
+	task 'Token is the name of a file that has a name starting with a hyphen'
+
+	current_level="${current_level%.a}.b"
+	current_token > "$file"
+	task "Token is in the file with token name ${level}"
+)
 
 # TODO wildcards
