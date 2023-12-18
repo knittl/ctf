@@ -12,7 +12,7 @@ root="$PWD" # get absolute path
 exec 2> README
 
 fake_pepper='invalid' # export? # TODO randomize?
-info "Fake token pepper: $fake_pepper"
+# info "Fake token pepper: $fake_pepper"
 fake_token() ( # run in subshell
 	export TOKEN_PEPPER="$fake_pepper"
 	token "$1"
