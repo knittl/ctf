@@ -66,7 +66,9 @@ LABEL org.opencontainers.image.authors="p23687@fh-hagenberg.at" \
 
 ENV SHELL=/bin/bash
 
+ARG course=BIT
 ARG student
+ENV COURSE=$course
 ENV STUDENT=$student
 
 RUN useradd -ms /bin/bash --no-log-init -c 'Account for '"$STUDENT" "$STUDENT" \
