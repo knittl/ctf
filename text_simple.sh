@@ -4,12 +4,12 @@
 
 : "${current_level:?must be set}"
 
-exec 2> README
-
 root="$1"
 test -d "$root" || mkdir -p "$root"
 cd "$root"
 root="$PWD" # get absolute path
+
+exec 2> README
 
 fake_pepper='invalid' # export? # TODO randomize?
 info "Fake token pepper: $fake_pepper" >&2
