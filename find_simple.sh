@@ -115,12 +115,12 @@ next_task
 ## find multiple tests
 next_task
 (
+	size="$(random_int 256 1024)"
+	age="$(random_int 8 32)"
+	perm="$(random_perm)"
+
 	tok() {
 		rand_cd_leaf
-
-		size="$(random_int 256 1024)"
-		age="$(random_int 8 32)"
-		perm="$(random_perm)"
 
 		action=${1:?provide mode: token/fake_token}
 		file="$("$action" "$(level)")"
