@@ -39,6 +39,11 @@ RUN . ./lib.sh \
 	&& current_level=2 ./ls_simple.sh /ctf/tasks/2-ls \
 	&& cat /ctf/tasks/2-ls/README
 
+RUN . ./lib.sh \
+	&& . ./setup.sh \
+	&& current_level=3 ./randomize_dirs.sh /ctf/tasks/3-files \
+	&& cat /ctf/tasks/3-files/README
+
 COPY README /ctf
 RUN awk -v student="$STUDENT" '{gsub("\\${STUDENT}", student);print}' /ctf/README > /ctf/README.tmp && printf 'Checksum: %s\n\n' "$(printf '%s' "$TOKEN_PEPPER" | sha256sum | cut -c-64)" >> /ctf/README.tmp
 
