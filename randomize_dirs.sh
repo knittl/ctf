@@ -4,6 +4,8 @@
 
 : "${current_level:?must be set}"
 
+exec 2> README
+
 num_dirs=8
 
 root="${1:?root missing}"
