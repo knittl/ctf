@@ -21,7 +21,7 @@ fake_token() ( # run in subshell
 ## head
 next_task
 file="$(rand_touch)"
-task "Token in first line of '$file'"
+task "Token is in first line of '$file'"
 {
 	lines="$(random_int 64 256)"
 	current_token
@@ -42,7 +42,7 @@ for i in $(seq "$lines"); do
 	column="$(random_int 4 "$columns")"
 	for j in $(seq "$columns"); do
 		if test "$i" -eq "$line" && test "$j" -eq "$column"; then
-			task "Token in line $line, col $column in file '$file'" >&2
+			task "Token is in line $line, col $column in file '$file'" >&2
 			current_token
 		else
 			# TODO add other text too?
@@ -58,7 +58,7 @@ user="$(random_alnum)"
 cat <<EOF > passwd
 BIT-$user:x:1042:1042:$(token 1-1 | tr : ,):/tmp:/bin/false
 EOF
-task "Token in comment field of user '$user' in file 'passwd'"
+task "Token is in comment field of user '$user' in file 'passwd'"
 
 ## cut + grep
 next_task
@@ -66,7 +66,7 @@ while include="$(random_alnum 4)" exclude="$(random_alnum 4)"; do
 	test "$include" != "$exclude" && break
 done
 
-task "Token in comment of usernames which contain '$include' but not '$exclude' in file 'passwd'"
+task "Token is in comment of usernames which contain '$include' but not '$exclude' in file 'passwd'"
 
 i=1
 current_token | tr ':' '\n' |
@@ -89,7 +89,7 @@ done >> passwd
 ## sort (+tail)
 next_task
 file="$(rand_touch)"
-task "Token in line with largest number in '$file'"
+task "Token is in line with largest number in '$file'"
 {
 	for i in $(random_seq 1024 2048); do fake_token "$(level)"; done
 	current_token
