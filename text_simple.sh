@@ -119,7 +119,7 @@ freq="$(random_int 16)"
 next_task
 file="$(rand_touch)"
 tag="$(random_alnum)"
-task "Token is in line which starts with '$tag' in '$file'"
+task "Token is in line which starts with '$tag' in file '$file'"
 {
 	printf '%s\t%s\t%s\n' "$tag" "$(current_token)" "$(random_alnum)"
 	for _ in $(random_seq 512 1024); do
@@ -133,7 +133,7 @@ next_task
 file="$(rand_touch)"
 start="$(random_alnum)"
 end="$(random_alnum)"
-task "Token is in line which starts with '$start' and ends with '$end' in '$file'"
+task "Token is in line which starts with '$start' and ends with '$end' in file '$file'"
 {
 	line() { printf '%s\t%s\t%s\n' "$1" "$2" "$3"; }
 	line "$start" "$(current_token)" "$end"
@@ -174,7 +174,7 @@ task "Token is in line which starts with '$start' but does not end with '$end' i
 next_task
 file="$(rand_touch)"
 tag="$(random_alnum)"
-task "Token is in line which does not contain '$tag' in '$file'"
+task "Token is in line which does not contain '$tag' in file '$file'"
 {
 	printf '%s %s\n' "$(random_alnum)" "$(current_token)"
 	for _ in $(random_seq 512 1024); do
@@ -186,7 +186,7 @@ task "Token is in line which does not contain '$tag' in '$file'"
 next_task
 file="$(rand_touch)"
 until tag="$(random_alnum | grep '[a-z]' | grep '[A-Z]')"; do :; done
-task "Token is in line which contains '$(printf '%s' "$tag"|to_lower)' in mixed case in '$file'"
+task "Token is in line which contains '$(printf '%s' "$tag"|to_lower)' in mixed case in file '$file'"
 {
 	printf '%s\t%s\n' "$(random_alnum)$tag$(random_alnum)" "$(current_token)"
 	for _ in $(random_seq 512 1024); do
@@ -197,7 +197,7 @@ task "Token is in line which contains '$(printf '%s' "$tag"|to_lower)' in mixed 
 ## grep numbers
 next_task
 file="$(rand_touch)"
-task "Token is in line which starts with numbers in '$file'"
+task "Token is in line which starts with numbers in file '$file'"
 {
 	printf '%s\t%s\n' "$(random_digits)$(random_alnum)" "$(current_token)"
 	for _ in $(random_seq 512 1024); do
