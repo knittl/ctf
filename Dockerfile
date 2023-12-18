@@ -31,18 +31,18 @@ ENV TOKEN_PEPPER=$pepper
 
 RUN . ./lib.sh \
 	&& . ./setup.sh \
-	&& current_level=1 ./cat_simple.sh /ctf/tasks/1-cat \
-	&& cat /ctf/tasks/1-cat/README
+	&& current_level=1 ./randomize_dirs.sh /ctf/tasks/1-files \
+	&& cat /ctf/tasks/1-files/README
 
 RUN . ./lib.sh \
 	&& . ./setup.sh \
-	&& current_level=2 ./ls_simple.sh /ctf/tasks/2-ls \
-	&& cat /ctf/tasks/2-ls/README
+	&& current_level=2 ./cat_simple.sh /ctf/tasks/2-cat \
+	&& cat /ctf/tasks/2-cat/README
 
 RUN . ./lib.sh \
 	&& . ./setup.sh \
-	&& current_level=3 ./randomize_dirs.sh /ctf/tasks/3-files \
-	&& cat /ctf/tasks/3-files/README
+	&& current_level=3 ./ls_simple.sh /ctf/tasks/3-ls \
+	&& cat /ctf/tasks/3-ls/README
 
 RUN . ./lib.sh \
 	&& . ./setup.sh \
