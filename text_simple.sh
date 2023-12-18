@@ -2,15 +2,12 @@
 
 . ./lib.sh
 
+: "${current_level:?must be set}"
+
 root="$1"
-
 test -d "$root" || mkdir -p "$root"
-
 cd "$root"
 root="$PWD" # get absolute path
-
-rand_dir() { find "$1" -type d | pick_random; }
-rand_cd() { cd "$(rand_dir "$root")"; }
 
 fake_pepper='invalid' # export? # TODO randomize?
 info "Fake token pepper: $fake_pepper" >&2
@@ -20,57 +17,57 @@ fake_token() ( # run in subshell
 )
 
 ## head
+next_task
 file="$(rand_touch)"
-echo
 task "Token in first line of '$file'"
 {
 	lines="$(random_int 64 256)"
-	token 1-1
+	current_token
 	random_alnum "$((lines*64))" | fold -w64
 } > "$file"
 
 ## simple file:
 file="$(rand_touch)"
-echo
 
 lines="$(random_int 64 256)"
 line="$(random_int 64 "$lines")"
 line="$(random_int 2 8)" # TODO first line, one of first few lines?
 
 ## head + cut with default delim (tab)
+next_task
 for i in $(seq "$lines"); do
 	columns="$(random_int 4 16)"
 	column="$(random_int 4 "$columns")"
 	for j in $(seq "$columns"); do
 		if test "$i" -eq "$line" && test "$j" -eq "$column"; then
 			task "Token in line $line, col $column in file '$file'" >&2
-			token 1-1
+			current_token
 		else
 			# TODO add other text too?
-			fake_token 1-1
+			fake_token "$(level)"
 		fi
 	done | paste -sd '\t'
 done > "$file"
 # TODO this setup very expensive
 
 ## cut with custom delim (fake passwd :)
+next_task
 user="$(random_alnum)"
 cat <<EOF > passwd
 BIT-$user:x:1042:1042:$(token 1-1 | tr : ,):/tmp:/bin/false
 EOF
-echo
-task "Token in comment field of user '$user' in passwd"
+task "Token in comment field of user '$user' in file 'passwd'"
 
 ## cut + grep
+next_task
 while include="$(random_alnum 4)" exclude="$(random_alnum 4)"; do
 	test "$include" != "$exclude" && break
 done
 
-echo
-task "Token in comment of usernames which contain '$include' but not '$exclude' in passwd"
+task "Token in comment of usernames which contain '$include' but not '$exclude' in file 'passwd'"
 
 i=1
-token 1-1 | tr ':' '\n' |
+current_token | tr ':' '\n' |
 while read -r part; do
 	print_passwd_entry() {
 		name="$COURSE-$(random_alnum)${2:+-$2}"
@@ -88,28 +85,28 @@ while read -r part; do
 done >> passwd
 
 ## sort (+tail)
+next_task
 file="$(rand_touch)"
-echo
 task "Token in line with largest number in '$file'"
 {
-	for i in $(random_seq 1024 2048); do fake_token 1-1; done
-	token 1-1
+	for i in $(random_seq 1024 2048); do fake_token "$(level)"; done
+	current_token
 } | nl | shuf > "$file"
 
 ## sort | uniq
+next_task
 file="$(rand_touch)"
-echo
 task "Token is line with highest frequency in '$file'"
 freq="$(random_int 16)"
 {
 	for _ in $(random_seq 256 512); do
-		token="$(fake_token 1-1)"
+		token="$(fake_token "$(level)")"
 		for _ in $(random_seq "$freq"); do
 			echo "$token"
 		done
 	done
 
-	token="$(token 1-1)"
+	token="$(current_token)"
 	for _ in $(random_seq "$((freq+1))" "$((freq*2))"); do
 		echo "$token"
 	done
@@ -117,92 +114,92 @@ freq="$(random_int 16)"
 
 
 ## grep
+next_task
 file="$(rand_touch)"
 tag="$(random_alnum)"
-echo
 task "Token is in line which starts with '$tag' in '$file'"
 {
-	printf '%s\t%s\t%s\n' "$tag" "$(token 1-1)" "$(random_alnum)"
+	printf '%s\t%s\t%s\n' "$tag" "$(current_token)" "$(random_alnum)"
 	for _ in $(random_seq 512 1024); do
-		printf '%s\t%s\t%s\n' "$(random_alnum)" "$(fake_token 1-1)" "$tag"
+		printf '%s\t%s\t%s\n' "$(random_alnum)" "$(fake_token "$(level)")" "$tag"
 	done
 } | shuf > "$file"
 
 
 ## grep | grep or grep with regex
+next_task
 file="$(rand_touch)"
 start="$(random_alnum)"
 end="$(random_alnum)"
-echo
 task "Token is in line which starts with '$start' and ends with '$end' in '$file'"
 {
 	line() { printf '%s\t%s\t%s\n' "$1" "$2" "$3"; }
-	line "$start" "$(token 1-1)" "$end"
+	line "$start" "$(current_token)" "$end"
 	for _ in $(random_seq 512 1024); do
 		case "$(random_int 5)" in
-			1) line "$start" "$(fake_token 1-1)" "$(random_alnum)" ;;
-			2) line "$(random_alnum)" "$(fake_token 1-1)" "$end" ;;
-			3) line "$(random_alnum)" "$(fake_token 1-1)" "$start" ;;
-			4) line "$end" "$(fake_token 1-1)" "$(random_alnum)" ;;
-			5) line "$(random_alnum)" "$(fake_token 1-1)" "$(random_alnum)" ;;
+			1) line "$start" "$(fake_token "$(level)")" "$(random_alnum)" ;;
+			2) line "$(random_alnum)" "$(fake_token "$(level)")" "$end" ;;
+			3) line "$(random_alnum)" "$(fake_token "$(level)")" "$start" ;;
+			4) line "$end" "$(fake_token "$(level)")" "$(random_alnum)" ;;
+			5) line "$(random_alnum)" "$(fake_token "$(level)")" "$(random_alnum)" ;;
 		esac
 	done
 } | shuf > "$file"
 
 
 ## grep | grep -v
+next_task
 file="$(rand_touch)"
 start="$(random_alnum)"
 end="$(random_alnum)"
-echo
 task "Token is in line which starts with '$start' but does not end with '$end' in file '$file'"
 {
 	line() { printf '%s\t%s\t%s\n' "$1" "$2" "$3"; }
-	line "$start" "$(token 1-1)" "$(random_alnum)"
+	line "$start" "$(current_token)" "$(random_alnum)"
 	for _ in $(random_seq 512 1024); do
 		case "$(random_int 5)" in
-			1) line "$start" "$(fake_token 1-1)" "$end" ;;
-			2) line "$(random_alnum)" "$(fake_token 1-1)" "$end" ;;
-			3) line "$(random_alnum)" "$(fake_token 1-1)" "$start" ;;
-			4) line "$end" "$(fake_token 1-1)" "$(random_alnum)" ;;
-			5) line "$(random_alnum)" "$(fake_token 1-1)" "$(random_alnum)" ;;
+			1) line "$start" "$(fake_token "$(level)")" "$end" ;;
+			2) line "$(random_alnum)" "$(fake_token "$(level)")" "$end" ;;
+			3) line "$(random_alnum)" "$(fake_token "$(level)")" "$start" ;;
+			4) line "$end" "$(fake_token "$(level)")" "$(random_alnum)" ;;
+			5) line "$(random_alnum)" "$(fake_token "$(level)")" "$(random_alnum)" ;;
 		esac
 	done
 } | shuf > "$file"
 
 
 ## grep -v
+next_task
 file="$(rand_touch)"
 tag="$(random_alnum)"
-echo
 task "Token is in line which does not contain '$tag' in '$file'"
 {
-	printf '%s %s\n' "$(random_alnum)" "$(token 1-1)"
+	printf '%s %s\n' "$(random_alnum)" "$(current_token)"
 	for _ in $(random_seq 512 1024); do
-		printf '%s %s\n' "$tag" "$(fake_token 1-1)"
+		printf '%s %s\n' "$tag" "$(fake_token "$(level)")"
 	done
 } | shuf > "$file"
 
 ## grep -i
+next_task
 file="$(rand_touch)"
 until tag="$(random_alnum | grep '[a-z]' | grep '[A-Z]')"; do :; done
-echo
 task "Token is in line which contains '$(printf '%s' "$tag"|to_lower)' in mixed case in '$file'"
 {
-	printf '%s\t%s\n' "$(random_alnum)$tag$(random_alnum)" "$(token 1-1)"
+	printf '%s\t%s\n' "$(random_alnum)$tag$(random_alnum)" "$(current_token)"
 	for _ in $(random_seq 512 1024); do
-		printf '%s\t%s\n' "$(random_alnum)$(random_alnum)$(random_alnum)" "$(fake_token 1-1)"
+		printf '%s\t%s\n' "$(random_alnum)$(random_alnum)$(random_alnum)" "$(fake_token "$(level)")"
 	done
 } | shuf > "$file"
 
 ## grep numbers
+next_task
 file="$(rand_touch)"
-echo
 task "Token is in line which starts with numbers in '$file'"
 {
-	printf '%s\t%s\n' "$(random_digits)$(random_alnum)" "$(token 1-1)"
+	printf '%s\t%s\n' "$(random_digits)$(random_alnum)" "$(current_token)"
 	for _ in $(random_seq 512 1024); do
-		printf '%s\t%s\n' "$(random_alpha)$(random_alnum)" "$(fake_token 1-1)"
+		printf '%s\t%s\n' "$(random_alpha)$(random_alnum)" "$(fake_token "$(level)")"
 	done
 } | shuf > "$file"
 
