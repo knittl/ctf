@@ -44,14 +44,13 @@ task 'Navigate the directory tree to find the hidden directory with the token as
 next_task
 (
 	rand_cd
-	level="$(level)"
 	current_task="${current_task}.a"
 	file="$(rand_touch "$(current_token)")" # TODO better file name?
 	task 'Token is the name of a file'
 
 	current_task="${current_task%.a}.b"
 	current_token > "$file"
-	task "Token is in the content of file with token name $level"
+	task "Token is in the content of file with token name $(level)"
 )
 
 next_task
@@ -64,14 +63,13 @@ next_task
 next_task
 (
 	rand_cd
-	level="$(level)"
 	current_task="${current_task}.a"
 	file="$(rand_touch "-$(current_token)")"
 	task 'Token is the name of a file that has a name starting with a hyphen'
 
 	current_task="${current_task%.a}.b"
 	current_token > "$file"
-	task "Token is in the file with token name ${level}"
+	task "Token is in the file with token name $(level)"
 )
 
 # TODO wildcards
