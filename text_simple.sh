@@ -12,7 +12,7 @@ root="$PWD" # get absolute path
 exec 2> README
 
 fake_pepper='invalid' # export? # TODO randomize?
-info "Fake token pepper: $fake_pepper" >&2
+info "Fake token pepper: $fake_pepper"
 fake_token() ( # run in subshell
 	export TOKEN_PEPPER="$fake_pepper"
 	token "$1"
@@ -42,7 +42,7 @@ for i in $(seq "$lines"); do
 	column="$(random_int 4 "$columns")"
 	for j in $(seq "$columns"); do
 		if test "$i" -eq "$line" && test "$j" -eq "$column"; then
-			task "Token is in line $line, col $column in file '$file'" >&2
+			task "Token is in line $line, col $column in file '$file'"
 			current_token
 		else
 			# TODO add other text too?

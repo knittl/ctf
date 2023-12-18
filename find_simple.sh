@@ -2,21 +2,22 @@
 
 . ./lib.sh
 
-root="$1"
+: "${current_level:?must be set}"
+
 num_dirs=32
 
-test -d "$root" || mkdir -p "$root"
-
+root="$1"
+test -d "$root" || mkdir -p "$root" || exit 1
 cd "$root"
 root="$PWD" # get absolute path
 
-rand_dir() { find "$1" -type d | pick_random; }
-rand_cd() { cd "$(rand_dir "$root")"; }
+# TODO create readme
+exec 2> README
 
 rand_leaf_dir() { find "$1" -type d -links 2 | pick_random; }
 rand_dir() { find "$1" -type d | pick_random; }
 rand_cd() { cd "$(rand_dir "$root")"; }
-rand_cd_leaf() { cd "$(rand_dir "$root")"; }
+rand_cd_leaf() { cd "$(rand_leaf_dir "$root")"; }
 
 mkdirs() { for _ in $(seq "${1:-2}"); do mkdir "$(random_filename)"; done; }
 mkfiles() { for _ in $(seq "${1:-4}"); do touch "$(random_filename)"; done; }
@@ -29,36 +30,51 @@ for _ in $(seq "$num_dirs"); do
 done
 
 ## find -name
-task "Token is in file with name containing '$COURSE' and with extension '.token'"
-rand_cd_leaf
-token 2-2 > "$COURSE-$(random_alnum).token"
+next_task
+(
+	task "Token is in file with name containing '$COURSE' and with extension '.token'"
+	rand_cd_leaf
+	current_token > "$COURSE-$(random_alnum).token"
+)
 
 ## find -iname
-tag="$(random_alnum)"
-task "Token is in file with name containing '$(echo "$tag" | to_lower)' in any case"
-rand_cd_leaf
-token 2-3 > "$(random_alnum)$tag$(random_alnum)"
+next_task
+(
+	tag="$(random_alnum)"
+	task "Token is in file with name containing '$(echo "$tag" | to_lower)' (case-insensitive)"
+	rand_cd_leaf
+	current_token > "$(random_alnum)$tag$(random_alnum)"
+)
 
 ## find -mtime
-age="$(random_int 2 8)"
-task "Token is the name of the file which is older than $age years"
-rand_cd_leaf
-touch -d "$((age+1)) years ago" "$(token 2-4)"
-mkfaketokens 2-4
+next_task
+(
+	age="$(random_int 2 8)"
+	task "Token is the name of the file which is older than $age years"
+	rand_cd_leaf
+	touch -d "$((age+1)) years ago" "$(current_token)"
+	mkfaketokens "$(level)"
+)
 
 ## find -size
-size="$(random_int 256 1024)"
-task "Token is the name of the file which has a size greater than $size bytes"
-rand_cd_leaf
-{ random_alnum "$size" | fold; echo; token 2-5; } > "$(uniq_filename)"
-mkfaketokens 2-5
+next_task
+(
+	size="$(random_int 256 1024)"
+	task "Token is in last line of file which has a size greater than $size bytes"
+	rand_cd_leaf
+	{ random_alnum "$size" | fold; echo; current_token; } > "$(uniq_filename)"
+	mkfaketokens "$(level)"
+)
 
 ## find -size exactly
-rand_cd_leaf
-file="$(token 2-6)"
-random_alnum "$(random_int 256 1024)" > "$file"
-task "Token is in file which has a size of exactly $(wc -c < "$file") bytes"
-mkfaketokens 2-6
+next_task
+(
+	rand_cd_leaf
+	file="$(current_token)"
+	random_alnum "$(random_int 256 1024)" > "$file"
+	task "Token is in file which has a size of exactly $(wc -c < "$file") bytes"
+	mkfaketokens "$(level)"
+)
 
 token_file() {
 	file="$(token "$1")"
@@ -67,38 +83,47 @@ token_file() {
 }
 
 ## find -perm
-rand_cd_leaf
-file="$(token_file 2-7)"
-chmod "$(random_perm)" "$file"
-task "Token is the name of file with permissions '$(stat -c'%#a' "$file")'"
-mkfaketokens 2-7
-
-## find -perm (symbolic)
-rand_cd_leaf
-file="$(token_file 2-8)"
-chmod "$(random_perm_chmod)" "$file"
-task "Token is name of file with permissions '$(stat -c'%A' "$file")'"
-mkfaketokens 2-8
-
-## find -type d -name
-rand_cd_leaf
-dir="$(rand_mkdir)"
-token 2-9 > "$dir/$(random_filename)"
-rand_cd_leaf
-touch "$dir"
-task "Token is in a file in directory with name '$dir'"
-
-## find multiple tests
+next_task
 (
 	rand_cd_leaf
+	file="$(token_file "$(level)")"
+	chmod "$(random_perm)" "$file"
+	task "Token is the name of file with permissions '$(stat -c'%#a' "$file")'"
+	mkfaketokens "$(level)"
+)
 
+## find -perm (symbolic)
+next_task
+(
+	rand_cd_leaf
+	file="$(token_file "$(level)")"
+	chmod "$(random_perm_chmod)" "$file"
+	task "Token is name of file with permissions '$(stat -c'%A' "$file")'"
+	mkfaketokens "$(level)"
+)
+
+## find -type d -name
+next_task
+(
+	rand_cd_leaf
+	dir="$(rand_mkdir)"
+	current_token > "$dir/$(random_filename)"
+	for _ in $(random_seq 4 16); do rand_cd && touch "$dir"; done
+	task "Token is in a file in directory with name '$dir'"
+)
+
+## find multiple tests
+next_task
+(
 	tok() {
+		rand_cd_leaf
+
 		size="$(random_int 256 1024)"
 		age="$(random_int 8 32)"
 		perm="$(random_perm)"
 
 		action=${1:?provide mode: token/fake_token}
-		file="$("$action" 2-10)"
+		file="$("$action" "$(level)")"
 		: > "$file"
 		shift
 
@@ -117,35 +142,40 @@ task "Token is in a file in directory with name '$dir'"
 	tok token size perm age
 
 	# fake tokens:
-	tok fake_token size perm
-	tok fake_token size age
-	tok fake_token perm age
+	for _ in $(random_seq 4 8); do
+		tok fake_token size perm
+		tok fake_token size age
+		tok fake_token perm age
 
-	tok fake_token size
-	tok fake_token perm
-	tok fake_token age
+		for attr in size perm age; do tok fake_token "$attr"; done
+	done
 )
 
 ## find empty file
-rand_cd_leaf
-file="$(token_file 2-11)"
-for _ in $(random_seq 16 64); do
-	random_alnum > "$(fake_token 2-11)"
-	mkdir -p "$(fake_token 2-11)"
-done
-task "Token is the name of the only empty file in directory ${PWD#$root/}"
+next_task
+(
+	rand_cd_leaf
+	file="$(token_file "$(level)")"
+	for _ in $(random_seq 16 64); do
+		random_alnum > "$(fake_token "$(level)")"
+		mkdir -p "$(fake_token "$(level)")"
+	done
+	task "Token is the name of the only empty file in directory ${PWD#$root/}"
+)
 
 ## find empty dir
-rand_cd_leaf
-dir="$(token 2-12)"
-mkdir "$dir"
-for _ in $(random_seq 16 64); do
-	fake="$(fake_token 2-12)"
-	mkdir -p "$fake"
-	touch "$fake/$(random_filename)"
-done
-task "Token is the name of the only empty directory in ${PWD#$root/}"
-
+next_task
+(
+	rand_cd_leaf
+	dir="$(token "$(level)")"
+	mkdir "$dir"
+	for _ in $(random_seq 16 64); do
+		fake="$(fake_token "$(level)")"
+		mkdir -p "$fake"
+		touch "$fake/$(random_filename)"
+	done
+	task "Token is the name of the only empty directory in ${PWD#$root/}"
+)
 
 
 # TODO find by owner
