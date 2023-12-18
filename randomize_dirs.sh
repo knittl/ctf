@@ -4,14 +4,14 @@
 
 : "${current_level:?must be set}"
 
-exec 2> README
-
 num_dirs=8
 
 root="${1:?root missing}"
 test -d "$root" || mkdir -p "$root"
 cd "$root"
 root="$PWD" # get absolute path
+
+exec 2> README
 
 rand_dir() { find "$1" -type d | pick_random; }
 rand_cd() { cd "$(rand_dir "$root")"; }
