@@ -4,6 +4,8 @@
 
 : "${current_level:?must be set}"
 
+exec 2> README
+
 root="$1"
 test -d "$root" || mkdir -p "$root"
 cd "$root"
