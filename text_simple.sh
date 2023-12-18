@@ -31,9 +31,9 @@ task "Token is in first line of '$file'"
 ## simple file:
 file="$(rand_touch)"
 
-lines="$(random_int 64 256)"
-line="$(random_int 64 "$lines")"
-line="$(random_int 2 8)" # TODO first line, one of first few lines?
+lines="$(random_int 32 128)"
+line="$(random_int 32 "$lines")"
+line="$(random_int 4 16)" # TODO first line, one of first few lines?
 
 ## head + cut with default delim (tab)
 next_task
