@@ -12,7 +12,7 @@ err() { colored "$color_red" "⚠️ $*" >&2; }
 dbg() { test "$DBG" && printf "${color_yellow}DBG${color_reset}: %s\n" "$*" >&2; }
 info() { colored "$color_green" "ℹ️  $*" >&2; }
 next_task() { current_task="$((current_task+1))"; }
-level() { printf '%s-%s\n' "$current_level" "$current_task"; }
+level() { printf '%s-%s%s\n' "$current_level" "$current_task" "${current_subtask:+.$current_subtask}"; }
 task() { colored "$color_bold" "📝 ${current_task:+[$(level)] }$*"; echo; } >&2
 # TODO extra format for question text?
 
