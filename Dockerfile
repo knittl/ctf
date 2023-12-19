@@ -1,5 +1,7 @@
 FROM ubuntu:23.10 AS base
 
+COPY show-tasks show-motd /usr/local/bin/
+
 ENV LANG=C.UTF-8
 
 RUN yes|unminimize
@@ -63,8 +65,7 @@ WORKDIR "/home/$STUDENT"
 
 COPY --from=build /ctf/tasks .
 COPY --from=build /ctf/README.tmp README
-COPY dot.bashrc .
-RUN cat dot.bashrc >> .bashrc && rm dot.bashrc
+RUN echo 'show-motd' >> .bashrc
 
 USER "$STUDENT"
 
