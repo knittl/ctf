@@ -1,7 +1,5 @@
 FROM ubuntu:23.10 AS base
 
-COPY show-tasks show-motd /usr/local/bin/
-
 ENV LANG=C.UTF-8
 
 RUN yes|unminimize
@@ -54,18 +52,20 @@ LABEL org.opencontainers.image.authors="p23687@fh-hagenberg.at" \
 
 ENV SHELL=/bin/bash
 
+COPY show-tasks show-motd /usr/local/bin/
+
 ARG course=BIT
 ARG student
 ENV COURSE=$course
 ENV STUDENT=$student
 
 RUN useradd -ms /bin/bash --no-log-init -c 'Account for '"$STUDENT" "$STUDENT" \
-	&& sed -i '/^#force_color_prompt=yes$/s/^#//' "/home/$STUDENT/.bashrc"
+	&& sed -i '/^#force_color_prompt=yes$/s/^#//' "/home/$STUDENT/.bashrc" \
+	&& echo 'show-motd' >> .bashrc
 WORKDIR "/home/$STUDENT"
 
 COPY --from=build /ctf/tasks .
 COPY --from=build /ctf/README.tmp README
-RUN echo 'show-motd' >> .bashrc
 
 USER "$STUDENT"
 
