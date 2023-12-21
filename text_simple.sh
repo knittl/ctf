@@ -91,7 +91,8 @@ next_task
 file="$(rand_touch)"
 task "Token is in line with largest number in '$file'"
 {
-	for i in $(random_seq 1024 2048); do fake_token "$(level)"; done
+	level="$(level)"
+	for i in $(random_seq 256 512); do fake_token "$level"; done
 	current_token
 } | nl | shuf > "$file"
 
@@ -101,8 +102,9 @@ file="$(rand_touch)"
 task "Token is line with highest frequency in '$file'"
 freq="$(random_int 16)"
 {
+	level="$(level)"
 	for _ in $(random_seq 256 512); do
-		token="$(fake_token "$(level)")"
+		token="$(fake_token "$level")"
 		for _ in $(random_seq "$freq"); do
 			echo "$token"
 		done
@@ -122,7 +124,7 @@ tag="$(random_alnum)"
 task "Token is in line which starts with '$tag' in file '$file'"
 {
 	printf '%s\t%s\t%s\n' "$tag" "$(current_token)" "$(random_alnum)"
-	for _ in $(random_seq 512 1024); do
+	for _ in $(random_seq 256 512); do
 		printf '%s\t%s\t%s\n' "$(random_alnum)" "$(fake_token "$(level)")" "$tag"
 	done
 } | shuf > "$file"
@@ -137,7 +139,7 @@ task "Token is in line which starts with '$start' and ends with '$end' in file '
 {
 	line() { printf '%s\t%s\t%s\n' "$1" "$2" "$3"; }
 	line "$start" "$(current_token)" "$end"
-	for _ in $(random_seq 512 1024); do
+	for _ in $(random_seq 256 512); do
 		case "$(random_int 5)" in
 			1) line "$start" "$(fake_token "$(level)")" "$(random_alnum)" ;;
 			2) line "$(random_alnum)" "$(fake_token "$(level)")" "$end" ;;
@@ -158,7 +160,7 @@ task "Token is in line which starts with '$start' but does not end with '$end' i
 {
 	line() { printf '%s\t%s\t%s\n' "$1" "$2" "$3"; }
 	line "$start" "$(current_token)" "$(random_alnum)"
-	for _ in $(random_seq 512 1024); do
+	for _ in $(random_seq 256 512); do
 		case "$(random_int 5)" in
 			1) line "$start" "$(fake_token "$(level)")" "$end" ;;
 			2) line "$(random_alnum)" "$(fake_token "$(level)")" "$end" ;;
@@ -177,7 +179,7 @@ tag="$(random_alnum)"
 task "Token is in line which does not contain '$tag' in file '$file'"
 {
 	printf '%s %s\n' "$(random_alnum)" "$(current_token)"
-	for _ in $(random_seq 512 1024); do
+	for _ in $(random_seq 256 512); do
 		printf '%s %s\n' "$tag" "$(fake_token "$(level)")"
 	done
 } | shuf > "$file"
@@ -189,7 +191,7 @@ until tag="$(random_alnum | grep '[a-z]' | grep '[A-Z]')"; do :; done
 task "Token is in line which contains '$(printf '%s' "$tag"|to_lower)' in mixed case in file '$file'"
 {
 	printf '%s\t%s\n' "$(random_alnum)$tag$(random_alnum)" "$(current_token)"
-	for _ in $(random_seq 512 1024); do
+	for _ in $(random_seq 256 512); do
 		printf '%s\t%s\n' "$(random_alnum)$(random_alnum)$(random_alnum)" "$(fake_token "$(level)")"
 	done
 } | shuf > "$file"
@@ -200,7 +202,7 @@ file="$(rand_touch)"
 task "Token is in line which starts with numbers in file '$file'"
 {
 	printf '%s\t%s\n' "$(random_digits)$(random_alnum)" "$(current_token)"
-	for _ in $(random_seq 512 1024); do
+	for _ in $(random_seq 256 512); do
 		printf '%s\t%s\n' "$(random_alpha)$(random_alnum)" "$(fake_token "$(level)")"
 	done
 } | shuf > "$file"
