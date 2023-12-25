@@ -3,13 +3,7 @@
 . ./lib.sh
 
 : "${current_level:?must be set}"
-
-num_files=8
-
-root="$1"
-test -d "$root" || mkdir -p "$root"
-cd "$root"
-root="$PWD" # get absolute path
+init_root "$1"
 
 # TODO create readme
 exec 2> README

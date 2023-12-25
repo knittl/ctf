@@ -3,13 +3,10 @@
 . ./lib.sh
 
 : "${current_level:?must be set}"
+init_root "$1"
 
 num_dirs=8
 
-root="${1:?root missing}"
-test -d "$root" || mkdir -p "$root"
-cd "$root"
-root="$PWD" # get absolute path
 
 exec 2> README
 

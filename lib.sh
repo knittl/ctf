@@ -48,6 +48,13 @@ segment() {
 
 take() { dd bs=1 count="$1" 2>/dev/null; } # TODO use head -c"$1"?
 
+init_root() {
+	root="${1?root dir missing}"
+	test -d "$root" || mkdir -p "$root" || exit 1
+	cd "$root"
+	root="$PWD" # get absolute path
+}
+
 # random helpers
 random_device='/dev/urandom'
 
