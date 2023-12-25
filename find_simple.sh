@@ -6,10 +6,7 @@
 
 num_dirs=32
 
-root="$1"
-test -d "$root" || mkdir -p "$root" || exit 1
-cd "$root"
-root="$PWD" # get absolute path
+init_root "$1"
 
 # TODO create readme
 exec 2> README

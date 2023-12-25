@@ -56,6 +56,13 @@ init_level() {
 	: "${current_level:?must be set}"
 }
 
+init_root() {
+	root="${1?root dir missing}"
+	test -d "$root" || mkdir -p "$root" || exit 1
+	cd "$root" || exit 1
+	root="$PWD" # get absolute path
+}
+
 # random helpers
 random_device='/dev/urandom'
 
