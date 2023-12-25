@@ -2,13 +2,9 @@
 
 . ./lib.sh
 
-root="${1?root dir missing}"
+init_root "$1"
+
 num_files=8
-
-test -d "$root" || mkdir -p "$root"
-
-cd "$root"
-root="$PWD" # get absolute path
 
 rand_dir() { find "$1" -type d | pick_random; }
 rand_cd() { cd "$(rand_dir "$root")"; }
