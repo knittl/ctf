@@ -4,6 +4,7 @@ ENV LANG=C.UTF-8
 
 RUN yes|unminimize
 RUN apt update \
+	&& apt install -y xxd \
 	&& apt install -y man-db netbase less nano \
 	&& apt install -y psmisc \
 	&& apt install -y curl \
@@ -11,7 +12,6 @@ RUN apt update \
 
 FROM base AS build
 
-RUN apt-get update && apt-get install -y xxd
 
 RUN mkdir -p /ctf/tasks
 WORKDIR /ctf
