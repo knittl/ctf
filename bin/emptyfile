@@ -1,0 +1,3 @@
+#!/bin/sh
+for arg; do set -- "$@" "$(realpath "$arg")"; shift; done
+stat -c'%s%n' "$@" | mac64
