@@ -8,9 +8,12 @@ color_yellow='[1;33m'
 color_blue='[1;34m'
 color_bold='[1m'
 colored() { color="$1"; shift; printf "$color%s$color_reset\n" "$*"; }
-err() { colored "$color_red" "⚠️ $*" >&2; }
-dbg() { test "$DBG" && printf "${color_yellow}DBG${color_reset}: %s\n" "$*" >&2; }
-info() { colored "$color_green" "ℹ️  $*" >&2; }
+err() { colored "$color_red" "⚠️ $*"; } >&2
+if test "$DBG"
+then dbg() { printf "${color_yellow}DBG${color_reset}: %s\n" "$*"; } >&2
+else dbg() { :; }
+fi
+info() { colored "$color_green" "ℹ️  $*"; } >&2
 next_task() {
 	current_task="$((current_task+1))";
 	level="$(level)";
