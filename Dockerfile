@@ -31,6 +31,7 @@ ENV TOKEN_PEPPER=$pepper
 
 # TODO "global" README
 
+RUN ./generate.sh 0 ./tasks/cd.sh /ctf/tasks/0-cd
 RUN ./generate.sh 1 ./randomize_dirs.sh /ctf/tasks/1-files
 RUN ./generate.sh 2 ./cat_simple.sh /ctf/tasks/2-cat
 RUN ./generate.sh 3 ./ls_simple.sh /ctf/tasks/3-ls
