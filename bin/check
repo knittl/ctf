@@ -1,6 +1,6 @@
 #!/bin/sh
-if [ "$#" -ne 4 ]; then
-	echo "$0: Usage: $0 SCRIPT TASK MAC FILE..." >&2
+if [ "$#" -le 4 ]; then
+	echo "$0: Usage: $0 SCRIPT TASK MAC ARGS..." >&2
 	exit 1
 fi
 
