@@ -10,6 +10,8 @@ RUN apt update \
 	&& apt install -y curl \
 	&& rm -rf /var/cache/apt/archives /var/lib/apt/lists/*
 
+COPY bin/mac64 /usr/local/bin/
+
 FROM base AS build
 
 
