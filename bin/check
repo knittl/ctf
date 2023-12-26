@@ -6,6 +6,6 @@ fi
 
 script="$1"; task="$2"; mac="$3";
 shift 3
-nonce="$("$script" "$@")" || exit 1
+nonce="$("$(which "$script")" "$@")" || exit 1
 printf '%s{%s:%s:%s:%s}\n' "$COURSE" "$task" "$STUDENT" "$nonce" "$mac"
 
