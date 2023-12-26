@@ -17,7 +17,7 @@ FROM base AS build
 
 RUN mkdir -p /ctf/tasks
 WORKDIR /ctf
-COPY *.sh random /ctf/
+COPY *.sh random tasks/ /ctf/
 
 ARG course=BIT
 ARG student
