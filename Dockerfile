@@ -56,7 +56,7 @@ LABEL org.opencontainers.image.authors="p23687@fh-hagenberg.at" \
 
 ENV SHELL=/bin/bash
 
-COPY show-tasks show-motd bin/check bin/perm \
+COPY show-tasks show-motd bin/check bin/perm bin/cd \
 	/usr/local/bin/
 
 ARG course=BIT
