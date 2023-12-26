@@ -89,6 +89,12 @@ random_perm_chmod() {
 	done | join_lines
 }
 
+random_perm_sym() {
+	for user in u g o; do
+		for p in r w x; do pick_random "$p" '-'; done
+	done | join_lines
+}
+
 
 # files
 uniq_filename() {
