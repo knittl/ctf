@@ -8,6 +8,8 @@ color_yellow='[1;33m'
 color_blue='[1;34m'
 color_bold='[1m'
 color_underline='[4m'
+bold() { colored "$color_bold" "$@"; }
+underlined() { colored "$color_underline" "$@"; }
 colored() { color="$1"; shift; printf "$color%s$color_reset\n" "$*"; }
 err() { colored "$color_red" "⚠️ $*"; } >&2
 if test "$DBG"
@@ -20,7 +22,7 @@ next_task() {
 	level="$(level)";
 }
 level() { printf '%s-%s%s\n' "$current_level" "$current_task" "${current_subtask:+.$current_subtask}"; }
-task() { echo "📝 ${current_task:+[$(level)] }$*"; echo; } >&2
+task() { printf "📝 %s%s\n\n" "${current_task:+[$(level)] }" "$*"; } >&2
 # TODO extra format for question text?
 
 leetify() {
