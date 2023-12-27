@@ -12,3 +12,9 @@ token_format "$level" "$(mac64 /etc)" | while parse_token; do
 done
 
 # TODO relative directory change
+
+next_task
+filename="$(uniq_filename)"
+token_format "$level" "$(mac64 "0/home/$STUDENT/$filename")" | while parse_token; do
+	task "Create an empty file with name '$filename' in directory /home/$STUDENT/. Get the token by running: $(bold "check emptyfile $level $mac") $(underlined "/home/$STUDENT/$filename")"
+done
