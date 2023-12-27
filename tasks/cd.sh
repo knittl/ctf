@@ -43,3 +43,22 @@ next_task
 
 	mk_files png gif jar j2k jbg jfif jiff jpg.gz json
 )
+
+next_task
+(
+	dir="$(rand_mkdir)"
+	cd -- "$dir"
+
+	ext() { pick_random txt jpg png gif mkv blend html css js ts; }
+	names=$(
+		for _ in $(random_seq 128 256); do
+			age="$(random_int 0 16) months ago $(random_int 0 8) days ago $(random_int 0 1024) minutes ago"
+			name="$(random_filename).$(ext)"
+			touch -d "$age" "$name" && echo "$name"
+		done | sort -u
+	)
+
+	token_format "$level" "$(mac64 "$names")" | while parse_token; do
+		task "How can you save a simple list of the files in directory '$dir' into a file? Execute the command to write the file and then run: $(bold "check redirect $level $mac") $(underlined path/to/your/file)"
+	done
+)
