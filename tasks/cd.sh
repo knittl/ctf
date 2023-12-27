@@ -21,3 +21,25 @@ filename="$(uniq_filename)"
 token_format "$level" "$(mac64 "0/home/$STUDENT/$filename")" | while parse_token; do
 	task "Create an empty file with name '$filename' in directory /home/$STUDENT/. Get the token by running: $(bold "check emptyfile $level $mac") $(underlined "/home/$STUDENT/$filename")"
 done
+
+next_task
+(
+	dir="$(rand_mkdir)"
+	cd -- "$dir"
+
+	mk_files() {
+		for ext; do
+			for _ in $(random_seq 8 16); do
+				touch -d "$(random_int 0 16) months ago $(random_int 0 8) days ago $(random_int 0 1024) minutes ago" "$(random_filename).$ext"
+			done
+		done
+	}
+
+	mk_files jpg jpeg
+
+	token_format "$level" "$(ls -l * | mac64)" | while parse_token; do
+		task "How can you list details (size, date, ...) about all (non-hidden) $(bold jpg) and $(bold jpeg) image files in the directory '$dir' with a single command? Get the token by running: $(bold "check details $level $mac") $(underlined your command)"
+	done
+
+	mk_files png gif jar j2k jbg jfif jiff jpg.gz json
+)
