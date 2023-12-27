@@ -30,17 +30,18 @@ next_task
 	cd "$dir"
 
 	mk_files() {
-		ext="$1"
-		for _ in $(random_seq 8 16); do
-			touch -d "$(random_int 0 16) months ago $(random_int 0 8) days ago $(random_int 0 1024) minutes ago" "$(random_filename).$ext"
+		for ext; do
+			for _ in $(random_seq 8 16); do
+				touch -d "$(random_int 0 16) months ago $(random_int 0 8) days ago $(random_int 0 1024) minutes ago" "$(random_filename).$ext"
+			done
 		done
 	}
 
-	for ext in jpg jpeg; do mk_files "$ext"; done
+	mk_files jpg jpeg
 
 	token_format "$level" "$(ls -l * | mac64)" | while parse_token; do
 		task "How can you list details (size, date, ...) about all (non-hidden) $(bold jpg) and $(bold jpeg) image files in the directory '$dir' with a single command? Get the token by running: $(bold "check details $level $mac") $(underlined your command)"
 	done
 
-	for ext in png gif jar j2k jbg jfif jiff jpg.gz json; do mk_files "$ext"; done
+	mk_files png gif jar j2k jbg jfif jiff jpg.gz json
 )
