@@ -64,3 +64,12 @@ next_task
 		task "How can you save a simple list of the files in directory '$dir' into a file? Execute the command to write the file and then run: $(bold "check redirect $level $mac") $(underlined path/to/your/file)"
 	done
 )
+
+next_task
+(
+	count="$(random_int 4 8)"
+	wildcard="$(random_alnum 4)_*/*[$(random_alpha $(random_int 4 8))]/$(printf "%$(random_int 2 4)s" | tr ' ' '?').*"
+	token_format "$level" "$(printf '%d\n%s\n' "$count" "$wildcard" | mac64)" | while parse_token; do
+		task "Create a directory which contains exactly $count files which match the wildcard pattern '$wildcard'. Then run $(bold "check glob $level $mac $count '$wildcard'") $(underlined path/to/directory)"
+	done
+)

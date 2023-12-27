@@ -1,0 +1,13 @@
+#!/bin/sh
+
+count="$1"
+pattern="$2"
+dir="$3"
+
+# 
+(
+# non-quoted: glob is required
+IFS=
+LC_ALL=C ls -1q "$dir/"$pattern | wc -l
+echo "$pattern"
+) | mac64
