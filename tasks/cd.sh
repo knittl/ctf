@@ -23,3 +23,25 @@ filename="$(uniq_filename)"
 token_format "$level" "$(mac64 "0/home/$STUDENT/$filename")" | while parse_token; do
 	task "Create an empty file with name '$filename' in directory /home/$STUDENT/. Get the token by running: $(bold "check emptyfile $level $mac") $(underlined "/home/$STUDENT/$filename")"
 done
+
+next_task
+(
+	dir="$(rand_mkdir)"
+	cd "$dir"
+
+	for ext in jpg jpeg png gif; do
+		for _ in $(random_seq 8 16); do
+			touch "$(random_filename).$ext"
+		done
+	done
+
+	token_format "$level" "$(ls -l *.j* | mac64)" | while parse_token; do
+		task "How can you list details (size, date, ...) about all (non-hidden) $(bold jpg) and $(bold jpeg) image files in the directory '$dir' with a single command? Get the token by running: $(bold "check details $level $mac") $(underlined your command)"
+	done
+
+	for ext in jar j2k jbg jfif jiff jpg.gz json; do
+		for _ in $(random_seq 8 16); do
+			touch "$(random_filename).$ext"
+		done
+	done
+)
