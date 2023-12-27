@@ -7,6 +7,7 @@ color_green='[1;32m'
 color_yellow='[1;33m'
 color_blue='[1;34m'
 color_bold='[1m'
+color_underline='[4m'
 colored() { color="$1"; shift; printf "$color%s$color_reset\n" "$*"; }
 err() { colored "$color_red" "⚠️ $*"; } >&2
 if test "$DBG"
