@@ -16,8 +16,6 @@ token_format "$level" "$(mac64 /bin)" | while parse_token; do
 	task "The output of $(bold pwd) is '/home/$STUDENT'. Show a command to change to the 'bin' directory inside the file system root (i.e. '/'). The command must use a relative path. Get the token by running: $(bold "check cd $level $mac r") $(underlined 'your command')"
 done
 
-# TODO relative directory change
-
 next_task
 filename="$(uniq_filename)"
 token_format "$level" "$(mac64 "0/home/$STUDENT/$filename")" | while parse_token; do
