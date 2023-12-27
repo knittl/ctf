@@ -20,7 +20,7 @@ next_task() {
 	level="$(level)";
 }
 level() { printf '%s-%s%s\n' "$current_level" "$current_task" "${current_subtask:+.$current_subtask}"; }
-task() { colored "$color_bold" "📝 ${current_task:+[$(level)] }$*"; echo; } >&2
+task() { echo "📝 ${current_task:+[$(level)] }$*"; echo; } >&2
 # TODO extra format for question text?
 
 leetify() {
