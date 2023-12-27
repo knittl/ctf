@@ -36,11 +36,11 @@ next_task
 		done
 	}
 
-	for ext in jpg jpeg png gif; do mk_files "$ext"; done
+	for ext in jpg jpeg; do mk_files "$ext"; done
 
-	token_format "$level" "$(ls -l *.j* | mac64)" | while parse_token; do
+	token_format "$level" "$(ls -l * | mac64)" | while parse_token; do
 		task "How can you list details (size, date, ...) about all (non-hidden) $(bold jpg) and $(bold jpeg) image files in the directory '$dir' with a single command? Get the token by running: $(bold "check details $level $mac") $(underlined your command)"
 	done
 
-	for ext in jar j2k jbg jfif jiff jpg.gz json; do mk_files "$ext"; done
+	for ext in png gif jar j2k jbg jfif jiff jpg.gz json; do mk_files "$ext"; done
 )
