@@ -67,7 +67,7 @@ next_task
 	)
 
 	token_format "$level" "$(mac64 "$names")" | while parse_token; do
-		task "How can you save a simple list of the files in directory '$dir' into a file? Execute the command to write the file and then run: $(bold "check redirect $level $mac") $(underlined path/to/your/file)"
+		task "How can you save a simple list of the files in directory '$dir' into a file? Execute the command to write the file and then run: $(bold "check cat $level $mac") $(underlined path/to/your/file)"
 	done
 )
 

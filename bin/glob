@@ -8,5 +8,5 @@ dir="$3"
 # non-quoted: glob is required
 IFS=
 LC_ALL=C ls -1q "$dir/"$pattern | wc -l
-) | mac64
+)
 echo "$pattern"
