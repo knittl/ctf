@@ -1,2 +1,2 @@
 #!/bin/sh
-stat -c'%A' "$@" | mac64
+stat -c'%A' "$@"
