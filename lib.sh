@@ -43,6 +43,9 @@ input() {
 
 take() { dd bs=1 count="$1" 2>/dev/null; } # TODO use head -c"$1"?
 
+init_level() {
+	: "${current_level:?must be set}"
+}
 init_root() {
 	root="${1?root dir missing}"
 	test -d "$root" || mkdir -p "$root" || exit 1
