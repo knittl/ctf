@@ -37,20 +37,11 @@ to_upper() { tr '[:lower:]' '[:upper:]'; }
 
 join_lines() { paste -sd "${1:-}"; }
 
-getinput() {
-	# TODO getinput
-	if test -t 0;
-	then printf '%s' "$1"
+input() {
+	if test "$#" -gt 0
+	then printf '%s\n' "$@"
 	else cat
 	fi
-}
-
-segment() {
-	size="${2:-16}"
-	delim="${3:--}"
-	getinput "$1" |
-		fold -w"$size" |
-		join_lines "$delim"
 }
 
 take() { dd bs=1 count="$1" 2>/dev/null; } # TODO use head -c"$1"?
