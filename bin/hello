@@ -1,2 +1,12 @@
 #!/bin/sh
-"$@"
+mode="$1"
+shift
+case "$mode" in
+	1) "$@" ;;
+	2)
+		"$@";
+		script="$1"
+		shift 3
+		"$script" "$@"
+		;;
+esac
