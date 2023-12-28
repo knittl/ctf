@@ -8,8 +8,9 @@ case "$mode" in
 		"$@" && "$@" && cd "$deep" && "$@" && pwd
 		;;
 	r)
+		cmd="$1"
 		shift
 		for arg; do set -- "$@" "./$arg"; shift; done # force relative path
-		cd "/home/$STUDENT" && cd "$@" && pwd
+		cd "/home/$STUDENT" && "$cmd" "$@" && pwd
 		;;
 esac
