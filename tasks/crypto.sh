@@ -11,8 +11,10 @@ next_task
 rot="$(random_int 3 23)"
 file="CAESAR-$(random_filename)-$rot.TXT"
 alphabet=ABCDEFGHIJKLMNOPQRSTUVWXYZ
-rotate() { printf '%s%s\n' "$(input "$2" | cut -c"$(($1+1))-")" "$(input "$2" | cut -c"-$1")"; }
-cat <<EOF | tr 'A-Z' "$(rotate "$rot" "$alphabet")" > "$file"
+digits=012345678901234567890123456789
+rot() { printf '%s%s\n' "$(input "$2" | cut -c"$(($1+1))-")" "$(input "$2" | cut -c"-$1")"; }
+rotate() { tr "$1" "$(rot "$2" "$1")"; }
+cat <<EOF | rotate "$alphabet" "$rot" > "$file"
 HELLO $(input "$STUDENT" | to_upper),
 
 YOU HAVE RECOVERED THE SECRET MESSAGE!
