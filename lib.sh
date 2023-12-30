@@ -64,7 +64,7 @@ to_lower() { tr '[:upper:]' '[:lower:]'; }
 to_upper() { tr '[:lower:]' '[:upper:]'; }
 
 input() {
-	if test "$1"
+	if test "${1+set}"
 	then printf '%s\n' "$@"
 	else cat
 	fi
