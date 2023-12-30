@@ -1,13 +1,42 @@
 # no shebang, must be sourced
 
 # helper funcs
-color_reset='[0m'
-color_red='[1;31m'
-color_green='[1;32m'
-color_yellow='[1;33m'
-color_blue='[1;34m'
-color_bold='[1m'
-color_underline='[4m'
+say() { printf '%s\n' "$*"; }
+join_lines() { paste -sd "${1:-}"; }
+ansi() {
+			case "$1" in
+				reset) say 0 ;;
+				bold|intense) say 1 ;;
+				faint|dim) say 2 ;;
+				italic) say 3 ;;
+				underline) say 4 ;;
+				blink) say 5 ;;
+				rapid) say 6 ;;
+				reverse) say 7 ;;
+				strike|crossed-out) say 9 ;;
+				not) printf 2 ;; # 2X
+				fg) bgfg=3 ;;
+				bg) bgfg=4 ;;
+				black) say "${bgfg}0" ;;
+				red) say "${bgfg}1" ;;
+				green) say "${bgfg}2" ;;
+				yellow) say "${bgfg}3" ;;
+				blue) say "${bgfg}4" ;;
+				magenta) say "${bgfg}5" ;;
+				cyan) say "${bgfg}6" ;;
+				white) say "${bgfg}7" ;;
+			esac
+}
+fmt() {
+	printf '[%sm' "$(ansi fg; for arg; do ansi "$arg"; done | join_lines ';')"
+}
+color_reset="$(fmt reset)"
+color_red="$(fmt bold red)"
+color_green="$(fmt bold green)"
+color_yellow="$(fmt bold yellow)"
+color_blue="$(fmt bold blue)"
+color_bold="$(fmt bold)"
+color_underline="$(fmt underline)"
 bold() { colored "$color_bold" "$@"; }
 underlined() { colored "$color_underline" "$@"; }
 colored() { color="$1"; shift; printf "$color%s$color_reset\n" "$*"; }
@@ -33,8 +62,6 @@ leetify() {
 
 to_lower() { tr '[:upper:]' '[:lower:]'; }
 to_upper() { tr '[:lower:]' '[:upper:]'; }
-
-join_lines() { paste -sd "${1:-}"; }
 
 input() {
 	if test "$1"
