@@ -1,3 +1,4 @@
+#shellcheck shell=sh
 # no shebang, must be sourced
 
 # helper funcs
