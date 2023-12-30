@@ -219,17 +219,19 @@ extract_tokens() {
 verify_tokens() {
 	pepper="${1:-$TOKEN_PEPPER}"
 	bad=
-	extract_tokens | while IFS='' read -r token; do
-		token="$(printf '%s' "$token" | tr -d ' ')" # TODO translate before loop?
-		test "$token" || continue
-		if verify_token "$token" "$pepper"; then
-			echo "${color_green}✔${color_reset} $token"
-		else
-			echo "${color_red}✘${color_reset} $token"
-			bad=1
-		fi
-	done
-	test -z "$bad"
+	extract_tokens | {
+		while IFS='' read -r token; do
+			token="$(printf '%s' "$token" | tr -d ' ')" # TODO translate before loop?
+			test "$token" || continue
+			if verify_token "$token" "$pepper"; then
+				echo "${color_green}✔${color_reset} $token"
+			else
+				echo "${color_red}✘${color_reset} $token"
+				bad=1
+			fi
+		done
+		test -z "$bad"
+	}
 }
 
 setup() {
