@@ -90,6 +90,7 @@ random_gen() { tr -cd "$1" < "$random_device"; }
 random_alpha() { random_gen '[:alpha:]' | take "${1:-8}"; }
 random_alnum() { random_gen '[:alnum:]' | take "${1:-8}"; }
 random_digits() { random_gen '[:digit:]' | take "${1:-8}"; }
+random_base32() { random_gen 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567' | take "${1:-8}"; }
 random_name() { random_alnum "$@"; }
 random_filename() { random_name "$(random_int "${1:-4}" "${2:-16}")"; }
 random_perm() { echo "0$(random_int 0 7)$(random_int 0 7)$(random_int 0 7)"; }
