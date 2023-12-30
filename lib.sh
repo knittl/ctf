@@ -78,7 +78,7 @@ init_level() {
 init_root() {
 	root="${1?root dir missing}"
 	test -d "$root" || mkdir -p "$root" || exit 1
-	cd "$root"
+	cd "$root" || exit 1
 	root="$PWD" # get absolute path
 }
 
