@@ -70,6 +70,11 @@ input() {
 	fi
 }
 
+repeat() {
+	count="$1"; shift
+	for _ in $(seq "$count"); do "$@"; done
+}
+
 take() { dd bs=1 count="$1" 2>/dev/null; } # TODO use head -c"$1"?
 
 init_level() {
