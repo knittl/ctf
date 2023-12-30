@@ -232,13 +232,14 @@ verify_tokens() {
 
 setup() {
 	echo 'Running setup ...'
-	read -p 'Enter course [BIT]: ' COURSE
-	read -p 'Enter student Sxxx: ' STUDENT
+	printf 'Enter course [BIT]: '; read -r COURSE
+	printf 'Enter student Sxxx: '; read -r STUDENT
 	: "${COURSE:=BIT}"
 	: "${STUDENT:?must be set. Call setup}"
 	export COURSE
 	export STUDENT
-	export TOKEN_PEPPER="$(random_alnum)"
+	TOKEN_PEPPER="$(random_alnum)"
+	export TOKEN_PEPPER
 	info "Token pepper: '$TOKEN_PEPPER'"
 	echo 'Setup complete.'
 }
