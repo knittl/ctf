@@ -2,14 +2,11 @@
 
 . ./lib.sh
 
-: "${current_level:?must be set}"
+init_level
+init_root "$1"
+exec 2> README
 
 num_dirs=32
-
-init_root "$1"
-
-# TODO create readme
-exec 2> README
 
 rand_leaf_dir() { find "$1" -type d -links 2 | pick_random; }
 rand_dir() { find "$1" -type d | pick_random; }
