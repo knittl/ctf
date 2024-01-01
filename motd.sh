@@ -11,7 +11,8 @@ Tokens comprise the task number, your student id, and two special values.
 Not all tokens are valid. For instance, $(bold "$(fake_token 0-0)")
 is an invalid token.
 
-Start by changing into $(bold '~/1-files/') and then typing $(bold show-tasks).
+Start by changing into $(bold "~/$(cd tasks && echo 00-*/)") and then typing $(bold show-tasks).
+Press $(bold q) to quit the task list and to return to the shell prompt.
 
 You can always type $(bold show-motd) to see this message again.
 
