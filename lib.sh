@@ -79,6 +79,8 @@ take() { dd bs=1 count="$1" 2>/dev/null; } # TODO use head -c"$1"?
 
 init_level() {
 	: "${current_level:?must be set}"
+	current_task=0
+	level="$(level)"
 }
 
 init_root() {
