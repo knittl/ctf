@@ -22,43 +22,7 @@ done
 
 next_task
 rand_cd
-mkdir "$(current_token)"
-task 'Navigate the directory tree to find the directory with the token as name'
-
-next_task
-rand_cd
 mkdir ".$(current_token)"
 task 'Navigate the directory tree to find the hidden directory with the token as name'
-
-next_task
-(
-	rand_cd
-	current_subtask=a
-	file="$(rand_touch "$(current_token)")" # TODO better file name?
-	task 'Token is the name of a file'
-
-	current_subtask=b
-	current_token > "$file"
-	task "Token is in the content of file with token name $(current_subtask=a level)"
-)
-
-next_task
-(
-	rand_cd
-	touch ".$(current_token)" # TODO
-	task 'Token is the name of a hidden file'
-)
-
-next_task
-(
-	rand_cd
-	current_subtask=a
-	file="$(rand_touch "-$(current_token)")"
-	task 'Token is the name of a file that has a name starting with a hyphen'
-
-	current_subtask=b
-	current_token > "$file"
-	task "Token is in the file with token name $(current_subtask=a level)"
-)
 
 # TODO wildcards
