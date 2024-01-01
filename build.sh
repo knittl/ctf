@@ -4,6 +4,7 @@
 
 if [ "$#" -lt 1 ]; then
 	err "Usage: $0 build|push [FILE]..."
+	exit 1
 fi
 
 mode="$1"; shift
