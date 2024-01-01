@@ -79,3 +79,32 @@ token_format "$level" "$(mac64 "$type$perms")" | while parse_token; do
 	task "Create the $(bold "$pathtype") '$dir/$path' with permissions '$perms' -- then run: $(bold "check perm $level $mac") $(underlined "'$dir/$path'");"
 done
 )
+
+next_task # 5 sorted ls
+(
+dirname="$(rand_mkdir)"
+touch_ago() {
+	ago="$1"
+	touch -d "$1 years ago $1 month ago $1 week ago $1 day ago" "$2"
+}
+
+cd -- "$dirname"
+current_token | while parse_token; do
+	year="$(random_int 10 20)"
+
+	touch_ago 1 "$course"
+	touch_ago 2 '{'
+	touch_ago 3 "$exercise"
+	touch_ago 4 ":$student:"
+	printf '%s:%s' "$nonce" "$mac" | fold -b3 | {
+		ago=6
+		while read -r c; do
+			touch_ago "$ago" "$c"
+			ago="$((ago+1))"
+		done
+		touch_ago "$ago" '}'
+	}
+done
+task "The token is all file names in directory '$dirname' joined, sorted by modification date"
+)
+
