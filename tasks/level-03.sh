@@ -103,7 +103,7 @@ end="$(random_alnum)"
 		esac
 	done
 } | shuf > "$file"
-task "The token is in the line which starts with '$start' and ends with '$end' in file '$file'"
+task "The token is in the line which $(bold "starts with '$start'") and $(bold "ends with '$end'") in file '$file'"
 )
 
 next_task # 7 grep | grep -v

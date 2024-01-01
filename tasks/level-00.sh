@@ -104,5 +104,5 @@ dir="$(rand_mkdir)"
 cd -- "$dir"
 repeat "$(random_int 8 16)" rand_touch
 current_token > "$(find -type f | pick_random)"
-task "Token is in the content of the only $(bold non-empty) file in directory '$dir/'"
+task "The token is in the content of the only $(bold non-empty) file in directory '$dir/'"
 )
