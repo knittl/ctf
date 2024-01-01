@@ -11,4 +11,5 @@ input "$@" |
 	sha256sum |
 	xxd -r -p |
 	base64 |
+	tr '+/' '-_' |
 	head -c8 # TODO head/dd # TODO source lib.sh
