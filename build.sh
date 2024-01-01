@@ -14,7 +14,8 @@ cat "$@" | while read -r course student secret name; do
 	test "$secret" || continue
 	test "$student" || continue
 	test "${course#'#'}" = "$course" || continue # skip comments
-	img="knittl/ctf:$student"
+
+	img="knittl/$(input "$course" | to_lower):$student"
 
 	case "$mode" in
 		build)
