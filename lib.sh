@@ -72,7 +72,7 @@ input() {
 }
 
 repeat() {
-	count="$1" shift
+	count="$1"; shift
 	for _ in $(seq "$count"); do "$@"; done
 }
 
