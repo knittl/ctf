@@ -49,10 +49,10 @@ next_task # 3 sort (+tail)
 (
 file="$(rand_touch)"
 {
-	repeat "$(random_seq 256 512)" current_fake_token
+	repeat "$(random_int 256 512)" current_fake_token
 	current_token
 } | nl | shuf > "$file"
-task "The token is in the line with the $(bold highest number) in file '$file'"
+task "The token is in the line with the $(bold largest number) in file '$file'"
 )
 
 next_task # 4 sort | uniq
