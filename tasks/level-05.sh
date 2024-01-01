@@ -9,9 +9,8 @@ exec 2> README
 next_task # 1 static script
 (
 word="$(random_alnum)"
-token_format "$level" "$(mac64 "hello $word")" | while parse_token; do
-	task "Create an $(bold executable script file) which writes $(bold "'hello $word'") (without quotes) to $(bold standard output). Get the token by running: $(bold "check hello $level $mac 1") $(underlined ./your_script)"
-done
+prepare_current_token  "hello $word"
+task "Create an $(bold executable script file) which writes $(bold "'hello $word'") (without quotes) to $(bold standard output). Get the token by running: $(bold "check hello $level $mac 1") $(underlined ./your_script)"
 )
 
 next_task # 2 positional parameters
@@ -19,9 +18,8 @@ next_task # 2 positional parameters
 word() { random_alnum; }
 word1="$(word)"
 word2="$(word)  $(word)"
-token_format "$level" "$(printf 'hello %s\nhello %s\n' "$word1" "$word2" | mac64)" | while parse_token; do
+prepare_current_token "$(printf 'hello %s\nhello %s\n' "$word1" "$word2")"
 task "Create an $(bold executable script file) which writes $(underlined "'hello XXXX'") (without quotes) to $(bold standard output) ($(underlined XXXX) shall be the first argument passed to the script). The script must print arguments with spaces $(bold verbatim) (i.e. ./script 'a  b' outputs 'hello a  b'). Get the token by running: $(bold "check hello $level $mac 2") $(underlined ./your_script "'$word1'" "'$(word)'" "'$word2'" "'$(word)'")"
-done
 )
 
 # pizza:

@@ -39,10 +39,9 @@ filename="$(rand_perm_touch)"
 perms="$(stat -c'%A' "$filename")"
 chmod "$(random_perm)" "$filename"
 
-token_format "$level" "$(mac64 "$perms")" | while parse_token; do
-	echo "$perms" | cut -c2- | sed 's/.../& /g' | while read -r user group other _; do
-		task "Enable $(render_perm "$user") permissions for user, $(render_perm "$group") permissions for group, and $(render_perm "$other") permissions for others for the file '$dir/$filename' -- then run: $(bold "check perm $level $mac") $(underlined "'$dir/$filename'");"
-	done
+prepare_current_token "$perms"
+echo "$perms" | cut -c2- | sed 's/.../& /g' | while read -r user group other _; do
+	task "Enable $(render_perm "$user") permissions for user, $(render_perm "$group") permissions for group, and $(render_perm "$other") permissions for others for the file '$dir/$filename' -- then run: $(bold "check perm $level $mac") $(underlined "'$dir/$filename'");"
 done
 )
 
@@ -54,9 +53,8 @@ perms="$(stat -c'%A' "$filename")"
 perms_octal="$(stat -c'%#a' "$filename")"
 chmod "$(random_perm)" "$filename"
 
-token_format "$level" "$(mac64 "$perms")" | while parse_token; do
-	task "Set the octal permissions $(bold "'$perms_octal'") for the file '$dir/$filename' -- then run: $(bold "check perm $level $mac") $(underlined "'$dir/$filename'");"
-done
+prepare_current_token "$perms"
+task "Set the octal permissions $(bold "'$perms_octal'") for the file '$dir/$filename' -- then run: $(bold "check perm $level $mac") $(underlined "'$dir/$filename'");"
 )
 
 next_task # 3 perms (symbolic)
@@ -66,9 +64,8 @@ filename="$(rand_perm_touch)"
 perms="$(stat -c'%A' "$filename")"
 chmod "$(random_perm)" "$filename"
 
-token_format "$level" "$(mac64 "$perms")" | while parse_token; do
-	task "Set permissions $(bold "'${perms#-}'") for the file '$dir/$filename' -- then run: $(bold "check perm $level $mac") $(underlined "'$dir/$filename'");"
-done
+prepare_current_token "$perms"
+task "Set permissions $(bold "'${perms#-}'") for the file '$dir/$filename' -- then run: $(bold "check perm $level $mac") $(underlined "'$dir/$filename'");"
 )
 
 next_task # 4 create + mode
@@ -81,9 +78,8 @@ case "$type" in
 esac
 perms="$(random_perm_sym)"
 
-token_format "$level" "$(mac64 "$type$perms")" | while parse_token; do
-	task "Create the $(bold "$pathtype") '$dir/$path' with permissions $(bold "'$perms'") -- then run: $(bold "check perm $level $mac") $(underlined "'$dir/$path'");"
-done
+prepare_current_token "$type$perms"
+task "Create the $(bold "$pathtype") '$dir/$path' with permissions $(bold "'$perms'") -- then run: $(bold "check perm $level $mac") $(underlined "'$dir/$path'");"
 )
 
 next_task # 5 sorted ls
