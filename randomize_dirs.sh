@@ -2,13 +2,11 @@
 
 . ./lib.sh
 
-: "${current_level:?must be set}"
+init_level
 init_root "$1"
+exec 2> README
 
 num_dirs=8
-
-
-exec 2> README
 
 rand_dir() { find "$1" -type d | pick_random; }
 rand_cd() { cd "$(rand_dir "$root")"; }
