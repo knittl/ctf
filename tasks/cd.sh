@@ -33,7 +33,7 @@ done
 next_task
 (
 	dir="$(rand_mkdir)"
-	cd "$dir"
+	cd -- "$dir"
 
 	mk_files() {
 		for ext; do
@@ -55,7 +55,7 @@ next_task
 next_task
 (
 	dir="$(rand_mkdir)"
-	cd "$dir"
+	cd -- "$dir"
 
 	ext() { pick_random txt jpg png gif mkv blend html css js ts; }
 	names=$(
