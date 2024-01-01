@@ -7,5 +7,17 @@ if [ "$1" ]; then
 	}
 fi
 
-while [ "$PWD" != / ] && ! [ -f README ]; do cd ..; done
-less -R README 2>/dev/null || echo '❌ No tasks available, are you in the correct directory?' >&2
+while [ "$PWD" != / ] && ! [ -r README ]; do cd ..; done
+[ -r README ] || {
+ echo '❌ Tasks not found, are you in the correct directory?' >&2
+ exit 1
+}
+
+cat README |
+	if [ "$2" ]
+	then
+		level="$1"
+		while [ "${level#0}" != "$level" ]; do level="${level#0}"; done
+		awk -v RS= -v level="${level:-0}" -v task="$2" 'index($0,  "[" level "-" task "]")'
+	else less -FRX
+	fi
