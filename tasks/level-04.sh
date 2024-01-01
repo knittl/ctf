@@ -11,8 +11,8 @@ rand_dir() { find "$1" -type d | pick_random; }
 rand_cd() { cd "$(rand_dir "$root")"; }
 rand_cd_leaf() { cd "$(rand_leaf_dir "$root")"; }
 
-mkdirs() { repeat "${1:-2}" rand_mkdir; }
-mkfiles() { repeat "${1:-4}" rand_touch; }
+mkdirs() { repeat "${1:-2}" rand_mkdir; } >/dev/null
+mkfiles() { repeat "${1:-4}" rand_touch; } >/dev/null
 touch_fake_token() { touch -- "$(current_fake_token)"; }
 mkfaketokens() { repeat "${2:-4}" touch_fake_token; }
 
