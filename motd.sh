@@ -3,7 +3,7 @@
 . ./lib.sh >/dev/null
 
 cat <<EOF
-Welcome $(bold "${STUDENTNAME:-$STUDENT}"), these are your personal challenges!
+Welcome $(bold "${STUDENTNAME:-$STUDENT}"), these are your personal tasks!
 
 Your goal is to find tokens, such as $(bold "$(token 0-0)").
 Tokens comprise the task number, your student id, and two special values.
