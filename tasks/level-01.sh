@@ -125,7 +125,7 @@ OR THIS ONE: $(fake_token "$level")
 HERE IS YOUR PERSONAL TOKEN: $(current_token)
 
 YOU CAN IGNORE ALL FOLLOWING TOKENS:
-$(repeat "$(random_int 4 16) fake_tokens)
+$(repeat "$(random_int 4 16)" fake_tokens)
 EOF
 
 task "You received an encrypted file '$file'. Can you recover its plaintext? (Hint: $(bold tr), Caesar cipher)."
