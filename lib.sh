@@ -28,9 +28,8 @@ ansi() {
 				white) say "${bgfg}7" ;;
 			esac
 }
-fmt() {
-	printf '[%sm' "$(ansi fg; for arg; do ansi "$arg"; done | join_lines ';')"
-}
+fmt() { printf '[%sm' "$(ansi fg; for arg; do ansi "$arg"; done | join_lines ';')"; }
+formatted() { format="$1"; shift; printf "%s%s%s\n" "$(fmt "$format")" "$*" "$color_reset"; }
 color_reset="$(fmt reset)"
 color_red="$(fmt bold red)"
 color_green="$(fmt bold green)"
