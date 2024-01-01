@@ -6,15 +6,13 @@ init_level
 init_root "$1"
 exec 2> README
 
-num_dirs=8
-
 rand_dir() { find "$1" -type d | pick_random; }
 rand_cd() { cd -- "$(rand_dir "$root")"; }
 
-mkdirs() { repeat "${1:-2}" rand_mkdir; }
-mkfiles() { repeat "${1:-4}" rand_touch; }
+mkdirs() { repeat "${1:-2}" rand_mkdir; } >/dev/null
+mkfiles() { repeat "${1:-4}" rand_touch; } >/dev/null
 
-for _ in $(seq "$num_dirs"); do
+for _ in $(seq 8); do
 	rand_cd
 	mkdirs
 	mkfiles
