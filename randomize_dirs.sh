@@ -11,20 +11,14 @@ num_dirs=8
 rand_dir() { find "$1" -type d | pick_random; }
 rand_cd() { cd "$(rand_dir "$root")"; }
 
-mkdirs() { for _ in $(seq "${1:-2}"); do mkdir "$(random_filename)"; done; }
-mkfiles() { for _ in $(seq "${1:-4}"); do touch "$(random_filename)"; done; }
+mkdirs() { repeat "${1:-2}" rand_mkdir; }
+mkfiles() { repeat "${1:-4}" rand_touch; }
 
 for _ in $(seq "$num_dirs"); do
 	rand_cd
 	mkdirs
 	mkfiles
 done
-
-next_task
-cd "$root"
-file="$(rand_touch "$(random_alnum)")"
-current_token > "$file"
-task "Type \"cat '${PWD#$root}$file'\" to get the first token" # TODO correct path
 
 next_task
 rand_cd

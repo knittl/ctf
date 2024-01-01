@@ -7,14 +7,6 @@ init_root "$1"
 exec 2> README
 
 next_task
-dir="$(rand_mkdir)"
-cd "$dir"
-for _ in $(random_seq 8 16); do touch "$(random_filename)"; done
-current_token > "$(find -type f | pick_random)"
-task "Token is content of the only non-empty file in directory '$dir/'"
-cd "$root"
-
-next_task
 current_token | while parse_token; do
 	printf '%s' "$course" > part0
 	printf '%s' '{' > part1
