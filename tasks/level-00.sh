@@ -102,7 +102,7 @@ next_task # 9
 (
 dir="$(rand_mkdir)"
 cd -- "$dir"
-repeat "$(random_int 8 16)" rand_touch
+repeat "$(random_int 8 16)" rand_touch >/dev/null
 current_token > "$(find -type f | pick_random)"
 task "The token is in the content of the only $(bold non-empty) file in directory '$dir/'"
 )
