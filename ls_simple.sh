@@ -6,16 +6,6 @@ init_level
 init_root "$1"
 exec 2> README
 
-## simple file:
-next_task
-(
-	dirname="$(rand_mkdir)"
-	cd "$dirname"
-	for _ in $(random_seq 4 8); do rand_mkdir >/dev/null; done
-	touch "$(find */ -type d | pick_random)/$(current_token)"
-	task "Token is the filename of the only file in a random subdirectory of '$dirname'"
-)
-
 next_task
 (
 	dirname="$(rand_mkdir)"
