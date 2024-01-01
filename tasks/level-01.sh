@@ -31,30 +31,37 @@ next_task # 2
 (
 rand_cd
 touch -- ".$(current_token)"
-task "Navigate the directory tree to find the $(bold hidden) file with token $level as name"
+task "Navigate the directory tree to find the $(bold hidden file) with token $level as name"
 )
 
 next_task # 3
+(
+rand_cd
+mkdir ".$(current_token)"
+task "Navigate the directory tree to find the $(bold hidden directory) with token $level as name"
+)
+
+next_task # 4
 (
 rand_cd
 file="$(rand_touch "$(current_token)")" # TODO better file name?
 prev="$level"
 task "Token $level is the $(bold name) of a file in the directory tree"
 
-next_task # 4
+next_task # 5
 current_token > "$file"
 task "Token $level is in the $(bold content) of the file from task $prev"
 )
-next_task # 4: need to re-apply increment from subshell to parent shell
+next_task # 5: need to re-apply increment from subshell to parent shell
 
-next_task # 5
+next_task # 6
 (
 rand_cd
 file="$(rand_touch "-$(current_token)")"
 task "Token $level is in the content of a file whose name starts with a hyphen"
 )
 
-next_task # 6
+next_task # 7
 (
 file="$(rand_touch)"
 pos() {
@@ -77,7 +84,7 @@ token_format "$level" "$(mac64 "$largest_number")" | while parse_token; do
 done
 )
 
-next_task # 7
+next_task # 8
 (
 proto="$(pick_random tcp udp)"
 awk -v proto="$proto" '!/^#/&&$0~proto' /etc/services | pick_random | while read -r service port _; do
@@ -88,7 +95,7 @@ awk -v proto="$proto" '!/^#/&&$0~proto' /etc/services | pick_random | while read
 done
 )
 
-next_task # 8
+next_task # 9
 (
 proto="$(pick_random tcp udp)"
 awk -v proto="$proto" '!/^#/&&$0~proto' /etc/services | pick_random | while read -r service port _; do
@@ -99,7 +106,7 @@ awk -v proto="$proto" '!/^#/&&$0~proto' /etc/services | pick_random | while read
 done
 )
 
-next_task # 9
+next_task # 10
 (
 rot="$(random_int 3 23)"
 file="CAESAR-$(random_filename)-$rot.TXT"
