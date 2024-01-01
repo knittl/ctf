@@ -6,6 +6,26 @@ init_level
 init_root "$1"
 exec 2> README
 
+next_task # 1 static script
+(
+word="$(random_alnum)"
+token_format "$level" "$(mac64 "hello $word")" | while parse_token; do
+	task "Create an $(bold executable script file) which writes $(bold "'hello $word'") (without quotes) to $(bold standard output). Get the token by running: $(bold "check hello $level $mac 1") $(underlined ./your_script)"
+done
+)
+
+next_task # 2 positional parameters
+(
+word() { random_alnum; }
+word1="$(word)"
+word2="$(word)  $(word)"
+token_format "$level" "$(printf 'hello %s\nhello %s\n' "$word1" "$word2" | mac64)" | while parse_token; do
+task "Create an $(bold executable script file) which writes $(underlined "'hello XXXX'") (without quotes) to $(bold standard output) ($(underlined XXXX) shall be the first argument passed to the script). The script must print arguments with spaces $(bold verbatim) (i.e. ./script 'a  b' outputs 'hello a  b'). Get the token by running: $(bold "check hello $level $mac 2") $(underlined ./your_script "'$word1'" "'$(word)'" "'$word2'" "'$(word)'")"
+done
+)
+
+# pizza:
+(
 sort > meats <<EOF
 ham
 bacon
@@ -130,15 +150,16 @@ pretty() {
 info "The file '$file' contains a list of pizzas together with their ingredients.
 "
 
-next_task
+next_task # 3 pizza vegetarian
 repeat "$(random_int 2 8)" pizza current_token vegetables vegetables
 repeat "$(random_int 2 8)" pizza current_fake_token vegetables meats
 task "The token is next to a vegetarian pizza. You can find a list of meat-based ingredients in the file $(bold meats)."
 
-next_task
+next_task # 4 pizza extras
 repeat "$(random_int 2 8)" pizza current_token vegetables meats "$yummy"
 repeat "$(random_int 2 4)" pizza current_fake_token meats "$yucky" "$yummy"
 repeat "$(random_int 2 4)" pizza current_fake_token vegetables "$yucky" "$yummy"
 task "You cannot decide which pizza to order. You love $(pretty "$yummy"); but you can't stand $(pretty "$yucky"). The token is next to your favorite pizzas."
-} | shuf | paste "$names" - | grep -e "$COURSE{.*}" |tee "$file"
-
+} | shuf | paste "$names" - | grep -e "$COURSE{.*}" > "$file"
+)
+repeat 2 next_task # re-apply task from subshell to parent shell
