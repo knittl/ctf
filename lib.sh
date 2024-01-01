@@ -177,8 +177,8 @@ token() {
 	printf '%s{%s:%s}\n' "$course" "$data" "$mac"
 }
 prepare_token() {
-	nonce="$(input "$5" | mac64)"      # expected nonce
-	token "$1" "$3" "$4" "$5" "$nonce" # pin nonce
+	nonce="$(mac64 "$2")"      # expected nonce
+	token "$1" "$3" "$4" "$5" "$nonce" >/dev/null # pin nonce
 	# output variables: course exercise/task student nonce pepper
 }
 prepare_current_token() { prepare_token "$(level)" "$@"; }
