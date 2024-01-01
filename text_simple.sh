@@ -2,18 +2,10 @@
 
 . ./lib.sh
 
-: "${current_level:?must be set}"
-
+init_level
 init_root "$1"
 
 exec 2> README
-
-fake_pepper='invalid' # export? # TODO randomize?
-# info "Fake token pepper: $fake_pepper"
-fake_token() ( # run in subshell
-	export TOKEN_PEPPER="$fake_pepper"
-	token "$1"
-)
 
 ## head
 next_task
@@ -25,15 +17,12 @@ task "Token is in first line of '$file'"
 	random_alnum "$((lines*64))" | fold -w64
 } > "$file"
 
-## simple file:
+## head + cut with default delim (tab)
+next_task
 file="$(rand_touch)"
-
 lines="$(random_int 32 128)"
 line="$(random_int 32 "$lines")"
 line="$(random_int 4 16)" # TODO first line, one of first few lines?
-
-## head + cut with default delim (tab)
-next_task
 for i in $(seq "$lines"); do
 	columns="$(random_int 4 16)"
 	column="$(random_int 4 "$columns")"
@@ -64,7 +53,6 @@ while include="$(random_alnum 4)" exclude="$(random_alnum 4)"; do
 done
 
 task "Token is in comment of usernames which contain '$include' but not '$exclude' in file 'passwd'"
-
 i=1
 current_token | tr ':' '\n' |
 while read -r part; do
