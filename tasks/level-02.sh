@@ -82,7 +82,7 @@ esac
 perms="$(random_perm_sym)"
 
 token_format "$level" "$(mac64 "$type$perms")" | while parse_token; do
-	task "Create the $(bold "$pathtype") '$dir/$path' with permissions '$perms' -- then run: $(bold "check perm $level $mac") $(underlined "'$dir/$path'");"
+	task "Create the $(bold "$pathtype") '$dir/$path' with permissions $(bold "'$perms'") -- then run: $(bold "check perm $level $mac") $(underlined "'$dir/$path'");"
 done
 )
 
