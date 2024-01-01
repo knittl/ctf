@@ -129,16 +129,16 @@ random_perm_sym() {
 
 # files
 uniq_filename() {
-	while filename="$(random_filename)"; do test -e "$filename" || break; done
-	printf '%s' "$filename"
+	while filename="$("${1:-random_filename}")" && test -e "$filename"; do :; done
+	printf '%s\n' "$filename"
 }
 rand_touch() {
 	filename="${1:-$(uniq_filename)}"
-	touch -- "$filename" && echo "$filename"
+	touch -- "$filename" && printf '%s\n' "$filename"
 }
 rand_mkdir() {
 	filename="${1:-$(uniq_filename)}"
-	mkdir -p -- "$filename" && echo "$filename"
+	mkdir -p -- "$filename" && printf '%s\n' "$filename"
 }
 
 
