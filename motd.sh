@@ -12,6 +12,6 @@ Start by changing into $(bold '~/1-files/') and then typing $(bold show-tasks).
 
 You can always type $(bold show-motd) to see this message again.
 
-$(fmt dim)Checksum: $(printf '%s' "$TOKEN_PEPPER" | sha256sum | cut -c-64)$(fmt reset)
+$(formatted dim "Checksum: $(printf '%s' "$TOKEN_PEPPER" | sha256sum | cut -c-64)")
 
 EOF
