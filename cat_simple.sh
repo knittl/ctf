@@ -2,11 +2,8 @@
 
 . ./lib.sh
 
-: "${current_level:?must be set}"
-
+init_level
 init_root "$1"
-
-# TODO create readme
 exec 2> README
 
 next_task
