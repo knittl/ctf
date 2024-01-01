@@ -108,3 +108,37 @@ done
 task "The token is all file names in directory '$dirname' joined, sorted by modification date"
 )
 
+next_task # 6 split across files
+(
+current_token | while parse_token; do
+	printf '%s' "$course" > part0
+	printf '%s' '{' > part1
+	printf '%s' "$exercise" > part2
+	printf '%s' ':' > part3
+	printf '%s' "$student" > part4
+	printf '%s' ':' > part5
+	printf '%s' "$nonce" > part6
+	printf '%s' ':' > part7
+	printf '%s' "$mac" > part8
+	printf '%s\n' '}' > part9
+done
+task "The token is in the files 'part0' through 'part9', sorted alphabetically"
+)
+
+next_task # 7 spaces
+(
+file="$(random_filename) $(random_filename) $(random_filename)"
+current_token > "$file"
+task 'The token is in the file with spaces in its name'
+)
+
+next_task # 8 wildcards
+(
+prefix="$(random_filename)"
+suffix="$(random_filename)"
+for _ in $(random_seq 8 32); do
+	current_fake_token > "$prefix$(random_filename)$suffix"
+done
+current_token > "$prefix*$suffix"
+task 'The token is in the file with an asterisk (*) in its name'
+)
