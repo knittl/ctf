@@ -1,14 +1,14 @@
 #!/bin/sh
 
 input() {
-	if test "$1"
+	if test "${1+x}"
 	then printf '%s\n' "$@"
 	else cat
 	fi
 }
 
-input "$@" \
-	| sha256sum \
-	| xxd -r -p \
-	| base64 \
-	| head -c8 # TODO head/dd # TODO source lib.sh
+input "$@" |
+	sha256sum |
+	xxd -r -p |
+	base64 |
+	head -c8 # TODO head/dd # TODO source lib.sh
