@@ -22,12 +22,14 @@ WORKDIR /ctf
 COPY *.sh tasks/ /ctf/
 
 ARG course=CTF
-ARG student
 ARG pepper
+ARG student
+ARG studentname
 RUN : "${course:?must be set} ${student:?must be set}"
 ENV COURSE=$course
-ENV STUDENT=$student
 ENV TOKEN_PEPPER=$pepper
+ENV STUDENT=$student
+ENV STUDENTNAME=${studentname:-$student}
 
 # TODO write and copy single script to generate tasks, then execute script
 
@@ -45,8 +47,7 @@ RUN ./generate.sh 8 ./regex.sh /ctf/tasks/8-regex
 RUN ./generate.sh 9 ./pizza.sh /ctf/tasks/9-pizza
 RUN ./generate.sh 10 ./scripting.sh /ctf/tasks/10-scripting
 
-COPY README /ctf
-RUN awk -v student="$STUDENT" '{gsub("\\${STUDENT}", student);print}' /ctf/README > /ctf/README.tmp && printf 'Checksum: %s\n\n' "$(printf '%s' "$TOKEN_PEPPER" | sha256sum | cut -c-64)" >> /ctf/README.tmp
+RUN ./bin/motd.sh > /ctf/README
 
 # TODO copy scripts
 # TODO generate tasks
@@ -76,8 +77,7 @@ RUN useradd -ms /bin/bash --no-log-init -c 'Account for '"$STUDENT" "$STUDENT" \
 	&& echo 'show-motd' >> "/home/$STUDENT/.bashrc"
 WORKDIR "/home/$STUDENT"
 
-COPY --from=build /ctf/tasks .
-COPY --from=build /ctf/README.tmp README
+COPY --from=build /ctf/tasks /ctf/README ./
 
 USER "$STUDENT"
 
