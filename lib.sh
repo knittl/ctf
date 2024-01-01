@@ -193,7 +193,7 @@ mac() {
 # fake_token() (TOKEN_PEPPER="$fake_pepper" token "$1") # run in subshell
 fake_token() {
 	token_init "$@" || return 1
-	printf '%s{%s:%s}\n' "$course" "$data" "$(random_alnum 8)"
+	printf '%s{%s:%s}\n' "$course" "$data" "$(random_base32 8)"
 }
 
 
