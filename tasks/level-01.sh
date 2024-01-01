@@ -46,18 +46,18 @@ next_task # 4
 rand_cd
 file="$(rand_touch "$(current_token)")" # TODO better file name?
 prev="$level"
-task "Token $level is the $(bold name) of a file in the directory tree"
+task "The token is the $(bold name) of a file in the directory tree"
 
 next_task # 5
 current_token > "$file"
-task "Token $level is in the $(bold content) of the file from task $prev"
+task "The token is in the $(bold content) of the file from task $prev"
 )
 next_task # 5: need to re-apply increment from subshell to parent shell
 
 next_task # 6
 (
 current_token > "-$(random_alnum)"
-task "Token $level is in the content of a file whose name starts with a hyphen"
+task "The token is in the $(bold content) of the file whose name $(bold starts with a hyphen)"
 )
 
 next_task # 7
@@ -79,7 +79,7 @@ for _ in $(random_seq 256 512); do
 done > "$file"
 
 token_format "$level" "$(mac64 "$largest_number")" | while parse_token; do
-	task "Use a $(bold regular expression) to find the largest number in file '$file' (NB the file contains positive and negative integers). Get the token by running: $(bold check printf $level $mac) $(underlined largest_number)"
+task "Use a $(bold regular expression) to find the $(bold largest number) in file '$file' (NB the file contains $(bold positive) and $(bold negative integers)). Get the token by running: $(bold check printf $level $mac) $(underlined largest_number)"
 done
 )
 

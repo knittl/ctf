@@ -38,7 +38,7 @@ next_task # 2 find by name insensitive
 rand_cd_leaf
 tag="$(random_alnum)"
 current_token > "$(random_alnum)$tag$(random_alnum)"
-task "Token is in file with name $(bold "containing '$(echo "$tag" | to_lower)' (case-insensitive)")"
+task "The token is in file with name $(bold "containing '$(echo "$tag" | to_lower)' (case-insensitive)")"
 )
 
 next_task # 3 find by modification time
@@ -83,7 +83,7 @@ rand_cd_leaf
 file="$(current_token_file)"
 chmod "$(random_perm_chmod)" "$file"
 mkfaketokens
-task "The token is name of file with $(bold "permissions '$(stat -c'%A' "$file")'")"
+task "The token is the name of file with $(bold "permissions '$(stat -c'%A' "$file")'")"
 )
 
 next_task # 8 find file in directory
@@ -92,7 +92,7 @@ rand_cd_leaf
 dir="$(rand_mkdir)"
 current_token > "$dir/$(random_filename)"
 for _ in $(random_seq 4 16); do rand_cd && touch -- "$dir"; done
-task "The token is in a file inside directory with name '$dir'"
+task "The token is in a file inside a directory with the name '$dir/'"
 )
 
 next_task # 9 find multiple criteria
@@ -140,7 +140,7 @@ for _ in $(random_seq 16 64); do
 	random_alnum > "$(current_fake_token)"
 	mkdir -p "$(current_fake_token)"
 done
-task "Token is the name of the only $(bold empty file) in directory ${PWD#$root/}"
+task "The token is the name of the only $(bold empty file) in directory '${PWD#$root/}'"
 )
 
 next_task # 11 find empty dir
@@ -153,5 +153,5 @@ for _ in $(random_seq 16 64); do
 	mkdir -p "$fake"
 	touch -- "$fake/$(random_filename)"
 done
-task "The token is the name of the only $(bold empty directory) in ${PWD#$root/}"
+task "The token is the name of the only $(bold empty directory) in '${PWD#$root/}'"
 )
