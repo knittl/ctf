@@ -99,7 +99,7 @@ pizza() {
 			test "$4" && cat "$4"
 		} | shuf | join_lines ','
 		"$mktoken"
-	} | join_lines '	'
+	} | join_lines '\t'
 }
 
 file="$(uniq_filename)"
