@@ -29,26 +29,18 @@ ENV TOKEN_PEPPER=$pepper
 ENV STUDENT=$student
 ENV STUDENTNAME=${studentname:-$student}
 
-RUN ./motd.sh > /ctf/README
-
 # TODO write and copy single script to generate tasks, then execute script
 
 # TODO "global" README
 
-RUN ./generate.sh 0 ./cd.sh /ctf/tasks/0-cd
-RUN ./generate.sh 1 ./randomize_dirs.sh /ctf/tasks/1-files
-RUN ./generate.sh 2 ./cat_simple.sh /ctf/tasks/2-cat
-RUN ./generate.sh 3 ./ls_simple.sh /ctf/tasks/3-ls
-RUN ./generate.sh 4 ./find_simple.sh /ctf/tasks/4-find
-RUN ./generate.sh 5 ./text_simple.sh /ctf/tasks/5-text
-RUN ./generate.sh 6 ./chmod_simple.sh /ctf/tasks/6-chmod
-RUN ./generate.sh 7 ./crypto.sh /ctf/tasks/7-crypto
-RUN ./generate.sh 8 ./regex.sh /ctf/tasks/8-regex
-RUN ./generate.sh 9 ./pizza.sh /ctf/tasks/9-pizza
-RUN ./generate.sh 10 ./scripting.sh /ctf/tasks/10-scripting
+RUN ./generate.sh 0 ./level-00.sh /ctf/tasks/00-intro
+RUN ./generate.sh 1 ./level-01.sh /ctf/tasks/01-re-crypto
+RUN ./generate.sh 2 ./level-02.sh /ctf/tasks/02-permissions
+RUN ./generate.sh 3 ./level-03.sh /ctf/tasks/03-text
+RUN ./generate.sh 4 ./level-04.sh /ctf/tasks/04-find
+RUN ./generate.sh 5 ./level-05.sh /ctf/tasks/05-scripts
 
-# TODO copy scripts
-# TODO generate tasks
+RUN ./motd.sh > /ctf/README
 
 # ---------------
 
