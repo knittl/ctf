@@ -71,7 +71,7 @@ ENV STUDENT=$student
 
 RUN useradd -ms /bin/bash --no-log-init -c 'Account for '"$STUDENT" "$STUDENT" \
 	&& sed -i '/^#force_color_prompt=yes$/s/^#//' "/home/$STUDENT/.bashrc" \
-	&& echo 'show-motd' >> .bashrc
+	&& echo 'show-motd' >> "/home/$STUDENT/.bashrc"
 WORKDIR "/home/$STUDENT"
 
 COPY --from=build /ctf/tasks .
