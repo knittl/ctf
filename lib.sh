@@ -176,9 +176,6 @@ token() {
 	mac="$(mac "$data:$pepper")"
 	printf '%s{%s:%s}\n' "$course" "$data" "$mac"
 }
-token_format() {
-	token "$1" "$3" "$4" "$5" "$2" # pin nonce
-}
 prepare_token() {
 	nonce="$(input "$5" | mac64)"      # expected nonce
 	token "$1" "$3" "$4" "$5" "$nonce" # pin nonce
