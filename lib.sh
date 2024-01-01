@@ -171,21 +171,13 @@ token_init_mac() {
 	pepper="${4:-$TOKEN_PEPPER}"      # TODO
 	nonce="${5:-$(random_alnum)}"     # TODO
 }
-_token() {
-	format_data="$1"
-	shift
+token() {
 	token_init "$@" || return 1
 	mac="$(mac "$data:$pepper")"
-	render_token  "$("$format_data" "$data")" "$mac"
+	printf '%s{%s:%s}\n' "$course" "$data" "$mac"
 }
-_data() { printf '%s' "$1"; }
-_data_placeholder() { _data "${1%:*}:%s"; }
-token() { _token _data "$@"; }
 token_format() {
-	_token _data_placeholder "$1" "$3" "$4" "$5" "$2" # pin nonce
-}
-render_token() {
-	printf '%s{%s:%s}\n' "$course" "$1" "$mac"
+	token "$1" "$3" "$4" "$5" "$2" # pin nonce
 }
 
 current_token() { token "$(level)"; }
