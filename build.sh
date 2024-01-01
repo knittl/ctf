@@ -8,11 +8,13 @@ fi
 
 mode="$1"; shift
 
-cat "$@" | while read -r course secret student name; do
+cat "$@" | while read -r course student secret name; do
 	test "$course" || continue
 	test "$secret" || continue
 	test "$student" || continue
 	test "${course#'#'}" = "$course" || continue # skip comments
+	img="knittl/ctf:$student"
+
 	case "$mode" in
 		build)
 			info "Building $course for '$student' with secret '$secret' ..."
@@ -21,10 +23,9 @@ cat "$@" | while read -r course secret student name; do
 				--build-arg=pepper="$secret" \
 				--build-arg=student="$student" \
 				--build-arg=studentname="$name" \
-				-t "knittl/ctf:$student" .
+				-t "$img" .
 			;;
 		push)
-			img="knittl/ctf:$student"
 			info "Pushing $img ..."
 			docker push "$img"
 			;;
