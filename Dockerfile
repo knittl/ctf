@@ -74,8 +74,7 @@ RUN useradd -ms /bin/bash --no-log-init -c 'Account for '"$STUDENT" "$STUDENT" \
 	&& echo 'show-motd' >> "/home/$STUDENT/.bashrc"
 WORKDIR "/home/$STUDENT"
 
-COPY --from=build /ctf/tasks .
-COPY --from=build /ctf/README.tmp README
+COPY --from=build /ctf/tasks /ctf/README ./
 
 USER "$STUDENT"
 
