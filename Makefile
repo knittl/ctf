@@ -1,7 +1,14 @@
-.PHONY: build push
+.PHONY: build push secrets
 
-build:
-	docker build --build-arg=student=test --build-arg=pepper=1337 -t knittl/ctf .
+build: build-users
+push: push-users
+secrets: secrets-users
 
-push:
-	docker push knittl/ctf
+secrets-%: config/%
+	./gen-secrets.sh CTF "config/$*" | tee "config/$*.secrets"
+
+build-%: config/%.secrets
+	./build.sh build "$^"
+
+push-%: config/%.secrets
+	./build.sh push "$^"
