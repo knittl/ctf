@@ -77,9 +77,8 @@ for _ in $(random_seq 256 512); do
 	if chance 10; then echo; fi
 done > "$file"
 
-token_format "$level" "$(mac64 "$largest_number")" | while parse_token; do
+prepare_current_token "$largest_number"
 task "Use a $(bold regular expression) to find the $(bold largest number) in file '$file' (NB the file contains $(bold positive) and $(bold negative integers)). Get the token by running: $(bold check printf $level $mac) $(underlined largest_number)"
-done
 )
 
 next_task # 8
@@ -87,9 +86,8 @@ next_task # 8
 proto="$(pick_random tcp udp)"
 awk -v proto="$proto" '!/^#/&&$0~proto' /etc/services | pick_random | while read -r service port _; do
 	port="${port%/$proto}"
-	token_format "$level" "$(mac64 "$port")" | while parse_token; do
-		task "Which $(bold "$(echo "$proto" | to_upper) port") is associated with the service/protocol '$service'? The file $(bold "'/etc/services'") contains a list of services and their assigned ports. Get the token by running: $(bold check printf $level $mac) $(underlined port_number)"
-	done
+	prepare_current_token "$port"
+	task "Which $(bold "$(echo "$proto" | to_upper) port") is associated with the service/protocol '$service'? The file $(bold "'/etc/services'") contains a list of services and their assigned ports. Get the token by running: $(bold check printf $level $mac) $(underlined port_number)"
 done
 )
 
@@ -98,9 +96,8 @@ next_task # 9
 proto="$(pick_random tcp udp)"
 awk -v proto="$proto" '!/^#/&&$0~proto' /etc/services | pick_random | while read -r service port _; do
 	port="${port%/$proto}"
-	token_format "$level" "$(mac64 "$service")" | while parse_token; do
-		task "Which $(bold service/protocol) is associated with $(echo "$proto" | to_upper) port $port? The file $(bold "'/etc/services'") contains a list of services and their assigned ports. Get the token by running: $(bold check printf $level $mac) $(underlined service_name)"
-	done
+	prepare_current_token "$service"
+	task "Which $(bold service/protocol) is associated with $(echo "$proto" | to_upper) port $port? The file $(bold "'/etc/services'") contains a list of services and their assigned ports. Get the token by running: $(bold check printf $level $mac) $(underlined service_name)"
 done
 )
 
