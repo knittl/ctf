@@ -12,11 +12,13 @@ rand_cd() { cd -- "$(rand_dir "$root")"; }
 mkdirs() { repeat "${1:-2}" rand_mkdir; } >/dev/null
 mkfiles() { repeat "${1:-4}" rand_touch; } >/dev/null
 
+(
 for _ in $(seq 8); do
 	rand_cd
 	mkdirs
 	mkfiles
 done
+)
 
 next_task # 1
 (

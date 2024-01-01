@@ -18,11 +18,13 @@ mkfaketokens() { repeat "${2:-4}" touch_fake_token; }
 
 current_token_file() { rand_touch "$(current_token)"; }
 
+(
 for _ in $(seq 32); do
 	rand_cd
 	mkdirs
 	mkfiles
 done
+)
 
 next_task # 1 find by name
 (
