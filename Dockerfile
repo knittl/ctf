@@ -38,6 +38,10 @@ RUN ./generate.sh 3 ./ls_simple.sh /ctf/tasks/3-ls
 RUN ./generate.sh 4 ./find_simple.sh /ctf/tasks/4-find
 RUN ./generate.sh 5 ./text_simple.sh /ctf/tasks/5-text
 RUN ./generate.sh 6 ./chmod_simple.sh /ctf/tasks/6-chmod
+RUN ./generate.sh 7 ./crypto.sh /ctf/tasks/7-crypto
+RUN ./generate.sh 8 ./regex.sh /ctf/tasks/8-regex
+RUN ./generate.sh 9 ./pizza.sh /ctf/tasks/9-pizza
+RUN ./generate.sh 10 ./scripting.sh /ctf/tasks/10-scripting
 
 COPY README /ctf
 RUN awk -v student="$STUDENT" '{gsub("\\${STUDENT}", student);print}' /ctf/README > /ctf/README.tmp && printf 'Checksum: %s\n\n' "$(printf '%s' "$TOKEN_PEPPER" | sha256sum | cut -c-64)" >> /ctf/README.tmp
