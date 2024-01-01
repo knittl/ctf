@@ -132,13 +132,13 @@ info "The file '$file' contains a list of pizzas together with their ingredients
 
 next_task
 repeat "$(random_int 2 8)" pizza current_token vegetables vegetables
-repeat "$(random_int 2 8)" pizza fake_token vegetables meats
+repeat "$(random_int 2 8)" pizza current_fake_token vegetables meats
 task "The token is next to a vegetarian pizza. You can find a list of meat-based ingredients in the file $(bold meats)."
 
 next_task
 repeat "$(random_int 2 8)" pizza current_token vegetables meats "$yummy"
-repeat "$(random_int 2 4)" pizza fake_token meats "$yucky" "$yummy"
-repeat "$(random_int 2 4)" pizza fake_token vegetables "$yucky" "$yummy"
+repeat "$(random_int 2 4)" pizza current_fake_token meats "$yucky" "$yummy"
+repeat "$(random_int 2 4)" pizza current_fake_token vegetables "$yucky" "$yummy"
 task "You cannot decide which pizza to order. You love $(pretty "$yummy"); but you can't stand $(pretty "$yucky"). The token is next to your favorite pizzas."
 } | shuf | paste "$names" - | grep -e "$COURSE{.*}" |tee "$file"
 

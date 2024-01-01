@@ -186,6 +186,7 @@ render_token() {
 }
 
 current_token() { token "$(level)"; }
+current_fake_token() { fake_token "$(level)"; }
 
 mac() {
 	printf '%s' "$1" | sha256sum | xxd -r -p | base32 -w0 | take 8;
