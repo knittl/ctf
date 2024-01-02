@@ -25,7 +25,7 @@ ARG course=CTF
 ARG pepper
 ARG student
 ARG studentname
-RUN : "${course:?must be set} ${student:?must be set}"
+RUN : "${course:?must be set} ${student:?must be set} ${pepper:?must be set}"
 ENV COURSE=$course
 ENV TOKEN_PEPPER=$pepper
 ENV STUDENT=$student
