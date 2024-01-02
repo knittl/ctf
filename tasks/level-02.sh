@@ -85,39 +85,37 @@ touch_ago() {
 }
 
 cd -- "$dirname"
-current_token | while parse_token; do
-	year="$(random_int 10 20)"
+current_token >/dev/null
+year="$(random_int 10 20)"
 
-	touch_ago 1 "$course"
-	touch_ago 2 '{'
-	touch_ago 3 "$exercise"
-	touch_ago 4 ":$student:"
-	printf '%s:%s' "$nonce" "$mac" | fold -b3 | {
-		ago=6
-		while read -r c; do
-			touch_ago "$ago" "$c"
-			ago="$((ago+1))"
-		done
-		touch_ago "$ago" '}'
-	}
-done
+touch_ago 1 "$course"
+touch_ago 2 '{'
+touch_ago 3 "$exercise"
+touch_ago 4 ":$student:"
+printf '%s:%s\n' "$nonce" "$mac" | fold -b3 | {
+	ago=6
+	while read -r c; do
+		touch_ago "$ago" "$c"
+		ago="$((ago+1))"
+	done
+	touch_ago "$ago" '}'
+}
 task "The token is all file names in directory '$dirname' joined, sorted by modification date"
 )
 
 next_task # 6 split across files
 (
-current_token | while parse_token; do
-	printf '%s' "$course" > part0
-	printf '%s' '{' > part1
-	printf '%s' "$exercise" > part2
-	printf '%s' ':' > part3
-	printf '%s' "$student" > part4
-	printf '%s' ':' > part5
-	printf '%s' "$nonce" > part6
-	printf '%s' ':' > part7
-	printf '%s' "$mac" > part8
-	printf '%s\n' '}' > part9
-done
+current_token >/dev/null
+printf '%s' "$course" > part0
+printf '%s' '{' > part1
+printf '%s' "$exercise" > part2
+printf '%s' ':' > part3
+printf '%s' "$student" > part4
+printf '%s' ':' > part5
+printf '%s' "$nonce" > part6
+printf '%s' ':' > part7
+printf '%s' "$mac" > part8
+printf '%s\n' '}' > part9
 task "The token is in the files 'part0' through 'part9', sorted alphabetically"
 )
 
