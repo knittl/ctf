@@ -12,10 +12,10 @@ RUN apt update \
 
 COPY bin/mac64 /usr/local/bin/
 
+# ----------
+
 FROM base AS build
 
-
-RUN mkdir -p /ctf/tasks
 WORKDIR /ctf
 COPY *.sh random tasks/ /ctf/
 
