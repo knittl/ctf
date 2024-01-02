@@ -50,22 +50,22 @@ mkfaketokens
 task "The token is the name of the file which is older than $age years"
 )
 
-next_task # 4 find by size greater
-(
-rand_cd_leaf
-size="$(random_int 256 1024)"
-{ random_alnum "$size" | fold; echo; current_token; } > "$(uniq_filename)"
-mkfaketokens
-task "The token is in the $(bold last line) of file which has a $(bold size greater than $size bytes)"
-)
-
-next_task # 5 find by size exact
+next_task # 4 find by size exact
 (
 rand_cd_leaf
 file="$(current_token)"
 random_alnum "$(random_int 256 1024)" > "$file"
 mkfaketokens
 task "The token is in the file which has a size of $(bold "exactly $(wc -c < "$file") bytes")"
+)
+
+next_task # 5 find by size greater
+(
+rand_cd_leaf
+size="$(random_int 256 1024)"
+{ random_alnum "$size" | fold; echo; current_token; } > "$(uniq_filename)"
+mkfaketokens
+task "The token is in the $(bold last line) of the file which has a $(bold size greater than $size bytes)"
 )
 
 next_task # 6 find by permission (numeric)
