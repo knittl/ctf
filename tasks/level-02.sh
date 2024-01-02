@@ -73,7 +73,7 @@ esac
 perms="$(random_perm_sym)"
 
 prepare_current_token "$type$perms"
-task "Create the $(bold "$pathtype") '$dir/$path' with permissions '$perms' -- then run: $(bold "check perm $level $mac") $(underlined "'$dir/$path'");"
+task "Create the $(bold "$pathtype") '$dir/$path' with permissions $(bold "'$perms'") -- then run: $(bold "check perm $level $mac") $(underlined "'$dir/$path'");"
 )
 
 next_task # 5 sorted ls
