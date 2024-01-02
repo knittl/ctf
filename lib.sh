@@ -2,7 +2,8 @@
 # no shebang, must be sourced
 
 # helper funcs
-say() { printf '%s\n' "$*"; }
+echo() { printf '%s\n' "$*"; } # redefine echo to be sane
+say() { echo "$@"; }
 join_lines() { paste -sd "${1:-}"; }
 ansi() {
 			case "$1" in
@@ -205,7 +206,7 @@ parse_token() { IFS='{:}' read -r course exercise student nonce mac _; }
 verify_token() {
 	token="$1"
 	pepper="${2:-$TOKEN_PEPPER}"
-	printf '%s\n' "$token" | while parse_token; do
+	echo "$token" | while parse_token; do
 		expected="$(token "$exercise" "$course" "$student" "$pepper" "$nonce")"
 		test "$token" = "$expected"
 	done
@@ -223,7 +224,7 @@ verify_tokens() {
 	bad=
 	extract_tokens | {
 		while IFS='' read -r token; do
-			token="$(printf '%s' "$token" | tr -d ' ')" # TODO translate before loop?
+			token="$(echo "$token" | tr -d ' ')" # TODO translate before loop?
 			test "$token" || continue
 			if verify_token "$token" "$pepper"; then
 				echo "${color_green}✔${color_reset} $token"
