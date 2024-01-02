@@ -8,7 +8,7 @@ exec 2> README
 
 dir="$(rand_mkdir)"
 chmod a+w "$dir"
-cd -- "$dir"
+cd_dir() { cd -- "$dir"; }
 
 # helpers
 render_perm() {
@@ -28,6 +28,7 @@ render_perm() {
 
 next_task # 1 perms (textual)
 (
+cd_dir
 filename="$(rand_touch)"
 chmod "$(random_perm)" "$filename"
 perms="$(stat -c'%A' "$filename")"
@@ -41,6 +42,7 @@ done
 
 next_task # 2 perms (numeric)
 (
+cd_dir
 filename="$(rand_touch)"
 chmod "$(random_perm)" "$filename"
 perms="$(stat -c'%A' "$filename")"
@@ -53,6 +55,7 @@ task "Set the octal permissions $(bold "'$perms_octal'") for the file '$dir/$fil
 
 next_task # 3 perms (symbolic)
 (
+cd_dir
 filename="$(rand_touch)"
 chmod "$(random_perm)" "$filename"
 perms="$(stat -c'%A' "$filename")"
@@ -100,7 +103,7 @@ printf '%s:%s\n' "$nonce" "$mac" | fold -b3 | {
 	done
 	touch_ago "$ago" '}'
 }
-task "The token is all file names in directory '$dirname' joined, sorted by modification date"
+task "The token is all $(bold file names) in directory '$dirname' joined, sorted by modification date"
 )
 
 next_task # 6 split across files
@@ -123,7 +126,7 @@ next_task # 7 spaces
 (
 file="$(random_filename) $(random_filename) $(random_filename)"
 current_token > "$file"
-task 'The token is in the file with spaces in its name'
+task "The token is in the file with $(bold spaces) in its name"
 )
 
 next_task # 8 wildcards
@@ -134,5 +137,5 @@ for _ in $(random_seq 8 32); do
 	current_fake_token > "$prefix$(random_filename)$suffix"
 done
 current_token > "$prefix*$suffix"
-task 'The token is in the file with an asterisk (*) in its name'
+task "The token is in the file with an $(bold 'asterisk (*)') in its name"
 )
