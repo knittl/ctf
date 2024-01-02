@@ -252,8 +252,20 @@ setup() {
 	: "${STUDENT:?must be set. Call setup}"
 	export COURSE
 	export STUDENT
-	TOKEN_PEPPER="$(random_alnum)"
+	TOKEN_PEPPER="${1-$(random_alnum)}"
 	export TOKEN_PEPPER
 	info "Token pepper: '$TOKEN_PEPPER'"
 	echo 'Setup complete.'
+}
+
+setup_verify() {
+	# cannot use pipe as it would create a subshell
+	while read -r course student pepper name; do
+		test "$student" = "$1" || continue
+		export STUDENT="$1"
+		export COURSE="$course"
+		export TOKEN_PEPPER="$pepper"
+		echo "$COURSE/$STUDENT $TOKEN_PEPPER"
+		break
+	done
 }
