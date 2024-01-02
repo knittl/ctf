@@ -13,6 +13,6 @@ Press $(bold q) to quit the task list and to return to the shell prompt.
 
 You can always type $(bold show-motd) to see this message again.
 
-$(formatted dim "Checksum: $(printf '%s' "$TOKEN_PEPPER" | sha256sum | cut -c-64)")
+$(fmt dim "Checksum: $(printf '%s' "$TOKEN_PEPPER" | sha256sum | cut -c-64)")
 
 EOF
