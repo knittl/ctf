@@ -52,7 +52,7 @@ next_task() {
 	level="$(level)";
 }
 level() { printf '%s-%s%s\n' "$current_level" "$current_task" "${current_subtask:+.$current_subtask}"; }
-task() { printf "📝 %s%s\n\n" "${current_task:+[$(level)] }" "$*"; } >&2
+task() { printf "📝 %s%s\n\n" "${current_task:+[$level] }" "$*"; } >&2
 # TODO extra format for question text?
 
 leetify() {
@@ -182,7 +182,7 @@ prepare_token() {
 	token "$1" "$3" "$4" "$5" "$nonce" >/dev/null # pin nonce
 	# output variables: course exercise/task student nonce pepper
 }
-prepare_current_token() { prepare_token "$(level)" "$@"; }
+prepare_current_token() { prepare_token "$level" "$@"; }
 
 print_check() {
 	check="$1";
@@ -190,8 +190,8 @@ print_check() {
 	echo "check $check $level $mac${1+ $@}";
 }
 
-current_token() { token "$(level)"; }
-current_fake_token() { fake_token "$(level)"; }
+current_token() { token "$level"; }
+current_fake_token() { fake_token "$level"; }
 
 mac() {
 	# printf without newline
