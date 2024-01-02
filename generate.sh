@@ -2,9 +2,6 @@
 
 level="$1"
 generator="$2"
-root="$3"
+dir="$3"
 
-. ./setup.sh &&
-	current_level="$level" "$generator" "$root" &&
-	cat "$root/README"
-
+current_level="$level" "$generator" "$dir" && cat "$dir/README"
