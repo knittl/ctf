@@ -22,7 +22,7 @@ next_task # 2 head + cut with default delim (tab)
 padding() {
 	if chance 33
 	then current_fake_token
-	else random_alnum
+	else printf '%s\n' "$(random_alnum)"
 	fi
 }
 file="$(rand_touch)"
