@@ -18,7 +18,7 @@ next_task # 2
 dir=/
 while [ "$dir" = / ]; do dir="$(find / -maxdepth 1 -type d -perm /o+x | pick_random)"; done
 prepare_current_token "$dir"
-task "Show a command to change to the '${dir#/}' directory inside the file system root (i.e. '/'). The command has to work independently of your current directory. Get the token by running: $(bold "check cd $level $mac a") $(underlined your command)"
+task "Show a command to change to the '${dir#/}' directory inside the file system root (i.e. '/'). The command has to work independently of your current directory. Get the token by running: $(bold "$(print_check cd a)") $(underlined your command)"
 )
 
 next_task # 3
@@ -26,14 +26,14 @@ next_task # 3
 dir=/
 while [ "$dir" = / ]; do dir="$(find / -maxdepth 1 -type d -perm /o+x | pick_random)"; done
 prepare_current_token "$dir"
-task "The output of $(bold pwd) is '/home/$STUDENT'. Show a command to change to the '${dir#/}' directory inside the file system root (i.e. '/'). The command must use a relative path. Get the token by running: $(bold "check cd $level $mac r") $(underlined 'your command')"
+task "The output of $(bold pwd) is '/home/$STUDENT'. Show a command to change to the '${dir#/}' directory inside the file system root (i.e. '/'). The command must use a relative path. Get the token by running: $(bold "$(print_check cd r)") $(underlined 'your command')"
 )
 
 next_task # 4
 (
 filename="$(uniq_filename)"
 prepare_current_token "0/home/$STUDENT/$filename"
-task "Create an $(bold empty) file with name '$filename' in directory /home/$STUDENT/. Get the token by running: $(bold "check emptyfile $level $mac") $(underlined "/home/$STUDENT/$filename")"
+task "Create an $(bold empty) file with name '$filename' in directory /home/$STUDENT/. Get the token by running: $(bold "$(print_check emptyfile)") $(underlined "/home/$STUDENT/$filename")"
 )
 
 next_task # 5
@@ -52,7 +52,7 @@ mk_files() {
 mk_files jpg jpeg
 
 prepare_current_token "$(ls -l *)"
-task "How can you list details (size, date, ...) about all (non-hidden) $(bold jpg) and $(bold jpeg) image files in the directory '$dir' with a single command? Get the token by running: $(bold "check details $level $mac") $(underlined your command)"
+task "How can you list details (size, date, ...) about all (non-hidden) $(bold jpg) and $(bold jpeg) image files in the directory '$dir' with a single command? Get the token by running: $(bold "$(print_check details)") $(underlined your command)"
 
 mk_files png gif jar j2k jbg jfif jiff jpg.gz json
 )
@@ -72,7 +72,7 @@ names=$(
 )
 
 prepare_current_token "$names"
-task "How can you save a simple list of the files in directory '$dir' into a file? Execute the command to write the file and then run: $(bold "check cat $level $mac") $(underlined path/to/your/file)"
+task "How can you save a simple list of the files in directory '$dir' into a file? Execute the command to write the file and then run: $(bold "$(print_check cat)") $(underlined path/to/your/file)"
 )
 
 next_task # 7
@@ -80,7 +80,7 @@ next_task # 7
 count="$(random_int 4 8)"
 wildcard="$(random_alnum 4)_*/*[$(random_alpha $(random_int 4 8))]/$(printf "%$(random_int 2 4)s" | tr ' ' '?').*"
 prepare_current_token "$(printf '%d\n%s\n' "$count" "$wildcard")"
-task "Create a directory which contains $(bold "exactly $count") files which match the wildcard pattern '$wildcard'. Then run $(bold "check glob $level $mac $count '$wildcard'") $(underlined path/to/directory)"
+task "Create a directory which contains $(bold "exactly $count") files which match the wildcard pattern '$wildcard'. Then run $(bold "$(print_check glob "$count" "'$wildcard'")") $(underlined path/to/directory)"
 )
 
 next_task # 8
