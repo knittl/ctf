@@ -26,6 +26,7 @@ cat "$@" | while read -r course student secret name; do
 				--build-arg=student="$student" \
 				--build-arg=studentname="$name" \
 				-t "$img" .
+			info "Build complete. Secret='$secret', Checksum: $(printf '%s' "$secret" | sha256sum | cut -c-64)"
 			;;
 		push)
 			info "Pushing $img ..."
