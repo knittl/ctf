@@ -57,7 +57,7 @@ next_task # 5: need to re-apply increment from subshell to parent shell
 next_task # 6
 (
 rand_cd
-file="$(rand_touch "-$(current_token)")"
+current_token > "-$(random_alnum)"
 task "The token is in the $(bold content) of a file whose name $(bold starts with a hyphen)"
 )
 
