@@ -111,7 +111,7 @@ alphabet=ABCDEFGHIJKLMNOPQRSTUVWXYZ
 rot() { printf '%s%s\n' "$(input "$2" | cut -c"$(($1+1))-")" "$(input "$2" | cut -c"-$1")"; }
 rotate() { tr "$1" "$(rot "$2" "$1")"; }
 
-fake_tokens() { repeat "$(random_int 2 8)" fake_token "$level" | join_lines; }
+fake_tokens() { repeat "$(random_int 2 8)" current_fake_token | join_lines ' '; }
 
 rotate "$alphabet" "$rot" > "$file" <<EOF
 HELLO $(input "${STUDENTNAME:-$STUDENT}" | to_upper),
