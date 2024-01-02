@@ -24,13 +24,18 @@ render_perm() {
 	esac
 }
 
+rand_perm_touch() {
+	filename="$(rand_touch)"
+	chmod "$(random_perm)" "$filename"
+	echo "$filename"
+}
+
 #####
 
 next_task # 1 perms (textual)
 (
 cd_dir
-filename="$(rand_touch)"
-chmod "$(random_perm)" "$filename"
+filename="$(rand_perm_touch)"
 perms="$(stat -c'%A' "$filename")"
 chmod "$(random_perm)" "$filename"
 
@@ -43,8 +48,7 @@ done
 next_task # 2 perms (numeric)
 (
 cd_dir
-filename="$(rand_touch)"
-chmod "$(random_perm)" "$filename"
+filename="$(rand_perm_touch)"
 perms="$(stat -c'%A' "$filename")"
 perms_octal="$(stat -c'%#a' "$filename")"
 chmod "$(random_perm)" "$filename"
@@ -56,8 +60,7 @@ task "Set the octal permissions $(bold "'$perms_octal'") for the file '$dir/$fil
 next_task # 3 perms (symbolic)
 (
 cd_dir
-filename="$(rand_touch)"
-chmod "$(random_perm)" "$filename"
+filename="$(rand_perm_touch)"
 perms="$(stat -c'%A' "$filename")"
 chmod "$(random_perm)" "$filename"
 
