@@ -184,10 +184,17 @@ prepare_token() {
 }
 prepare_current_token() { prepare_token "$(level)" "$@"; }
 
+print_check() {
+	check="$1";
+	shift;
+	echo "check $check $level $mac${1+ $@}";
+}
+
 current_token() { token "$(level)"; }
 current_fake_token() { fake_token "$(level)"; }
 
 mac() {
+	# printf without newline
 	printf '%s' "$1" | sha256sum | xxd -r -p | base32 -w0 | take 8;
 	# printf '%s' "$1" | sha256sum | take 8;
 }
