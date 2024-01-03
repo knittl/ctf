@@ -16,7 +16,7 @@ Press $(bold q) to quit the task list and to return to the shell prompt.
 
 You can always type $(bold show-motd) to see this message again.
 
-$(formatted dim "Timestamp: $(date -u +%FT%TZ)")
-$(formatted dim "Checksum:  $(printf '%s' "$TOKEN_PEPPER" | sha256sum | cut -c-64)")
+$(fmt dim "Timestamp: $(date -u +%FT%TZ)")
+$(fmt dim "Checksum:  $(printf '%s' "$TOKEN_PEPPER" | sha256sum | cut -c-64)")
 
 EOF
