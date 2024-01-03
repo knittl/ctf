@@ -1,52 +1,18 @@
 #shellcheck shell=sh
 # no shebang, must be sourced
 
+. ./format.sh
+
 # helper funcs
 echo() { printf '%s\n' "$*"; } # redefine echo to be sane
 say() { echo "$@"; }
 join_lines() { paste -sd "${1:-}"; }
-ansi() {
-			case "$1" in
-				reset) say 0 ;;
-				bold|intense) say 1 ;;
-				faint|dim) say 2 ;;
-				italic) say 3 ;;
-				underline) say 4 ;;
-				blink) say 5 ;;
-				rapid) say 6 ;;
-				reverse) say 7 ;;
-				strike|crossed-out) say 9 ;;
-				not) printf 2 ;; # 2X
-				fg) bgfg=3 ;;
-				bg) bgfg=4 ;;
-				black) say "${bgfg}0" ;;
-				red) say "${bgfg}1" ;;
-				green) say "${bgfg}2" ;;
-				yellow) say "${bgfg}3" ;;
-				blue) say "${bgfg}4" ;;
-				magenta) say "${bgfg}5" ;;
-				cyan) say "${bgfg}6" ;;
-				white) say "${bgfg}7" ;;
-			esac
-}
-fmt() { printf '[%sm' "$(ansi fg; for arg; do ansi "$arg"; done | join_lines ';')"; }
-formatted() { format="$1"; shift; printf "%s%s%s\n" "$(fmt "$format")" "$*" "$color_reset"; }
-color_reset="$(fmt reset)"
-color_red="$(fmt bold red)"
-color_green="$(fmt bold green)"
-color_yellow="$(fmt bold yellow)"
-color_blue="$(fmt bold blue)"
-color_bold="$(fmt bold)"
-color_underline="$(fmt underline)"
-bold() { colored "$color_bold" "$@"; }
-underlined() { colored "$color_underline" "$@"; }
-colored() { color="$1"; shift; printf "$color%s$color_reset\n" "$*"; }
-err() { colored "$color_red" "⚠️ $*"; } >&2
+err() { fmt red "⚠️ $*"; } >&2
 if test "$DBG"
-then dbg() { printf "${color_yellow}DBG${color_reset}: %s\n" "$*"; } >&2
+then dbg() { printf "[%s] %s\n" "$(fmt yellow DBG)" "$*"; } >&2
 else dbg() { :; }
 fi
-info() { colored "$color_green" "ℹ️  $*"; } >&2
+info() { fmt green "ℹ️  $*"; } >&2
 next_task() {
 	current_task="$((current_task+1))";
 	level="$(level)";
@@ -226,9 +192,9 @@ verify_tokens() {
 		while IFS='' read -r token; do
 			test "$token" || continue
 			if verify_token "$token" "$pepper"; then
-				echo "${color_green}✔${color_reset} $token"
+				echo "$(fmt green ✔) $token"
 			else
-				echo "${color_red}✘${color_reset} $token"
+				echo "$(fmt red ✘) $token"
 				bad=1
 			fi
 		done
