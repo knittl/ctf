@@ -17,7 +17,7 @@ COPY bin/mac64 /usr/local/bin/
 FROM base AS build
 
 WORKDIR /ctf
-COPY *.sh random tasks/ /ctf/
+COPY *.sh tasks/ /ctf/
 
 ARG course=BIT
 ARG pepper
