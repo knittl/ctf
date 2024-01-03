@@ -51,7 +51,7 @@ next_task() {
 	current_task="$((current_task+1))";
 	level="$(level)";
 }
-level() { printf '%s-%s%s\n' "$current_level" "$current_task" "${current_subtask:+.$current_subtask}"; }
+level() { printf '%s-%s\n' "$current_level" "$current_task"; }
 task() { printf "📝 %s%s\n\n" "${current_task:+[$level] }" "$*"; } >&2
 # TODO extra format for question text?
 
