@@ -13,18 +13,22 @@ current_token > "$file"
 task "Type $(bold "cat '${PWD#$root}$file'") to get the first token." # TODO correct path
 )
 
+rand_fhs_dir() {
+	dir=/
+	while [ "$dir" = / ] || [ "$dir" = /ctf ]; do dir="$(find / -maxdepth 1 -type d -perm /o+x | pick_random)"; done
+	echo "$dir"
+}
+
 next_task # 2
 (
-dir=/
-while [ "$dir" = / ]; do dir="$(find / -maxdepth 1 -type d -perm /o+x | pick_random)"; done
+dir="$(rand_fhs_dir)"
 prepare_current_token "$dir"
 task "Show a command to change to the '${dir#/}' directory inside the file system root (i.e. '/'). The command has to work independently of your current directory. Get the token by running: $(bold "$(print_check cd a)") $(underlined your command)"
 )
 
 next_task # 3
 (
-dir=/
-while [ "$dir" = / ]; do dir="$(find / -maxdepth 1 -type d -perm /o+x | pick_random)"; done
+dir="$(rand_fhs_dir)"
 prepare_current_token "$dir"
 task "The output of $(bold pwd) is '/home/$STUDENT'. Show a command to change to the '${dir#/}' directory inside the file system root (i.e. '/'). The command must use a relative path. Get the token by running: $(bold "$(print_check cd r)") $(underlined 'your command')"
 )
