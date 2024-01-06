@@ -23,21 +23,21 @@ next_task # 2
 (
 dir="$(rand_fhs_dir)"
 prepare_current_token "$dir"
-task "Show a command to change to the '${dir#/}' directory inside the file system root (i.e. '/'). The command has to work independently of your current directory. Get the token by running: $(bold "$(print_check cd a)") $(underlined your command)"
+task "Show a command to change to the '${dir#/}' directory inside the file system root (i.e. '/').  The command has to work independently of your current directory.  Get the token by running: $(bold "$(print_check cd a)") $(underlined your command)"
 )
 
 next_task # 3
 (
 dir="$(rand_fhs_dir)"
 prepare_current_token "$dir"
-task "The output of $(bold pwd) is '/home/$STUDENT'. Show a command to change to the '${dir#/}' directory inside the file system root (i.e. '/'). The command must use a relative path. Get the token by running: $(bold "$(print_check cd r)") $(underlined 'your command')"
+task "The output of $(bold pwd) is '/home/$STUDENT'.  Show a command to change to the '${dir#/}' directory inside the file system root (i.e. '/').  The command must use a relative path.  Get the token by running: $(bold "$(print_check cd r)") $(underlined 'your command')"
 )
 
 next_task # 4
 (
 filename="$(uniq_filename)"
 prepare_current_token "0/home/$STUDENT/$filename"
-task "Create an $(bold empty) file with name '$filename' in directory /home/$STUDENT/. Get the token by running: $(bold "$(print_check emptyfile)") $(underlined "/home/$STUDENT/$filename")"
+task "Create an $(bold empty) file with name '$filename' in directory /home/$STUDENT/.  Get the token by running: $(bold "$(print_check emptyfile)") $(underlined "/home/$STUDENT/$filename")"
 )
 
 next_task # 5
@@ -84,7 +84,7 @@ next_task # 7
 count="$(random_int 4 8)"
 wildcard="$(random_alnum 4)_*/*[$(random_alpha $(random_int 4 8))]/$(printf "%$(random_int 2 4)s" | tr ' ' '?').*"
 prepare_current_token "$(printf '%d\n%s\n' "$count" "$wildcard")"
-task "Create a directory which contains $(bold "exactly $count") files which match the wildcard pattern '$wildcard'. Then run $(bold "$(print_check glob "$count" "'$wildcard'")") $(underlined path/to/directory)"
+task "Create a directory which contains $(bold "exactly $count") files which match the wildcard pattern '$wildcard'.  Then run $(bold "$(print_check glob "$count" "'$wildcard'")") $(underlined path/to/directory)"
 )
 
 next_task # 8
@@ -93,7 +93,7 @@ dirname="$(rand_mkdir)"
 cd "$dirname"
 repeat "$(random_int 4 8)" rand_mkdir >/dev/null
 touch "$(find */ -type d | pick_random)/$(current_token)"
-task "The token is the name of the only file in a random subdirectory of '$dirname'. Navigate with $(bold ls) and find the file."
+task "The token is the name of the only file in a random subdirectory of '$dirname'.  Navigate with $(bold ls) and find the file."
 )
 
 next_task # 9
