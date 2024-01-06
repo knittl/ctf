@@ -1,5 +1,5 @@
 #!/bin/sh
-"$@";
-script="$1"
-shift 3
+for script; do :; done # get last arg
+"$script" "$@";
+shift 2
 "$script" "$@"
