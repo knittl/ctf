@@ -70,6 +70,7 @@ RUN useradd -ms /bin/bash --no-log-init -c 'Account for '"$STUDENT" "$STUDENT" \
 WORKDIR "/home/$STUDENT"
 
 COPY --from=build --chown="$STUDENT:$STUDENT" /ctf/tasks /ctf/README ./
+COPY --from=build --chown="$STUDENT:$STUDENT" /tmp/ctf/checks/* /usr/local/bin/
 
 USER "$STUDENT"
 
