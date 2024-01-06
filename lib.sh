@@ -152,10 +152,18 @@ prepare_token() {
 }
 prepare_current_token() { prepare_token "$level" "$@"; }
 
+mk_check_script() {
+	script="$1"; shift
+	mkdir -p /tmp/ctf/checks/
+	cat > "/tmp/ctf/checks/_check-$level" <<-EOF
+	#!/bin/sh
+	exec check $(printf "'%s' " "$script" "$level" "$mac" "$@")"\$@"
+	EOF
+	chmod a+x "/tmp/ctf/checks/_check-$level"
+}
 print_check() {
-	check="$1";
-	shift;
-	echo "check $check $level $mac${1+ $@}";
+	mk_check_script "$@"
+	echo "check-task $level"
 }
 
 current_token() { token "$level"; }
