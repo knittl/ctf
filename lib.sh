@@ -18,7 +18,7 @@ next_task() {
 	level="$(level)";
 }
 level() { printf '%s-%s\n' "$current_level" "$current_task"; }
-task() { printf "📝 %s%s\n\n" "${current_task:+[$level] }" "$*"; } >&2
+task() { printf "📝 %s%s\n\n" "${current_task:+[$level] }" "$(input "$@")"; } >&2
 # TODO extra format for question text?
 
 leetify() {
