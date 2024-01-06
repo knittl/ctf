@@ -5,12 +5,18 @@ case "$mode" in
 	a)
 		deep="$(mktemp -d)/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t/u/v/w/x/y/z"
 		mkdir -p "$deep"
-		"$@" && "$@" && cd "$deep" && "$@" && pwd
+		"$@" && "$@" && cd "$deep" && "$@" && pwd || {
+			echo "\`$@\` didn't work, please try again. Make sure your command works independently of your working directory"
+			exit 1
+		}
 		;;
 	r)
 		cmd="$1"
 		shift
 		for arg; do set -- "$@" "./$arg"; shift; done # force relative path
-		cd "/home/$STUDENT" && "$cmd" "$@" && pwd
+		cd "/home/$STUDENT" && "$cmd" "$@" && pwd || {
+			echo "That didn't work, please try again. Make sure you navigate from $HOME"
+			exit 1
+		}
 		;;
 esac
