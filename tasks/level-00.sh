@@ -84,7 +84,7 @@ next_task # 7
 count="$(random_int 4 8)"
 wildcard="$(random_alnum 4)_*/*[$(random_alpha $(random_int 4 8))]/$(printf "%$(random_int 2 4)s" | tr ' ' '?').*"
 prepare_current_token "$(printf '%d\n%s\n' "$count" "$wildcard")"
-task "Create a directory which contains $(bold "exactly $count") files which match the wildcard pattern '$wildcard'.  Then run $(bold "$(print_check glob "$count" "'$wildcard'")") $(underlined path/to/directory)"
+task "Create a directory which contains $(bold "exactly $count") files which match the wildcard pattern '$(bold "$wildcard")'.  Then run $(bold "$(print_check glob "$count" "'$wildcard'")") $(underlined path/to/directory)"
 )
 
 next_task # 8
