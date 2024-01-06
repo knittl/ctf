@@ -9,8 +9,10 @@ exec 2> README
 next_task # 1 static script
 (
 word="$(random_alnum)"
-prepare_current_token  "hello $word"
-task "Create an $(bold executable script file) which writes $(bold "'hello $word'") (without quotes) to $(bold standard output). Get the token by running: $(bold "$(print_check exec)") $(underlined ./your_script)"
+prepare_current_token "hello $word"
+task <<TASK
+Create an $(bold executable script file) which writes '$(bold "hello $word")' (without quotes) to $(bold standard output). Get the token by running: $(bold "$(print_check exec)") $(underlined ./your_script)
+TASK
 )
 
 next_task # 2 positional parameters
@@ -19,7 +21,9 @@ word() { random_alnum; }
 word1="$(word)"
 word2="$(word)  $(word)"
 prepare_current_token "$(printf 'hello %s\nhello %s\n' "$word1" "$word2")"
-task "Create an $(bold executable script file) which writes $(underlined "'hello XXXX'") (without quotes) to $(bold standard output) ($(underlined XXXX) shall be the $(bold first argument) passed to the script). The script must print arguments with spaces $(bold verbatim) (i.e. ./script 'a  b' outputs 'hello a  b'). Get the token by running: $(bold "$(print_check hello "$word1" "$(word)" "$word2" "$(word)")") $(underlined ./your_script)"
+task <<TASK
+Create an $(bold executable script file) which writes '$(underlined "hello XXXX")' (without quotes) to $(bold standard output). ($(underlined XXXX) shall be the $(bold first argument) passed to the script). The script must print arguments with spaces $(bold verbatim) (i.e. ./script 'a  b' outputs 'hello a  b'). Get the token by running: $(bold "$(print_check hello "$word1" "$(word)" "$word2" "$(word)")") $(underlined ./your_script)
+TASK
 )
 
 # pizza:
