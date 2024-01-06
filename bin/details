@@ -1,3 +1,3 @@
 #!/bin/sh
 
-"$@" | sed 's|[^ ]*/||'
+"$@" | sed 's|[^ ]*/||;' | sed "s/$STUDENT $STUDENT/root root/"
