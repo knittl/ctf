@@ -37,7 +37,7 @@ next_task # 4
 (
 filename="$(uniq_filename)"
 prepare_current_token "0/home/$STUDENT/$filename"
-task "Create an $(bold empty) file with name '$filename' in directory /home/$STUDENT/.  Get the token by running: $(bold "$(print_check emptyfile)") $(underlined "/home/$STUDENT/$filename")"
+task "Create an $(bold empty) file with name '$filename' in directory /home/$STUDENT/.  Get the token by running: $(bold "$(print_check emptyfile "/home/$STUDENT/$filename")")"
 )
 
 next_task # 5
