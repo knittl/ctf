@@ -120,7 +120,7 @@ tok() {
 
 # real token:
 tok current_token size perm age
-task "The token is name of file with $(bold "size $(wc -c < "$file") bytes") and $(bold "permissions $(stat -c'%#a' "$file")"), $(bold "last modified $age weeks ago")"
+task "The token is name of file with $(bold "size $(wc -c < "$file") bytes") and $(bold "permissions $(stat -c'%#a' "$file")"), $(bold "last modified over $age weeks ago")"
 
 # fake tokens:
 for _ in $(random_seq 4 8); do
