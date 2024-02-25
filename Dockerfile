@@ -65,6 +65,9 @@ ENV STUDENT=$student
 ENV STUDENTNAME=${studentname:-$student}
 
 RUN useradd -ms /bin/bash --no-log-init -c "Account for $STUDENTNAME ($STUDENT)" -G sudo "$STUDENT" \
+	&& printf '%s:%s\n' "$STUDENT" "$({ tr -cd '[:lower:][:digit:]' </dev/urandom | dd bs=1 count=12; echo; } | tee "/home/$STUDENT/.password")" | chpasswd \
+	&& chmod a= "/home/$STUDENT/.password" \
+	&& chown "$STUDENT" "/home/$STUDENT/.password" \
 	&& touch "/home/$STUDENT/.sudo_as_admin_successful" \
 	&& sed -i '/^#force_color_prompt=yes$/s/^#//' "/home/$STUDENT/.bashrc" \
 	&& echo 'show-motd' >> "/home/$STUDENT/.bashrc"
