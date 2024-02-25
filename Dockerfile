@@ -8,6 +8,8 @@ RUN apt update \
 	&& apt install -y man-db netbase less nano \
 	&& apt install -y psmisc \
 	&& apt install -y curl \
+	&& apt install -y sudo \
+	&& apt install -y git \
 	&& rm -rf /var/cache/apt/archives /var/lib/apt/lists/*
 
 COPY bin/mac64 /usr/local/bin/
