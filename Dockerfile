@@ -63,7 +63,8 @@ ARG student
 ENV COURSE=$course
 ENV STUDENT=$student
 
-RUN useradd -ms /bin/bash --no-log-init -c 'Account for '"$STUDENT" "$STUDENT" \
+RUN useradd -ms /bin/bash --no-log-init -c "Account for $STUDENTNAME ($STUDENT)" -G sudo "$STUDENT" \
+	&& touch "/home/$STUDENT/.sudo_as_admin_successful" \
 	&& sed -i '/^#force_color_prompt=yes$/s/^#//' "/home/$STUDENT/.bashrc" \
 	&& echo 'show-motd' >> "/home/$STUDENT/.bashrc"
 WORKDIR "/home/$STUDENT"
