@@ -24,21 +24,21 @@ next_task # 1
 (
 rand_cd
 mkdir "$(current_token)"
-task "Navigate the directory tree with $(bold ls) to find the directory with token $level as name"
+task "Navigate the directory tree with $(bold ls) and $(bold cd) to find the directory with token $level as name"
 )
 
 next_task # 2
 (
 rand_cd
 touch -- ".$(current_token)"
-task "Navigate the directory tree to find the $(bold hidden file) with token $level as name"
+task "Navigate (ls, cd) the directory tree to find the $(bold hidden file) with token $level as name"
 )
 
 next_task # 3
 (
 rand_cd
 mkdir ".$(current_token)"
-task "Navigate the directory tree to find the $(bold hidden directory) with token $level as name"
+task "Navigate (ls, cd) the directory tree to find the $(bold hidden directory) with token $level as name"
 )
 
 next_task # 4
@@ -46,7 +46,7 @@ next_task # 4
 rand_cd
 file="$(rand_touch "$(current_token)")" # TODO better file name?
 prev="$level"
-task "The token is the $(bold name) of a file in the directory tree"
+task "The token is the $(bold name) of a file in this directory tree"
 
 next_task # 5
 current_token > "$file"
@@ -79,7 +79,7 @@ for _ in $(random_seq 256 512); do
 done > "$file"
 
 prepare_current_token "$largest_number"
-task "Use a $(bold regular expression) to find the $(bold largest number) in file '$file' (NB the file contains $(bold positive) and $(bold negative integers)).  Get the token by running: $(bold "$(print_check printf)") $(underlined largest_number)"
+task "Use a $(bold regular expression) to find the $(bold largest number) in file '$(bold "$file")' (NB the file contains $(bold positive) and $(bold negative integers)).  Get the token by running: $(bold "$(print_check printf)") $(underlined largest_number)"
 )
 
 next_task # 8
@@ -88,7 +88,7 @@ proto="$(pick_random tcp udp)"
 awk -v proto="$proto" '!/^#/&&$0~proto' /etc/services | pick_random | while read -r service port _; do
 	port="${port%/$proto}"
 	prepare_current_token "$port"
-	task "Which $(bold "$(echo "$proto" | to_upper) port") is associated with the service/protocol '$service'? The file $(bold "'/etc/services'") contains a list of services and their assigned ports.  Get the token by running: $(bold "$(print_check printf)") $(underlined port_number)"
+	task "Which $(bold "$(echo "$proto" | to_upper) port") is associated with the service/protocol '$(bold "$service")'? The file '$(bold "/etc/services")' contains a list of services and their assigned ports.  Get the token by running: $(bold "$(print_check printf)") $(underlined port_number)"
 done
 )
 
@@ -98,7 +98,7 @@ proto="$(pick_random tcp udp)"
 awk -v proto="$proto" '!/^#/&&$0~proto' /etc/services | pick_random | while read -r service port _; do
 	port="${port%/$proto}"
 	prepare_current_token "$service"
-	task "Which $(bold service/protocol) is associated with $(bold "$(echo "$proto" | to_upper)") port $port? The file $(bold "'/etc/services'") contains a list of services and their assigned ports.  Get the token by running: $(bold "$(print_check printf)") $(underlined service_name)"
+	task "Which $(bold service/protocol) is associated with $(bold "$(echo "$proto" | to_upper)") port $(bold "$port")? The file '$(bold "/etc/services")' contains a list of services and their assigned ports.  Get the token by running: $(bold "$(print_check printf)") $(underlined service_name)"
 done
 )
 
@@ -128,5 +128,5 @@ YOU CAN IGNORE ALL FOLLOWING TOKENS:
 $(repeat "$(random_int 4 16)" fake_tokens)
 EOF
 
-task "You received an encrypted file '$file'.  Can you recover its plaintext? (Hint: $(bold tr), Caesar cipher)."
+task "You received an encrypted file '$(bold "$file")'.  Can you recover its plaintext? (Hint: $(bold tr), Caesar cipher)."
 )
