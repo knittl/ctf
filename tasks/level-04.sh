@@ -30,7 +30,7 @@ next_task # 1 find by name
 (
 rand_cd_leaf
 current_token > "$COURSE-$(random_alnum).token"
-task "The token is in the file with name $(bold containing) '$COURSE' and with extension '.token'"
+task "The token is in the file with name $(bold containing) '$(bold "$COURSE")' and with extension '$(bold ".token")'"
 )
 
 next_task # 2 find by name insensitive
@@ -38,7 +38,7 @@ next_task # 2 find by name insensitive
 rand_cd_leaf
 tag="$(random_alnum)"
 current_token > "$(random_alnum)$tag$(random_alnum)"
-task "The token is in file with name $(bold "containing '$(echo "$tag" | to_lower)' (case-insensitive)")"
+task "The token is in file with name $(bold containing) '$(bold "$(echo "$tag" | to_lower)")' ($(bold case-insensitive))"
 )
 
 next_task # 3 find by modification time
@@ -47,7 +47,7 @@ rand_cd_leaf
 age="$(random_int 2 8)"
 touch -d "$((age+1)) years ago" "$(current_token)"
 mkfaketokens
-task "The token is the name of the file which is older than $age years"
+task "The token is the $(bold name) of the file which is $(bold "older than $age years")"
 )
 
 next_task # 4 find by size exact
@@ -74,7 +74,7 @@ rand_cd_leaf
 file="$(current_token_file)"
 chmod "$(random_perm)" "$file"
 mkfaketokens
-task "The token is the name of file with $(bold "permissions '$(stat -c'%#a' "$file")'")"
+task "The token is the $(bold name) of file with $(bold permissions) '$(bold "$(stat -c'%#a' "$file")")'"
 )
 
 next_task # 7 find by permission (symbolic)
@@ -83,7 +83,7 @@ rand_cd_leaf
 file="$(current_token_file)"
 chmod "$(random_perm_chmod)" "$file"
 mkfaketokens
-task "The token is the name of file with $(bold "permissions '$(stat -c'%A' "$file")'")"
+task "The token is the $(bold name) of file with $(bold permissions) '$(bold "$(stat -c'%A' "$file")")'"
 )
 
 next_task # 8 find file in directory
@@ -92,7 +92,7 @@ rand_cd_leaf
 dir="$(rand_mkdir)"
 current_token > "$dir/$(random_filename)"
 for _ in $(random_seq 4 16); do rand_cd && touch -- "$dir"; done
-task "The token is in a file inside a directory with the name '$dir/'"
+task "The token is in a file inside a directory with the name '$(bold "$dir/")'"
 )
 
 next_task # 9 find multiple criteria
@@ -120,7 +120,7 @@ tok() {
 
 # real token:
 tok current_token size perm age
-task "The token is name of file with $(bold "size $(wc -c < "$file") bytes") and $(bold "permissions $(stat -c'%#a' "$file")"), $(bold "last modified over $age weeks ago")"
+task "The token is $(bold name) of file with $(bold "size $(wc -c < "$file") bytes") and $(bold "permissions $(stat -c'%#a' "$file")"), $(bold "last modified over $age weeks ago")"
 
 # fake tokens:
 for _ in $(random_seq 4 8); do
@@ -140,7 +140,7 @@ for _ in $(random_seq 16 64); do
 	random_alnum > "$(current_fake_token)"
 	mkdir -p "$(current_fake_token)"
 done
-task "The token is the name of the only $(bold empty file) in directory '${PWD#$root/}'"
+task "The token is the name of the only $(bold empty file) in directory '$(bold "${PWD#$root/}")'"
 )
 
 next_task # 11 find empty dir
@@ -153,5 +153,5 @@ for _ in $(random_seq 16 64); do
 	mkdir -p "$fake"
 	touch -- "$fake/$(random_filename)"
 done
-task "The token is the name of the only $(bold empty directory) in '${PWD#$root/}'"
+task "The token is the name of the only $(bold empty directory) in '$(bold "${PWD#$root/}")'"
 )

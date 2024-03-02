@@ -79,7 +79,7 @@ for _ in $(random_seq 256 512); do
 done > "$file"
 
 prepare_current_token "$largest_number"
-task "Use a $(bold regular expression) to find the $(bold largest number) in file '$file' (NB the file contains $(bold positive) and $(bold negative integers)).  Get the token by running: $(bold "$(print_check printf)") $(underlined largest_number)"
+task "Use a $(bold regular expression) to find the $(bold largest number) in file '$(bold "$file")' (NB the file contains $(bold positive) and $(bold negative integers)).  Get the token by running: $(bold "$(print_check printf)") $(underlined largest_number)"
 )
 
 next_task # 8
@@ -88,7 +88,7 @@ proto="$(pick_random tcp udp)"
 awk -v proto="$proto" '!/^#/&&$0~proto' /etc/services | pick_random | while read -r service port _; do
 	port="${port%/$proto}"
 	prepare_current_token "$port"
-	task "Which $(bold "$(echo "$proto" | to_upper) port") is associated with the service/protocol '$service'? The file $(bold "'/etc/services'") contains a list of services and their assigned ports.  Get the token by running: $(bold "$(print_check printf)") $(underlined port_number)"
+	task "Which $(bold "$(echo "$proto" | to_upper) port") is associated with the service/protocol '$(bold "$service")'? The file '$(bold "/etc/services")' contains a list of services and their assigned ports.  Get the token by running: $(bold "$(print_check printf)") $(underlined port_number)"
 done
 )
 
@@ -98,7 +98,7 @@ proto="$(pick_random tcp udp)"
 awk -v proto="$proto" '!/^#/&&$0~proto' /etc/services | pick_random | while read -r service port _; do
 	port="${port%/$proto}"
 	prepare_current_token "$service"
-	task "Which $(bold service/protocol) is associated with $(bold "$(echo "$proto" | to_upper)") port $port? The file $(bold "'/etc/services'") contains a list of services and their assigned ports.  Get the token by running: $(bold "$(print_check printf)") $(underlined service_name)"
+	task "Which $(bold service/protocol) is associated with $(bold "$(echo "$proto" | to_upper)") port $(bold "$port")? The file '$(bold "/etc/services")' contains a list of services and their assigned ports.  Get the token by running: $(bold "$(print_check printf)") $(underlined service_name)"
 done
 )
 
@@ -126,5 +126,5 @@ YOU CAN IGNORE ALL FOLLOWING TOKENS:
 $(repeat "$(random_int 4 16)" fake_tokens)
 EOF
 
-task "You received an encrypted file '$file'.  Can you recover its plaintext? (Hint: $(bold tr), Caesar cipher)."
+task "You received an encrypted file '$(bold "$file")'.  Can you recover its plaintext? (Hint: $(bold tr), Caesar cipher)."
 )
