@@ -14,7 +14,7 @@ lines="$(random_int 64 256)"
 	current_token
 	random_alnum "$((lines*64))" | fold -w64
 } > "$file"
-task "The token is in the $(bold first line) of file '$file'"
+task "The token is in the $(bold first line) of file '$(bold "$file")'"
 )
 
 next_task # 2 extract cells
@@ -36,7 +36,7 @@ for i in $(seq "$lines"); do
 			repeat "$((column-1))" padding
 			current_token
 			repeat "$((columns-column-1))" padding
-			task "The token is in $(bold "line $line, column $column") in file '$file'"
+			task "The token is in $(bold "line $line, column $column") in file '$(bold "$file")'"
 		else
 			repeat "$columns" padding
 		fi
@@ -52,7 +52,7 @@ file="$(rand_touch)"
 	repeat "$(random_int 256 512)" current_fake_token
 	current_token
 } | nl | shuf > "$file"
-task "The token is in the line with the $(bold largest number) in file '$file'"
+task "The token is in the line with the $(bold largest number) in file '$(bold "$file")'"
 )
 
 next_task # 4 frequency analysis
@@ -70,7 +70,7 @@ freq="$(random_int 16)"
 	tok() { echo "$token"; }
 	repeat "$(random_int  "$((freq+1))" "$((freq*2))")" tok
 } | shuf > "$file"
-task "The token is line with $(bold highest frequency) in the file '$file'"
+task "The token is line with $(bold highest frequency) in the file '$(bold "$file")'"
 )
 
 next_task # 5 find text
@@ -82,7 +82,7 @@ tag="$(random_alnum)"
 	line() { printf '%s\t%s\t%s\n' "$(random_alnum)" "$(current_fake_token)" "$tag"; }
 	repeat "$(random_int 256 512)" line
 } | shuf > "$file"
-task "The token is in the line which $(bold "starts with '$tag'") in file '$file'"
+task "The token is in the line which $(bold starts with) '$(bold "$tag")' in file '$(bold "$file")'"
 )
 
 next_task # 6 multiple anchors
@@ -103,7 +103,7 @@ end="$(random_alnum)"
 		esac
 	done
 } | shuf > "$file"
-task "The token is in the line which $(bold "starts with '$start'") and $(bold "ends with '$end'") in file '$file'"
+task "The token is in the line which $(bold starts with) '$(bold "$start")' and $(bold ends with) '$(bold "$end")' in file '$(bold "$file")'"
 )
 
 next_task # 7 multiple conditions
@@ -124,7 +124,7 @@ end="$(random_alnum)"
 		esac
 	done
 } | shuf > "$file"
-task "The token is in the line which $(bold "starts with '$start'") but does $(bold "not end with '$end'") in file '$file'"
+task "The token is in the line which $(bold starts with) '$(bold "$start")' but does $(bold not end with) '$(bold "$end")' in file '$(bold "$file")'"
 )
 
 next_task # 8 exclude text
@@ -137,7 +137,7 @@ tag="$(random_alnum)"
 		printf '%s %s\n' "$tag" "$(current_fake_token)"
 	done
 } | shuf > "$file"
-task "The token is in the line which does $(bold not contain) '$tag' in file '$file'"
+task "The token is in the line which does $(bold not contain) '$(bold "$tag")' in file '$(bold "$file")'"
 )
 
 next_task # 9 ignore case
@@ -150,7 +150,7 @@ until tag="$(random_alpha | grep '[[:lower:]]' | grep '[[:upper:]]')"; do :; don
 		printf '%s\t%s\n' "$(random_alnum)$(random_alnum)$(random_alnum)" "$(current_fake_token)"
 	done
 } | shuf > "$file"
-task "The token is in the line which contains $(bold "'$(printf '%s' "$tag"|to_lower)'") in mixed case in the file '$file'"
+task "The token is in the line which $(bold contains) '$(bold "$(printf '%s' "$tag"|to_lower)")' in $(bold mixed case) in the file '$(bold "$file")'"
 )
 
 next_task # 10 match numbers
@@ -162,5 +162,5 @@ file="$(rand_touch)"
 		printf '%s\t%s\n' "$(random_alpha)$(random_alnum)" "$(fake_token "$level")"
 	done
 } | shuf > "$file"
-task "The token is in the line which starts with $(bold numbers) in file '$file'"
+task "The token is in the line which $(bold starts with numbers) in file '$(bold "$file")'"
 )

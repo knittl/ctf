@@ -54,7 +54,7 @@ perms_octal="$(stat -c'%#a' "$filename")"
 chmod "$(random_perm)" "$filename"
 
 prepare_current_token "$perms"
-task "Set the octal permissions $(bold "'$perms_octal'") for the file '$dir/$filename' -- then run: $(bold "$(print_check perm "$dir/$filename")")"
+task "Set the octal permissions $(bold "'$perms_octal'") for the file '$(bold "$dir/$filename")' -- then run: $(bold "$(print_check perm "$dir/$filename")")"
 )
 
 next_task # 3 perms (symbolic)
@@ -65,7 +65,7 @@ perms="$(stat -c'%A' "$filename")"
 chmod "$(random_perm)" "$filename"
 
 prepare_current_token "$perms"
-task "Set permissions $(bold "'${perms#-}'") for the file '$dir/$filename' -- then run: $(bold "$(print_check perm "$dir/$filename")")"
+task "Set permissions $(bold "'${perms#-}'") for the file '$(bold "$dir/$filename")' -- then run: $(bold "$(print_check perm "$dir/$filename")")"
 )
 
 next_task # 4 create + mode
@@ -79,7 +79,7 @@ esac
 perms="$(random_perm_sym)"
 
 prepare_current_token "$type$perms"
-task "Create the $(bold "$pathtype") '$dir/$path' with permissions $(bold "'$perms'") -- then run: $(bold "$(print_check perm "$dir/$path")")"
+task "Create the $(bold "$pathtype") '$(bold "$dir/$path")' with permissions $(bold "'$perms'") -- then run: $(bold "$(print_check perm "$dir/$path")")"
 )
 
 next_task # 5 sorted ls
@@ -106,7 +106,7 @@ printf '%s:%s\n' "$nonce" "$mac" | fold -w3 | {
 	done
 	touch_ago "$ago" '}'
 }
-task "The token is all $(bold file names) in directory '$dirname' joined, sorted by modification date"
+task "The token is all $(bold file names) in directory '$(bold "$dirname")' joined, sorted by modification date"
 )
 
 next_task # 6 split across files
@@ -122,14 +122,14 @@ printf '%s' "$nonce" > part6
 printf '%s' ':' > part7
 printf '%s' "$mac" > part8
 printf '%s\n' '}' > part9
-task "The token is in the files 'part0' through 'part9', sorted alphabetically"
+task "The token is in the files '$(bold part0)' through '$(bold part9)', sorted alphabetically"
 )
 
 next_task # 7 spaces
 (
 file="$(random_filename) $(random_filename) $(random_filename)"
 current_token > "$file"
-task "The token is in the file with $(bold spaces) in its name"
+task "The token is in the file with $(bold spaces) in its $(bold name)"
 )
 
 next_task # 8 wildcards
@@ -140,5 +140,5 @@ for _ in $(random_seq 8 32); do
 	current_fake_token > "$prefix$(random_filename)$suffix"
 done
 current_token > "$prefix*$suffix"
-task "The token is in the file with an $(bold 'asterisk (*)') in its name"
+task "The token is in the file with an $(bold 'asterisk (*)') in its $(bold name)"
 )
