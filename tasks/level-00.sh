@@ -76,7 +76,7 @@ names=$(
 )
 
 prepare_current_token "$names"
-task "How can you save a simple list of the files in directory '$(bold "$dir")' into a file? Execute the command to write the file and then run: $(bold "$(print_check cat)") $(underlined path/to/your/file)"
+task "How can you save a $(bold simple list) of the files in directory '$(bold "$dir")' into a file? Execute the command to write the file and then run: $(bold "$(print_check cat)") $(underlined path/to/your/file)"
 )
 
 next_task # 7
