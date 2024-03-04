@@ -24,21 +24,21 @@ next_task # 1
 (
 rand_cd
 mkdir "$(current_token)"
-task "Navigate the directory tree with $(bold ls) to find the directory with token $level as name"
+task "Navigate the directory tree with $(bold ls) and $(bold cd) to find the directory with token $level as name"
 )
 
 next_task # 2
 (
 rand_cd
 touch -- ".$(current_token)"
-task "Navigate the directory tree to find the $(bold hidden file) with token $level as name"
+task "Navigate (ls, cd) the directory tree to find the $(bold hidden file) with token $level as name"
 )
 
 next_task # 3
 (
 rand_cd
 mkdir ".$(current_token)"
-task "Navigate the directory tree to find the $(bold hidden directory) with token $level as name"
+task "Navigate (ls, cd) the directory tree to find the $(bold hidden directory) with token $level as name"
 )
 
 next_task # 4
@@ -46,7 +46,7 @@ next_task # 4
 rand_cd
 file="$(rand_touch "$(current_token)")" # TODO better file name?
 prev="$level"
-task "The token is the $(bold name) of a file in the directory tree"
+task "The token is the $(bold name) of a file in this directory tree"
 
 next_task # 5
 current_token > "$file"
