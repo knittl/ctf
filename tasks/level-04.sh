@@ -74,7 +74,7 @@ rand_cd_leaf
 file="$(current_token_file)"
 chmod "$(random_perm)" "$file"
 mkfaketokens
-task "The token is the $(bold name) of file with $(bold permissions) '$(bold "$(stat -c'%#a' "$file")")'"
+task "The token is the $(bold name) of file with $(bold permissions) '$(bold "$(stat -c'%04a' "$file")")'"
 )
 
 next_task # 7 find by permission (symbolic)
@@ -120,7 +120,7 @@ tok() {
 
 # real token:
 tok current_token size perm age
-task "The token is $(bold name) of file with $(bold "size $(wc -c < "$file") bytes") and $(bold "permissions $(stat -c'%#a' "$file")"), $(bold "last modified over $age weeks ago")"
+task "The token is $(bold name) of file with $(bold "size $(wc -c < "$file") bytes") and $(bold "permissions $(stat -c'%04a' "$file")"), $(bold "last modified over $age weeks ago")"
 
 # fake tokens:
 for _ in $(random_seq 4 8); do
