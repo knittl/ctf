@@ -93,7 +93,7 @@ dirname="$(rand_mkdir)"
 cd "$dirname"
 repeat "$(random_int 4 8)" rand_mkdir >/dev/null
 touch "$(find */ -type d | pick_random)/$(current_token)"
-task "The token is the name of the only file in a random subdirectory of '$(bold "$dirname")'.  Navigate with $(bold ls) and find the file."
+task "The token is the name of the only file in a random subdirectory of '$(bold "$dirname")'.  Navigate with $(bold ls) and $(bold cd) to find the file."
 )
 
 next_task # 9
