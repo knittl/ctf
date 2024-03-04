@@ -50,7 +50,7 @@ next_task # 2 perms (numeric)
 cd_dir
 filename="$(rand_perm_touch)"
 perms="$(stat -c'%A' "$filename")"
-perms_octal="$(stat -c'%#a' "$filename")"
+perms_octal="$(stat -c'%04a' "$filename")"
 chmod "$(random_perm)" "$filename"
 
 prepare_current_token "$perms"
