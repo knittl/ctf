@@ -35,13 +35,15 @@ extract_tokens() {
 # TODO strict mode verification? i.e. exactly one flag per line
 verify_tokens() {
 	pepper="${1:-$TOKEN_PEPPER}"
+	_setup_verify="$2"
 	bad=
 	extract_tokens | {
 		while IFS='' read -r token; do
 			token="$(echo "$token" | tr -d ' ')" # TODO translate before loop?
 			test "$token" || continue
+			${_setup_verify:+"$_setup_verify"}
 			if verify_token "$token" "$pepper"; then
-				echo "$(fmt green ✔) $token"
+				echo "$(fmt green ✔) $token${name+ from $name}"
 			else
 				echo "$(fmt red ✘) $token"
 				bad=1
@@ -55,27 +57,18 @@ verify_tokens() {
 verify_all() {
 	COURSE="$1"
 	peppers="$2"
-	[ -f "$peppers" ] && [ -r "$peppers" ] || {
+	[ "$#" -eq 2 ] && [ -f "$peppers" ] && [ -r "$peppers" ] || {
 		err "Usage: verify_all COURSE PEPPERSFILE"
 		return 1
 	}
-	bad=
-	extract_tokens | {
-		while IFS='' read -r token; do
-			token="$(echo "$token" | tr -d ' ')" # TODO translate before loop?
-			test "$token" || continue
-			parse_token <<-TOKEN
-			$token
-			TOKEN
-			setup_verify "$student" < "$peppers" 2>/dev/null
-			if verify_token "$token" "$pepper"; then
-				echo "$(fmt green ✔) $token from $name"
-			else
-				echo "$(fmt red ✘) $token"
-				bad=1
-			fi
-		done
-		test -z "$bad"
+
+	_load_pepper() {
+		parse_token <<-TOKEN
+		$token
+		TOKEN
+		setup_verify "$student" < "$peppers" 2>/dev/null
 	}
+
+	verify_tokens '' _load_pepper
 }
 
