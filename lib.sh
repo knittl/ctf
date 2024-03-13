@@ -241,7 +241,35 @@ setup_verify() {
 		export STUDENT="$1"
 		export COURSE="$course"
 		export TOKEN_PEPPER="$pepper"
-		echo "$COURSE/$STUDENT $TOKEN_PEPPER"
+		echo "$COURSE/$STUDENT $TOKEN_PEPPER" >&2
 		break
 	done
+}
+
+# extracts the student id to lookup pepper, then verifies each submitted/found token
+verify_all() {
+	COURSE="$1"
+	peppers="$2"
+	[ -f "$peppers" ] && [ -r "$peppers" ] || {
+		err "Usage: verify_all COURSE PEPPERSFILE"
+		return 1
+	}
+	bad=
+	extract_tokens | {
+		while IFS='' read -r token; do
+			token="$(echo "$token" | tr -d ' ')" # TODO translate before loop?
+			test "$token" || continue
+			parse_token <<-TOKEN
+			$token
+			TOKEN
+			setup_verify "$student" < "$peppers" 2>/dev/null
+			if verify_token "$token" "$pepper"; then
+				echo "$(fmt green ✔) $token from $name"
+			else
+				echo "$(fmt red ✘) $token"
+				bad=1
+			fi
+		done
+		test -z "$bad"
+	}
 }
