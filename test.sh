@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. ./lib.sh
+. ./verify_lib.sh
 
 assert_equal() {
 	expected="$1"
