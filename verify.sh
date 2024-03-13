@@ -1,3 +1,3 @@
 #!/bin/sh
-. ./lib.sh
+. ./verify_lib.sh
 exec verify_all "$@"
