@@ -37,7 +37,7 @@ verify_tokens() {
 	pepper="${1:-$TOKEN_PEPPER}"
 	_setup_verify="$2"
 	bad=
-	extract_tokens | {
+	extract_tokens | uniq | {
 		while IFS='' read -r token; do
 			token="$(echo "$token" | tr -d ' ')" # TODO translate before loop?
 			test "$token" || continue
