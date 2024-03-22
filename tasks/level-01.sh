@@ -116,6 +116,8 @@ rotate "$alphabet" "$rot" > "$file" <<EOF
 HELLO $(input "${STUDENTNAME:-$STUDENT}" | to_upper),
 
 YOU HAVE RECOVERED THE SECRET MESSAGE!
+ONLY UPPERCASE LETTERS ARE ROTATED, YOU MUST KEEP ALL LOWERCASE LETTERS FROM THE CIPHERTEXT.
+(RANDOM NOISE: $(input 'if you can read this, you are rotating lowercase letters!' | rotate "$(input "$alphabet" | to_lower)" "$rot"))
 
 DON'T BE CONFUSED BY THESE FAKE TOKENS: $(fake_tokens)
 OR THIS ONE: $(fake_token "$level")
