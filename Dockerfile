@@ -60,8 +60,10 @@ COPY show-tasks show-motd bin/* \
 
 ARG course=BIT
 ARG student
+ARG studentname
 ENV COURSE=$course
 ENV STUDENT=$student
+ENV STUDENTNAME=${studentname:-$student}
 
 RUN useradd -ms /bin/bash --no-log-init -c "Account for $STUDENTNAME ($STUDENT)" -G sudo "$STUDENT" \
 	&& printf '%s:%s\n' "$STUDENT" "$(tr -cd '[:lower:][:digit:]' </dev/urandom | dd bs=1 count=8 | { cat; echo; } | tee "/home/$STUDENT/.password")" | chpasswd \
