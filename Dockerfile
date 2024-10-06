@@ -2,7 +2,6 @@ FROM ubuntu:24.04 AS base
 
 ENV LANG=C.UTF-8
 
-RUN yes|unminimize
 RUN apt update \
 	&& apt install -y xxd \
 	&& apt install -y man-db netbase less nano \
@@ -10,6 +9,8 @@ RUN apt update \
 	&& apt install -y curl \
 	&& apt install -y sudo \
 	&& apt install -y git \
+	&& apt install -y unminimize \
+	&& yes|unminimize \
 	&& rm -rf /var/cache/apt/archives /var/lib/apt/lists/*
 
 COPY bin/mac64 /usr/local/bin/
