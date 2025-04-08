@@ -73,7 +73,7 @@ names=$(
 )
 
 prepare_current_token "$names"
-task "How can you save a $(bold simple list) of the files in directory '$(bold "$dir")' into a file? Execute the command to write the file and then run: $(bold "$(print_check cat)") $(underlined path/to/your/file)"
+task "How can you save a $(bold simple list) of the files in directory '$(bold "$dir")' into a file?  Execute the command to write the file and then run: $(bold "$(print_check cat)") $(underlined path/to/your/file)"
 )
 
 next_task # 8
@@ -92,7 +92,7 @@ mk_files() {
 mk_files jpg jpeg
 
 prepare_current_token "$(ls -l *)"
-task "How can you list details (size, date, ...) about all (non-hidden) $(bold jpg) and $(bold jpeg) image files in the directory '$(bold "$dir")' with a single command? Get the token by running: $(bold "$(print_check details)") $(underlined your command)"
+task "How can you list details (size, date, ...) about all (non-hidden) $(bold jpg) and $(bold jpeg) image files in the directory '$(bold "$dir")' with a single command?  Get the token by running: $(bold "$(print_check details)") $(underlined your command)"
 
 mk_files png gif jar j2k jbg jfif jiff jpg.gz json
 )
