@@ -98,7 +98,7 @@ proto="$(pick_random tcp udp)"
 awk -v proto="$proto" '!/^#/&&$0~proto' /etc/services | pick_random | while read -r service port _; do
 	port="${port%/$proto}"
 	prepare_current_token "$service"
-	task "Which $(bold service/protocol) is associated with $(bold "$(echo "$proto" | to_upper)") port $(bold "$port")? The file '$(bold "/etc/services")' contains a list of services and their assigned ports.  Get the token by running: $(bold "$(print_check printf)") $(underlined service_name)"
+	task "Which $(bold service/protocol) is associated with $(bold "$(echo "$proto" | to_upper)") port $(bold "$port")?  The file '$(bold "/etc/services")' contains a list of services and their assigned ports.  Get the token by running: $(bold "$(print_check printf)") $(underlined service_name)"
 done
 )
 
