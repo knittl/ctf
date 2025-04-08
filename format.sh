@@ -10,7 +10,7 @@ echo() { _e "$@"; } # redefine echo to be sane
 sgr_color() { _e "$bgfg$1"; }
 sgr_attr() { # sgr_attr attribute
 	case "$1" in
-		[0-9]) _e "$1" ;;
+		[0-9]|[0-9][0-9]) _e "$1" ;;
 		reset) _e 0 ;;
 		strong|b|bold|bright|intense) _e 1 ;;
 		faint|dim) _e 2 ;;
