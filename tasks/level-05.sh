@@ -162,7 +162,7 @@ next_task # 4 pizza extras
 repeat "$(random_int 2 8)" pizza current_token vegetables meats "$yummy"
 repeat "$(random_int 2 4)" pizza current_fake_token meats "$yucky" "$yummy"
 repeat "$(random_int 2 4)" pizza current_fake_token vegetables "$yucky" "$yummy"
-task "You cannot decide which pizza to order.  You $(bold love) $(pretty "$yummy"); but you $(bold can not stand) $(pretty "$yucky").  The tokens are next to your favorite pizzas."
+task "You cannot decide which pizza to order.  You $(bold love) $(pretty "$yummy"); but you $(bold cannot stand) $(pretty "$yucky").  The tokens are next to your favorite pizzas."
 } | shuf | paste "$names" - | grep -e "$COURSE{.*}" > "$file"
 )
 repeat 2 next_task # re-apply task from subshell to parent shell
