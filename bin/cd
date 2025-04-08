@@ -1,10 +1,17 @@
 #!/bin/sh
 mode="$1"
 shift
+
+if [ "$#" -lt 1 ]; then
+	echo 'Please provide a command to check'
+	exit 1
+fi
+
+deep="$(mktemp -d)/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t/u/v/w/x/y/z"
+mkdir -p "$deep"
+
 case "$mode" in
 	a)
-		deep="$(mktemp -d)/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t/u/v/w/x/y/z"
-		mkdir -p "$deep"
 		"$@" && "$@" && cd "$deep" && "$@" && pwd || {
 			echo "\`$@\` didn't work, please try again. Make sure your command works independently of your working directory"
 			exit 1
