@@ -84,7 +84,7 @@ cd -- "$dir"
 mk_files() {
 	for ext; do
 		for _ in $(random_seq 8 16); do
-			touch -d "$(random_int 0 16) months ago $(random_int 0 8) days ago $(random_int 0 1024) minutes ago" "$(random_filename).$ext"
+			touch -d "$(random_int 18 36) months ago $(random_int 0 8) days ago $(random_int 0 1024) minutes ago" "$(random_filename).$ext"
 		done
 	done
 }
