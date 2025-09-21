@@ -111,18 +111,19 @@ task "The token is all $(bold file names) in directory '$(bold "$dirname")' join
 
 next_task # 6 split across files
 (
+prefix="$(random_alnum)"
 current_token >/dev/null
-printf '%s' "$course" > part0
-printf '%s' '{' > part1
-printf '%s' "$exercise" > part2
-printf '%s' ':' > part3
-printf '%s' "$student" > part4
-printf '%s' ':' > part5
-printf '%s' "$nonce" > part6
-printf '%s' ':' > part7
-printf '%s' "$mac" > part8
-printf '%s\n' '}' > part9
-task "The token is in the files '$(bold part0)' through '$(bold part9)', sorted alphabetically"
+printf '%s' "$course" > "${prefix}0"
+printf '%s' '{' > "${prefix}1"
+printf '%s' "$exercise" > "${prefix}2"
+printf '%s' ':' > "${prefix}3"
+printf '%s' "$student" > "${prefix}4"
+printf '%s' ':' > "${prefix}5"
+printf '%s' "$nonce" > "${prefix}6"
+printf '%s' ':' > "${prefix}7"
+printf '%s' "$mac" > "${prefix}8"
+printf '%s\n' '}' > "${prefix}9"
+task "The token is in the files '$(bold "${prefix}0")' through '$(bold "${prefix}9")', sorted alphabetically"
 )
 
 next_task # 7 spaces
