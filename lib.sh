@@ -1,7 +1,7 @@
 #shellcheck shell=sh
 # no shebang, must be sourced
 
-. ./format.sh
+. "${0%/*}/format.sh"
 
 # helper funcs
 echo() { printf '%s\n' "$*"; } # redefine echo to be sane
