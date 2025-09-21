@@ -1,5 +1,5 @@
 #!/bin/sh
-. ./verify_lib.sh
+. "${0%/*}/verify_lib.sh"
 
 # extracts the student id to look up pepper, then verifies each submitted/found token
 COURSE="$1"

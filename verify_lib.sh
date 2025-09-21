@@ -1,7 +1,7 @@
 #shellcheck shell=sh
 # no shebang, must be sourced
 
-. ./lib.sh
+. "${0%/*}/lib.sh"
 
 parse_token() { IFS='{:}' read -r course exercise student nonce mac _; }
 
