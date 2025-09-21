@@ -36,7 +36,7 @@ for i in $(seq "$lines"); do
 			repeat "$((column-1))" padding
 			current_token
 			repeat "$((columns-column-1))" padding
-			task "The token is in $(bold "line $line, column $column") in file '$(bold "$file")'"
+			task "The token is in $(bold "line $line, column/field $column") in file '$(bold "$file")'"
 		else
 			repeat "$columns" padding
 		fi
