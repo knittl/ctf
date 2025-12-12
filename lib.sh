@@ -24,7 +24,7 @@ task() { printf "📝 %s%s\n\n" "${current_task:+[$level] }" "$(input "$@")"; } 
 # TODO extra format for question text?
 
 leetify() {
-	tr 
+	tr \
 		'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' \
 		'@bcd3f9h!jk7mn0pqr5+uvwxy24B(D3F6H1JK7MN0PQR$TUVWXY2'
 }
