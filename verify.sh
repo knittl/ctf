@@ -2,10 +2,9 @@
 . "${0%/*}/verify_lib.sh"
 
 # extracts the student id to look up pepper, then verifies each submitted/found token
-COURSE="$1"
-peppersfile="$2"
-[ "$#" -ge 2 ] && [ -f "$peppersfile" ] && [ -r "$peppersfile" ] || {
-	err "Usage: $0 COURSE PEPPERSFILE"
+peppersfile="$1"
+[ "$#" -gt 0 ] && [ -f "$peppersfile" ] && [ -r "$peppersfile" ] || {
+	err "Usage: $0 PEPPERSFILE"
 	return 1
 }
 
@@ -17,9 +16,12 @@ _load_pepper() {
 	setup_verify "$student" "$peppersfile" 2>/dev/null
 }
 
-verify() { verify_tokens '' _load_pepper; }
+verify() {
+	COURSES="$(grep -v '^#' "$peppersfile" | cut -f1 | sort -u | join_lines '|')"
+	verify_tokens '' _load_pepper;
+}
 
-shift 2
+shift
 if test "$#" -gt 0
 then printf '%s\n' "$@" | verify
 else verify

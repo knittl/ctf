@@ -28,7 +28,7 @@ verify_token() {
 extract_tokens() {
 	test -t 0 && info '^D (CTRL-D) to submit'
 	# TODO line buffered output
-	grep -o "$COURSE{[^}]*}"
+	grep -oE "($COURSES)\{[^}]*\}"
 }
 
 # TODO strict mode verification? i.e. exactly one flag per line
