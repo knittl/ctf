@@ -65,8 +65,10 @@ random_alpha() { random_gen '[:alpha:]' | take "${1:-8}"; }
 random_alnum() { random_gen '[:alnum:]' | take "${1:-8}"; }
 random_digits() { random_gen '[:digit:]' | take "${1:-8}"; }
 random_base32() { random_gen 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567' | take "${1:-8}"; }
-random_name() { random_alnum "$@"; }
-random_filename() { random_name "$(random_int "${1:-4}" "${2:-16}")"; }
+random_upper() { random_gen '[:upper:]' | take "${1:-8}"; }
+random_lower() { random_gen '[:lower:]' | take "${1:-8}"; }
+random_name() { random_upper 1; random_lower "$((${1:-8}-1))"; }
+random_filename() { random_alnum "$(random_int "${1:-4}" "${2:-16}")"; }
 random_perm() { echo "0$(random_int 0 7)$(random_int 0 7)$(random_int 0 7)"; }
 random_seq() { seq "$(random_int "$1" "$2")"; }
 pick_random() { shuf ${1+-e} -n1 "$@"; }
