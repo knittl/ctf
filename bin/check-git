@@ -1,0 +1,12 @@
+#!/bin/sh
+
+mode="$1"; shift
+
+case "$mode" in
+	count)
+		count="$1"
+		repo="$2"
+		branch="$3"
+		git -C "$repo" rev-list "-$count" --count --full-history "$branch"
+		;;
+esac
