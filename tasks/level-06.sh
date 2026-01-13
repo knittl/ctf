@@ -6,13 +6,16 @@ init_level
 init_root "$1"
 exec 2> README
 
+git config --global advice.defaultBranchName false
+
 rand_git_user() {
 	git config user.name "$(random_name) $(random_name)"
 	git config user.email "$(random_lower)@localhost"
 }
 
-rand_git_repo() { repo="$(rand_mkdir)" && cd "$repo" && git init; }
-random_word() { random_alnum "$(random_int 2 8)"; echo; }
+rand_git_repo() { repo="${1:-"$(rand_mkdir)"}" && cd "$repo" && git init && rand_git_user; }
+rand_word() { random_alnum "$(random_int 2 8)"; echo; }
+rand_subject() { rand_repeat 2-8 rand_word | join_lines ' '; }
 
 rand_repeat() {
 	range="$1"; shift
@@ -23,61 +26,55 @@ commit() { : 'overwrite for specific task!'; }
 commit_fake_token() { commit "$(current_fake_token)"; }
 commit_token() { commit "$(current_token)"; }
 
-git config --global advice.defaultBranchName false
-
 next_task # 1 commit message
-# (
-# rand_git_repo
-# rand_git_user
-# git commit --allow-empty -m "$(current_token)"
-# rand_repeat 16-32 git commit --allow-empty -m "$(current_fake_token)"
-# task "The token is in the the commit message of the first commit in repository $(bold "$repo")."
-# )
+(
+rand_git_repo
+git commit --allow-empty -m "$(current_token)"
+rand_repeat 16-32 git commit --allow-empty -m "$(current_fake_token)"
+task "The token is in the the commit message of the first commit in repository $(bold "$repo")."
+)
 
 next_task # 2 unreachable commits
-# (
+(
+commit() { git commit-tree -m "$1" "$(git write-tree)"; }
 
-# commit() { git commit-tree -m "$1" "$(git write-tree)"; }
-
-# rand_git_repo
-# rand_git_user
-# commit="$(commit_token)"
-# rand_repeat 8-16 commit_fake_token
-# task "The token is in the the commit message of commit $(bold "$commit") in repository $(bold "$repo")."
-# )
+rand_git_repo
+rand_repeat 8-16 commit_fake_token
+commit="$(commit_token)"
+task "The token is in the the commit message of commit $(bold "$commit") in repository $(bold "$repo")."
+)
 
 next_task # 3 branches
-# (
-# rand_git_repo
-# rand_git_user
+(
+rand_git_repo
 
-# file="$(uniq_filename).txt"
+file="$(uniq_filename).txt"
 
-# commit() {
-# 	echo "$1" > "$file"
-# 	git add "$file"
-# 	git commit -m "$(rand_repeat 2-8 random_word | join_lines ' ')"
-# }
+commit() {
+	echo "$1" > "$file"
+	git add "$file"
+	git commit -m "$(rand_subject)"
+}
 
-# make_random_branch() {
-# 	git checkout -qb "$(random_alnum)"
-# 	rand_repeat 8-16 commit_fake_token
-# 	git checkout -q -
-# }
+make_random_branch() {
+	git checkout -qb "$(random_alnum)"
+	rand_repeat 8-16 commit_fake_token
+	git checkout -q -
+}
 
-# commit_fake_token # initial commit
+commit_fake_token # initial commit
 
-# rand_repeat 4-8 make_random_branch
+rand_repeat 4-8 make_random_branch
 
-# branch="$(random_alnum)"
-# git checkout -qb "$branch"
-# rand_repeat 8-16 commit_fake_token
-# commit_token
+branch="$(random_alnum)"
+git checkout -qb "$branch"
+rand_repeat 8-16 commit_fake_token
+commit_token
 
-# git checkout -q -
+git checkout -q -
 
-# task "The token is in file $(bold "$file") in branch $(bold "$branch") in repository $(bold "$repo")."
-# )
+task "The token is in file $(bold "$file") in branch $(bold "$branch") in repository $(bold "$repo")."
+)
 
 next_task # 4 remotes
 (
@@ -85,7 +82,7 @@ next_task # 4 remotes
 commit() {
 	echo "$1" > "$file"
 	git add "$file"
-	git commit -m "$(rand_repeat 2-8 random_word | join_lines ' ')"
+	git commit -m "$(rand_subject)"
 }
 
 make_random_branch() {
@@ -99,9 +96,7 @@ file="$(uniq_filename).txt"
 
 make_remote() (
 	origin="$1"
-	cd "$origin"
-	git init
-	rand_git_user
+	rand_git_repo "$origin"
 
 	commit_fake_token # initial commit
 
@@ -110,7 +105,6 @@ make_remote() (
 	git checkout -qb "$branch"
 	rand_repeat 4-8 commit_fake_token
 	commit_token
-
 	git checkout -q -
 )
 
@@ -132,23 +126,18 @@ task "The token is in file $(bold "$file") in branch $(bold "$branch") of remote
 next_task # 5 stash, conflicts
 (
 rand_git_repo
-rand_git_user
 
 cat <<-'EOF' >README
 Read this file first, it contains important information
 
 Configuration: Configure the current token in file `.env`
 EOF
-cat <<-EOF >.env
-TOKEN=
-EOF
+printf 'TOKEN=\n' >.env
 
 git add README .env
 git commit -m 'Initial commit'
 
-cat <<-EOF >.env
-TOKEN=$(current_token)
-EOF
+printf 'TOKEN=%s\n' "$(current_token)" >.env
 git stash push -m 'Stash token for bugfix'
 
 cat <<-EOF >.env
@@ -168,7 +157,6 @@ task "You needed to implement an urgent bugfix.  The token is stashed away safel
 next_task # 6 tracked files
 (
 rand_git_repo
-rand_git_user
 
 rand_stage_file() {
 	file="$(uniq_filename)"
@@ -177,6 +165,12 @@ rand_stage_file() {
 }
 rand_repeat 8-16 rand_stage_file
 git commit -m 'Initial commit'
+
+# TODO modify files
+# TODO stage files
+# TODO stage and modify files?
+# TODO delete files
+# TODO delete files from index only
 
 current_token > "$(uniq_filename)"
 task "Don't lose important work.  Currently, it's the only untracked file in repository $(bold "$repo")."
@@ -190,13 +184,9 @@ bundle=".$repo.bundle"
 bundlepath="$PWD/$bundle"
 
 	(
-	cd "$origin"
-	git init
-	rand_git_user
+	rand_git_repo "$origin"
 
-	cat <<-EOF >README
-	Working with remotes is easy
-	EOF
+	printf 'Working with remotes is easy\n' >README
 	git add README
 	git commit -m 'Initial commit'
 
@@ -210,9 +200,9 @@ rand_git_user
 
 	(
 	cd "$origin"
+	git checkout -qb tokenize
 	current_token >token.txt
 	git add token.txt
-	git checkout -qb tokenize
 	git commit -m 'Add token'
 
 	git bundle create "$bundlepath" --all
@@ -225,7 +215,6 @@ next_task # 8 detecting changes
 (
 # TODO make more interesting, e.g. multiple commits
 rand_git_repo
-rand_git_user
 
 rand_repeat 32-64 current_fake_token > tokens.txt
 git add tokens.txt
@@ -255,7 +244,72 @@ prepare_current_token "$(printf '%s\n' "$commits")"
 task "Create a new Git repository with a branch that contains $(bold "$commits") commits.  Get the token by calling $(bold "$(print_check check-git count "$commits")") $(underlined path/to/repo) $(underlined branchname)"
 )
 
-# TODO create N commits on branch XY
+next_task # 10 merging
+(
+rand_git_repo
+
+commit() {
+	file="$prefix.$1"; shift
+	printf '%s\n' "$@" | tee "$file" >&3
+	git add "$file"
+	git commit -qm "$(rand_subject)"
+}
+
+commit_branch() {
+	git checkout -qb "$(random_alnum)" HEAD^
+	commit "$@"
+}
+
+prefix="$(random_alnum)"
+commit txt 'Find the token' 3>/dev/null
+commit txt 'Combine all branches' 3>/dev/null
+
+branch="$(git branch --show-current)"
+prefix="$(random_alnum)"
+# TODO random number of branches (must work with print_check:
+# for nr in $(seq "$(random_int 4 8)"); do
+for nr in $(seq 4); do
+	commit_branch "$nr" "$(rand_word)"
+done 3>/tmp/expected
+git checkout -q "$branch"
+
+prepare_current_token "$(cat /tmp/expected)"
+task "The token was split across multiple branches like a Horcrux.  Merge all branches of repository $(bold "$repo") and run $(bold "$(print_check cat "$prefix.1" "$prefix.2" "$prefix.3" "$prefix.4")") to reconstruct it."
+)
+
+next_task # 10 merging
+(
+rand_git_repo
+prefix="$(random_alnum)"
+
+commit() {
+	file="$prefix.$1"; shift
+	printf "$@" > "$file"
+	git add "$file"
+	git commit -m "$(rand_subject)"
+}
+
+commit_branch() {
+	git checkout -qb "branch-$1" HEAD^
+	commit "$@"
+}
+
+# TODO run checker script, not merge token
+prepare_current_token
+commit 00 'Find the token\n'
+commit 00 'Find the token split across files in multiple branches\n'
+branch="$(git branch --show-current)"
+commit_branch 01 'The token is: '
+commit_branch 02 '%s' "$course{"
+commit_branch 03 '%s' "$exercise:"
+commit_branch 04 '%s' "$student:"
+commit_branch 05 '%s' "$nonce:"
+commit_branch 06 '%s\n' "$mac}"
+git checkout -q "$branch"
+
+task "The token was split across multiple branches like a Horcrux.  Merge all branches of repository $(bold "$repo") to reconstruct it."
+)
+
 # TODO config?
 # TODO merge?
 # TODO reflog?
