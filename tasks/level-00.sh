@@ -30,7 +30,7 @@ next_task # 3
 (
 dir="$(rand_fhs_dir)"
 prepare_current_token "$dir"
-task "Show a $(bold single) command to change to the '$(bold "${dir#/}")' directory inside the file system root (i.e. '/').  The command has to work independently of your current directory.  Get the token by running: $(bold "$(print_check cd a)") $(underlined your command)"
+task "Show a $(bold single) command to change to the '$(bold "${dir#/}")' directory inside the file system root (i.e. '/').  The command has to work independently of your current directory.  Get the token by running: $(bold "$(print_check cd a)") $(underlined your) $(underlined command)"
 )
 
 next_task # 4
