@@ -221,7 +221,7 @@ git add tokens.txt
 git commit -m 'Initial commit'
 
 rand_repeat 32-64 current_fake_token > /tmp/tokens.txt
-awk -v "line=$(random_int "$(wc -l < tokens.txt)")" \
+awk -v "line=$(random_int "$(wc -l < /tmp/tokens.txt)")" \
 	-v "token=$(current_token)" \
 	'1;NR==line{print token}' /tmp/tokens.txt > tokens.txt
 
@@ -232,7 +232,7 @@ branch="$(random_alnum)"
 git branch "$branch"
 cat /tmp/tokens.txt > tokens.txt
 git add tokens.txt
-git commit -CHEAD --amend
+git commit --amend --no-edit
 
 task "The token does not exist in your current branch, but it's still available in branch $(bold "$branch") in repository $(bold "$repo")."
 )
