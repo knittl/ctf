@@ -30,7 +30,8 @@ next_task # 1 commit message
 (
 rand_git_repo
 git commit --allow-empty -m "$(current_token)"
-rand_repeat 16-32 git commit --allow-empty -m "$(current_fake_token)"
+fake_commit() { git commit --allow-empty -m "$(current_fake_token)"; }
+rand_repeat 16-32 fake_commit
 task "The token is in the commit message of the first commit in repository $(bold "$repo")."
 )
 
