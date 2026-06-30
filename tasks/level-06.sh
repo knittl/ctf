@@ -31,7 +31,7 @@ next_task # 1 commit message
 rand_git_repo
 git commit --allow-empty -m "$(current_token)"
 rand_repeat 16-32 git commit --allow-empty -m "$(current_fake_token)"
-task "The token is in the the commit message of the first commit in repository $(bold "$repo")."
+task "The token is in the commit message of the first commit in repository $(bold "$repo")."
 )
 
 next_task # 2 unreachable commits
@@ -41,7 +41,7 @@ commit() { git commit-tree -m "$1" "$(git write-tree)"; }
 rand_git_repo
 rand_repeat 8-16 commit_fake_token
 commit="$(commit_token)"
-task "The token is in the the commit message of commit $(bold "$commit") in repository $(bold "$repo")."
+task "The token is in the commit message of commit $(bold "$commit") in repository $(bold "$repo")."
 )
 
 next_task # 3 branches
